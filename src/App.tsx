@@ -1,29 +1,30 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Toaster } from "@/components/ui/sonner";
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Navbar from "@/components/Navbar";
-import Index from "@/pages/Index";
-import PathologySearch from "@/pages/PathologySearch";
-import PathologyDetail from "@/pages/PathologyDetail";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Navbar } from "./components/Navbar";
+import Index from "./pages/Index";
+import PathologySearch from "./pages/PathologySearch";
 
 const queryClient = new QueryClient();
 
-function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <Router>
-        <div className="min-h-screen bg-background">
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <div className="min-h-screen">
           <Navbar />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/pathologies" element={<PathologySearch />} />
-            <Route path="/pathology/:id" element={<PathologyDetail />} />
           </Routes>
         </div>
-        <Toaster />
-      </Router>
-    </QueryClientProvider>
-  );
-}
+      </BrowserRouter>
+    </TooltipProvider>
+  </QueryClientProvider>
+);
 
 export default App;
