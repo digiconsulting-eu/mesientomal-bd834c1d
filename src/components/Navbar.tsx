@@ -6,8 +6,11 @@ import {
   SheetContent,
   SheetTrigger,
 } from "./ui/sheet";
+import { useState } from "react";
 
 export const Navbar = () => {
+  const [open, setOpen] = useState(false);
+
   return (
     <nav className="border-b">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -26,7 +29,7 @@ export const Navbar = () => {
 
         {/* Mobile Navigation */}
         <div className="md:hidden">
-          <Sheet>
+          <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
                 <Menu className="h-6 w-6" />
@@ -35,14 +38,14 @@ export const Navbar = () => {
             </SheetTrigger>
             <SheetContent side="right" className="w-[300px]">
               <div className="flex flex-col space-y-4 mt-8">
-                <Link to="/" className="text-lg font-medium">Últimas Reseñas</Link>
-                <Link to="/cuenta-tu-experiencia" className="text-lg font-medium">Cuenta tu experiencia</Link>
-                <Link to="/pathologies" className="text-lg font-medium">Buscar Patología</Link>
-                <Link to="/add-pathology" className="text-lg font-medium">Insertar Patología</Link>
-                <Link to="/symptoms" className="text-lg font-medium">Buscar Síntomas</Link>
+                <Link to="/" onClick={() => setOpen(false)} className="text-lg font-medium">Últimas Reseñas</Link>
+                <Link to="/cuenta-tu-experiencia" onClick={() => setOpen(false)} className="text-lg font-medium">Cuenta tu experiencia</Link>
+                <Link to="/pathologies" onClick={() => setOpen(false)} className="text-lg font-medium">Buscar Patología</Link>
+                <Link to="/add-pathology" onClick={() => setOpen(false)} className="text-lg font-medium">Insertar Patología</Link>
+                <Link to="/symptoms" onClick={() => setOpen(false)} className="text-lg font-medium">Buscar Síntomas</Link>
                 <div className="pt-4 border-t">
-                  <Link to="/login" className="block text-lg font-medium mb-3">Iniciar sesión</Link>
-                  <Link to="/register" className="block text-lg font-medium text-primary">Registrarse</Link>
+                  <Link to="/login" onClick={() => setOpen(false)} className="block text-lg font-medium mb-3">Iniciar sesión</Link>
+                  <Link to="/register" onClick={() => setOpen(false)} className="block text-lg font-medium text-primary">Registrarse</Link>
                 </div>
               </div>
             </SheetContent>
