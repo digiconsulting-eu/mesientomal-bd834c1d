@@ -17,7 +17,7 @@ export const ReviewCard = ({ title, author, tag, content }: ReviewCardProps) => 
             <CardTitle className="text-xl font-semibold">{title}</CardTitle>
             <p className="text-sm text-gray-500 mt-1">{author}</p>
           </div>
-          <Badge variant="secondary" className="bg-purple-100 text-purple-800 hover:bg-purple-200">
+          <Badge variant="secondary" className="bg-blue-100 text-blue-800 hover:bg-blue-200">
             {tag}
           </Badge>
         </div>
