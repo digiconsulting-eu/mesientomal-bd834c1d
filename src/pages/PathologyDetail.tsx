@@ -21,7 +21,7 @@ const PathologyDetail = () => {
         .single();
 
       if (error) {
-        console.error("Error fetching pathology:", error);
+        console.error("Error al cargar la patología:", error);
         return;
       }
 
@@ -32,14 +32,14 @@ const PathologyDetail = () => {
   }, [name]);
 
   if (!pathology) {
-    return <div className="container mx-auto px-4 py-8">Loading...</div>;
+    return <div className="container mx-auto px-4 py-8">Cargando...</div>;
   }
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-gray-800">{pathology.Patologia}</h1>
-        <Button variant="outline">Segui</Button>
+        <Button variant="outline">Seguir</Button>
       </div>
 
       <div className="flex gap-2 mb-6">
@@ -47,13 +47,13 @@ const PathologyDetail = () => {
           variant={activeTab === 'panoramica' ? 'default' : 'outline'}
           onClick={() => setActiveTab('panoramica')}
         >
-          Panoramica
+          Descripción General
         </Button>
         <Button
           variant={activeTab === 'esperienze' ? 'default' : 'outline'}
           onClick={() => setActiveTab('esperienze')}
         >
-          Leggi Esperienze
+          Leer Experiencias
         </Button>
       </div>
 
@@ -61,34 +61,34 @@ const PathologyDetail = () => {
         <div className="md:col-span-1">
           <Card>
             <CardContent className="p-6">
-              <h2 className="text-xl font-semibold mb-4">Statistiche</h2>
+              <h2 className="text-xl font-semibold mb-4">Estadísticas</h2>
               <div className="space-y-4">
                 <div>
-                  <p className="text-gray-600">Difficoltà di Diagnosi</p>
+                  <p className="text-gray-600">Dificultad de Diagnóstico</p>
                   <div className="flex items-center">
                     <span className="text-2xl font-bold">4.0</span>
-                    <span className="ml-2 text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded">Alto</span>
+                    <span className="ml-2 text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded">Alta</span>
                   </div>
                 </div>
                 <div>
-                  <p className="text-gray-600">Fastidio Sintomi</p>
+                  <p className="text-gray-600">Severidad de Síntomas</p>
                   <div className="flex items-center">
                     <span className="text-2xl font-bold">4.0</span>
-                    <span className="ml-2 text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded">Alto</span>
+                    <span className="ml-2 text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded">Alta</span>
                   </div>
                 </div>
                 <div>
-                  <p className="text-gray-600">Trattamenti Disponibili</p>
+                  <p className="text-gray-600">Tratamientos Disponibles</p>
                   <div className="flex items-center">
                     <span className="text-2xl font-bold">3.5</span>
-                    <span className="ml-2 text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded">Medio</span>
+                    <span className="ml-2 text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded">Media</span>
                   </div>
                 </div>
                 <div>
-                  <p className="text-gray-600">Rischio Complicazioni</p>
+                  <p className="text-gray-600">Riesgo de Complicaciones</p>
                   <div className="flex items-center">
                     <span className="text-2xl font-bold">2.0</span>
-                    <span className="ml-2 text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded">Basso</span>
+                    <span className="ml-2 text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded">Bajo</span>
                   </div>
                 </div>
               </div>
@@ -100,7 +100,7 @@ const PathologyDetail = () => {
           {activeTab === 'panoramica' && (
             <Card>
               <CardContent className="p-6">
-                <h2 className="text-xl font-semibold mb-4">Cos'è {pathology.Patologia}?</h2>
+                <h2 className="text-xl font-semibold mb-4">¿Qué es {pathology.Patologia}?</h2>
                 <p className="text-gray-700">{pathology.Descrizione}</p>
               </CardContent>
             </Card>
@@ -109,18 +109,18 @@ const PathologyDetail = () => {
           {activeTab === 'esperienze' && (
             <Card>
               <CardContent className="p-6">
-                <h2 className="text-xl font-semibold mb-4">Esperienze</h2>
+                <h2 className="text-xl font-semibold mb-4">Experiencias</h2>
                 <div className="space-y-4">
                   <div className="border-b pb-4">
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="font-medium">Anonimo1027</span>
+                      <span className="font-medium">Anónimo1027</span>
                       <span className="text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded">
                         {pathology.Patologia?.toLowerCase()}
                       </span>
                     </div>
-                    <p className="text-gray-700">mal di schiena</p>
+                    <p className="text-gray-700">dolor de espalda</p>
                     <Button variant="default" className="mt-4">
-                      Leggi
+                      Leer
                     </Button>
                   </div>
                 </div>
