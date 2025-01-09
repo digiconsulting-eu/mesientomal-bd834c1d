@@ -84,14 +84,9 @@ export function ExperienceForm({ name }: ExperienceFormProps) {
     }
   }
 
-  const ratingOptions = Array.from({ length: 5 }, (_, i) => ({
-    value: String(i + 1),
-    label: String(i + 1),
-  }));
-
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
           name="title"
@@ -153,13 +148,13 @@ export function ExperienceForm({ name }: ExperienceFormProps) {
                   defaultValue={field.value}
                   className="flex space-x-4"
                 >
-                  {ratingOptions.map((option) => (
-                    <FormItem key={option.value} className="flex items-center space-x-2">
+                  {[1, 2, 3, 4, 5].map((value) => (
+                    <FormItem key={value} className="flex items-center space-x-2">
                       <FormControl>
-                        <RadioGroupItem value={option.value} />
+                        <RadioGroupItem value={value.toString()} />
                       </FormControl>
                       <FormLabel className="font-normal">
-                        {option.label}
+                        {value}
                       </FormLabel>
                     </FormItem>
                   ))}
@@ -182,13 +177,13 @@ export function ExperienceForm({ name }: ExperienceFormProps) {
                   defaultValue={field.value}
                   className="flex space-x-4"
                 >
-                  {ratingOptions.map((option) => (
-                    <FormItem key={option.value} className="flex items-center space-x-2">
+                  {[1, 2, 3, 4, 5].map((value) => (
+                    <FormItem key={value} className="flex items-center space-x-2">
                       <FormControl>
-                        <RadioGroupItem value={option.value} />
+                        <RadioGroupItem value={value.toString()} />
                       </FormControl>
                       <FormLabel className="font-normal">
-                        {option.label}
+                        {value}
                       </FormLabel>
                     </FormItem>
                   ))}
@@ -242,13 +237,13 @@ export function ExperienceForm({ name }: ExperienceFormProps) {
                   defaultValue={field.value}
                   className="flex space-x-4"
                 >
-                  {ratingOptions.map((option) => (
-                    <FormItem key={option.value} className="flex items-center space-x-2">
+                  {[1, 2, 3, 4, 5].map((value) => (
+                    <FormItem key={value} className="flex items-center space-x-2">
                       <FormControl>
-                        <RadioGroupItem value={option.value} />
+                        <RadioGroupItem value={value.toString()} />
                       </FormControl>
                       <FormLabel className="font-normal">
-                        {option.label}
+                        {value}
                       </FormLabel>
                     </FormItem>
                   ))}
@@ -271,13 +266,13 @@ export function ExperienceForm({ name }: ExperienceFormProps) {
                   defaultValue={field.value}
                   className="flex space-x-4"
                 >
-                  {ratingOptions.map((option) => (
-                    <FormItem key={option.value} className="flex items-center space-x-2">
+                  {[1, 2, 3, 4, 5].map((value) => (
+                    <FormItem key={value} className="flex items-center space-x-2">
                       <FormControl>
-                        <RadioGroupItem value={option.value} />
+                        <RadioGroupItem value={value.toString()} />
                       </FormControl>
                       <FormLabel className="font-normal">
-                        {option.label}
+                        {value}
                       </FormLabel>
                     </FormItem>
                   ))}
