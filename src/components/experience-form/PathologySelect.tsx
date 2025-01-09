@@ -29,11 +29,11 @@ export function PathologySelect({ form }: PathologySelectProps) {
       name="patologia"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Patologia *</FormLabel>
+          <FormLabel>Patología *</FormLabel>
           <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>
               <SelectTrigger>
-                <SelectValue placeholder="Seleziona una patologia" />
+                <SelectValue placeholder="Selecciona una patología" />
               </SelectTrigger>
             </FormControl>
             <SelectContent>

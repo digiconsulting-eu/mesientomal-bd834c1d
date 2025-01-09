@@ -14,7 +14,7 @@ export function TreatmentField({ form }: TreatmentFieldProps) {
       name="pharmacological_treatment"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Hai fatto o stai facendo una cura farmacologica? *</FormLabel>
+          <FormLabel>¿Has hecho o estás haciendo un tratamiento farmacológico? *</FormLabel>
           <FormControl>
             <RadioGroup
               onValueChange={field.onChange}
@@ -25,7 +25,7 @@ export function TreatmentField({ form }: TreatmentFieldProps) {
                 <FormControl>
                   <RadioGroupItem value="Si" />
                 </FormControl>
-                <FormLabel className="font-normal">Si</FormLabel>
+                <FormLabel className="font-normal">Sí</FormLabel>
               </FormItem>
               <FormItem className="flex items-center space-x-2">
                 <FormControl>

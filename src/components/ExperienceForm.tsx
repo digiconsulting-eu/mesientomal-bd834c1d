@@ -50,16 +50,16 @@ export function ExperienceForm() {
       if (error) throw error;
 
       toast({
-        title: "Esperienza condivisa",
-        description: "Grazie per aver condiviso la tua esperienza!",
+        title: "Experiencia compartida",
+        description: "¡Gracias por compartir tu experiencia!",
       });
 
       form.reset();
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Errore",
-        description: "Si è verificato un errore durante l'invio. Riprova più tardi.",
+        title: "Error",
+        description: "Ocurrió un error al enviar. Por favor, inténtalo más tarde.",
       });
     }
   }
@@ -73,7 +73,7 @@ export function ExperienceForm() {
         <TreatmentField form={form} />
         
         <Button type="submit" className="w-full">
-          Invia la tua esperienza
+          Envía tu experiencia
         </Button>
       </form>
     </Form>

@@ -16,9 +16,9 @@ export function BasicInfo({ form }: BasicInfoProps) {
         name="title"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Titolo *</FormLabel>
+            <FormLabel>Título *</FormLabel>
             <FormControl>
-              <Input placeholder="Inserisci un titolo (max 200 caratteri)" {...field} />
+              <Input placeholder="Ingresa un título (máx. 200 caracteres)" {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -30,10 +30,10 @@ export function BasicInfo({ form }: BasicInfoProps) {
         name="symptoms"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Quali sintomi hai avuto? *</FormLabel>
+            <FormLabel>¿Qué síntomas has tenido? *</FormLabel>
             <FormControl>
               <Textarea
-                placeholder="Descrivi i sintomi che hai avuto..."
+                placeholder="Describe los síntomas que has tenido..."
                 {...field}
               />
             </FormControl>
@@ -47,10 +47,10 @@ export function BasicInfo({ form }: BasicInfoProps) {
         name="experience"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Racconta la tua esperienza *</FormLabel>
+            <FormLabel>Cuenta tu experiencia *</FormLabel>
             <FormControl>
               <Textarea
-                placeholder="Quali cure hai fatto o stai facendo? Sei riuscito a guarire?"
+                placeholder="¿Qué tratamientos has hecho o estás haciendo? ¿Has logrado curarte?"
                 className="min-h-[120px]"
                 {...field}
               />

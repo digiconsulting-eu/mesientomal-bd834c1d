@@ -11,19 +11,19 @@ export function RatingFields({ form }: RatingFieldsProps) {
   const ratingFields = [
     {
       name: "diagnosis_difficulty" as const,
-      label: "Difficoltà di Diagnosi *"
+      label: "Dificultad de Diagnóstico *"
     },
     {
       name: "symptom_severity" as const,
-      label: "Quanto sono fastidiosi i sintomi? *"
+      label: "¿Qué tan molestos son los síntomas? *"
     },
     {
       name: "healing_possibility" as const,
-      label: "Possibilità di guarigione *"
+      label: "Posibilidad de curación *"
     },
     {
       name: "social_discomfort" as const,
-      label: "Disagio sociale *"
+      label: "Incomodidad social *"
     }
   ];
 
