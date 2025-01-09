@@ -40,6 +40,10 @@ export const Navbar = () => {
                 <Link to="/pathologies" className="text-lg font-medium">Buscar Patología</Link>
                 <Link to="/add-pathology" className="text-lg font-medium">Insertar Patología</Link>
                 <Link to="/symptoms" className="text-lg font-medium">Buscar Síntomas</Link>
+                <div className="pt-4 border-t">
+                  <Link to="/login" className="block text-lg font-medium mb-3">Iniciar sesión</Link>
+                  <Link to="/register" className="block text-lg font-medium text-primary">Registrarse</Link>
+                </div>
               </div>
             </SheetContent>
           </Sheet>
