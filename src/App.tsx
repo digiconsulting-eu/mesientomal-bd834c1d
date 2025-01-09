@@ -23,7 +23,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/pathologies" element={<PathologySearch />} />
             <Route path="/patologia/:name" element={<PathologyDetail />} />
-            <Route path="/share" element={<ShareExperience />} />
+            <Route path="/cuenta-tu-experiencia" element={<ShareExperience />} />
           </Routes>
         </div>
       </BrowserRouter>

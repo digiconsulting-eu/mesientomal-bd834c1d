@@ -11,7 +11,7 @@ export const Navbar = () => {
         
         <div className="hidden md:flex items-center space-x-6">
           <Link to="/" className="text-gray-600 hover:text-gray-900">Últimas Reseñas</Link>
-          <Link to="/share" className="text-gray-600 hover:text-gray-900">Cuenta tu experiencia</Link>
+          <Link to="/cuenta-tu-experiencia" className="text-gray-600 hover:text-gray-900">Cuenta tu experiencia</Link>
           <Link to="/pathologies" className="text-gray-600 hover:text-gray-900">Buscar Patología</Link>
           <Link to="/add-pathology" className="text-gray-600 hover:text-gray-900">Insertar Patología</Link>
           <Link to="/symptoms" className="text-gray-600 hover:text-gray-900">Buscar Síntomas</Link>
