@@ -1,5 +1,11 @@
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
+import { Menu } from "lucide-react";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "./ui/sheet";
 
 export const Navbar = () => {
   return (
@@ -9,6 +15,7 @@ export const Navbar = () => {
           <img src="/lovable-uploads/9a1ab863-2777-4b3b-8815-847d697912d9.png" alt="Logo" className="h-8" />
         </Link>
         
+        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-6">
           <Link to="/" className="text-gray-600 hover:text-gray-900">Últimas Reseñas</Link>
           <Link to="/cuenta-tu-experiencia" className="text-gray-600 hover:text-gray-900">Cuenta tu experiencia</Link>
@@ -17,7 +24,28 @@ export const Navbar = () => {
           <Link to="/symptoms" className="text-gray-600 hover:text-gray-900">Buscar Síntomas</Link>
         </div>
 
-        <div className="flex items-center space-x-4">
+        {/* Mobile Navigation */}
+        <div className="md:hidden">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Menu className="h-6 w-6" />
+                <span className="sr-only">Open menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-[300px]">
+              <div className="flex flex-col space-y-4 mt-8">
+                <Link to="/" className="text-lg font-medium">Últimas Reseñas</Link>
+                <Link to="/cuenta-tu-experiencia" className="text-lg font-medium">Cuenta tu experiencia</Link>
+                <Link to="/pathologies" className="text-lg font-medium">Buscar Patología</Link>
+                <Link to="/add-pathology" className="text-lg font-medium">Insertar Patología</Link>
+                <Link to="/symptoms" className="text-lg font-medium">Buscar Síntomas</Link>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
+
+        <div className="hidden md:flex items-center space-x-4">
           <Link to="/login">
             <Button variant="ghost">Iniciar sesión</Button>
           </Link>
