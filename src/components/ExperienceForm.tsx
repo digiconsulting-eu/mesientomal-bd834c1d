@@ -14,16 +14,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
-
-type ExperienceFormProps = {
-  name: string;
-};
+import { useQuery } from "@tanstack/react-query";
 
 type ExperienceInsert = Database["public"]["Tables"]["experiences"]["Insert"];
 
 const formSchema = z.object({
+  patologia: z.string().min(1, "Seleziona una patologia"),
   title: z.string().max(200, "Il titolo non può superare i 200 caratteri"),
   symptoms: z.string().min(1, "Inserisci i sintomi"),
   experience: z.string().min(1, "Racconta la tua esperienza"),
@@ -34,12 +33,26 @@ const formSchema = z.object({
   social_discomfort: z.string().min(1, "Seleziona un livello di disagio"),
 });
 
-export function ExperienceForm({ name }: ExperienceFormProps) {
+export function ExperienceForm() {
   const { toast } = useToast();
   
+  const { data: pathologies } = useQuery({
+    queryKey: ["pathologies"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("PATOLOGIE")
+        .select("Patologia")
+        .order("Patologia");
+      
+      if (error) throw error;
+      return data;
+    }
+  });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      patologia: "",
       title: "",
       symptoms: "",
       experience: "",
@@ -54,7 +67,7 @@ export function ExperienceForm({ name }: ExperienceFormProps) {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const insertData: ExperienceInsert = {
-        patologia: name,
+        patologia: values.patologia,
         title: values.title,
         symptoms: values.symptoms,
         experience: values.experience,
@@ -87,6 +100,33 @@ export function ExperienceForm({ name }: ExperienceFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <FormField
+          control={form.control}
+          name="patologia"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Patologia *</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Seleziona una patologia" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {pathologies?.map((pathology) => (
+                    pathology.Patologia && (
+                      <SelectItem key={pathology.Patologia} value={pathology.Patologia}>
+                        {pathology.Patologia}
+                      </SelectItem>
+                    )
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name="title"
