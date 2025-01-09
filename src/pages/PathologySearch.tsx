@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { Tables } from "@/integrations/supabase/types";
@@ -78,14 +79,15 @@ const PathologySearch = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {filteredPathologies.map((pathology) => (
-          <div
+          <Link
             key={pathology.id}
+            to={`/patologia/${encodeURIComponent(pathology.Patologia || '')}`}
             className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow"
           >
             <h3 className="text-blue-500 font-medium">
               {pathology.Patologia}
             </h3>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
