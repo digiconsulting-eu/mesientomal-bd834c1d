@@ -16,6 +16,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
+
+type ExperienceInsert = Database["public"]["Tables"]["experiences"]["Insert"];
 
 const formSchema = z.object({
   title: z.string().max(200, "Il titolo non può superare i 200 caratteri"),
@@ -48,15 +51,19 @@ export function ExperienceForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const { error } = await supabase.from("experiences").insert({
+      const insertData: ExperienceInsert = {
         patologia: name,
-        ...values,
+        title: values.title,
+        symptoms: values.symptoms,
+        experience: values.experience,
         diagnosis_difficulty: parseInt(values.diagnosis_difficulty),
         symptom_severity: parseInt(values.symptom_severity),
         healing_possibility: parseInt(values.healing_possibility),
         social_discomfort: parseInt(values.social_discomfort),
         pharmacological_treatment: values.pharmacological_treatment === "Si",
-      });
+      };
+
+      const { error } = await supabase.from("experiences").insert(insertData);
 
       if (error) throw error;
 
