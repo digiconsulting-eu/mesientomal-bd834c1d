@@ -4,13 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { Tables } from "@/integrations/supabase/types";
+import { ExperienceForm } from "@/components/ExperienceForm";
 
 type Pathology = Tables<"PATOLOGIE">;
 
 const PathologyDetail = () => {
   const { name } = useParams();
   const [pathology, setPathology] = useState<Pathology | null>(null);
-  const [activeTab, setActiveTab] = useState<'panoramica' | 'esperienze'>('panoramica');
+  const [activeTab, setActiveTab] = useState<'panoramica' | 'esperienze' | 'racconta'>('panoramica');
 
   useEffect(() => {
     const fetchPathology = async () => {
@@ -40,6 +41,27 @@ const PathologyDetail = () => {
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-gray-800">{pathology.Patologia}</h1>
         <Button variant="outline">Segui</Button>
+      </div>
+
+      <div className="flex gap-2 mb-6">
+        <Button
+          variant={activeTab === 'panoramica' ? 'default' : 'outline'}
+          onClick={() => setActiveTab('panoramica')}
+        >
+          Panoramica
+        </Button>
+        <Button
+          variant={activeTab === 'esperienze' ? 'default' : 'outline'}
+          onClick={() => setActiveTab('esperienze')}
+        >
+          Leggi Esperienze
+        </Button>
+        <Button
+          variant={activeTab === 'racconta' ? 'default' : 'outline'}
+          onClick={() => setActiveTab('racconta')}
+        >
+          Racconta la tua Esperienza
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -82,21 +104,6 @@ const PathologyDetail = () => {
         </div>
 
         <div className="md:col-span-2">
-          <div className="flex gap-2 mb-6">
-            <Button
-              variant={activeTab === 'panoramica' ? 'default' : 'outline'}
-              onClick={() => setActiveTab('panoramica')}
-            >
-              Panoramica
-            </Button>
-            <Button
-              variant={activeTab === 'esperienze' ? 'default' : 'outline'}
-              onClick={() => setActiveTab('esperienze')}
-            >
-              Leggi Esperienze
-            </Button>
-          </div>
-
           {activeTab === 'panoramica' && (
             <Card>
               <CardContent className="p-6">
@@ -109,7 +116,7 @@ const PathologyDetail = () => {
           {activeTab === 'esperienze' && (
             <Card>
               <CardContent className="p-6">
-                <h2 className="text-xl font-semibold mb-4">Esperienze (1)</h2>
+                <h2 className="text-xl font-semibold mb-4">Esperienze</h2>
                 <div className="space-y-4">
                   <div className="border-b pb-4">
                     <div className="flex items-center gap-2 mb-2">
@@ -124,6 +131,15 @@ const PathologyDetail = () => {
                     </Button>
                   </div>
                 </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {activeTab === 'racconta' && (
+            <Card>
+              <CardContent className="p-6">
+                <h2 className="text-xl font-semibold mb-4">Racconta la tua Esperienza</h2>
+                <ExperienceForm />
               </CardContent>
             </Card>
           )}
