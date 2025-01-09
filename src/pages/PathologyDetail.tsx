@@ -4,14 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { Tables } from "@/integrations/supabase/types";
-import { ExperienceForm } from "@/components/ExperienceForm";
 
 type Pathology = Tables<"PATOLOGIE">;
 
 const PathologyDetail = () => {
   const { name } = useParams();
   const [pathology, setPathology] = useState<Pathology | null>(null);
-  const [activeTab, setActiveTab] = useState<'panoramica' | 'esperienze' | 'racconta'>('panoramica');
+  const [activeTab, setActiveTab] = useState<'panoramica' | 'esperienze'>('panoramica');
 
   useEffect(() => {
     const fetchPathology = async () => {
@@ -55,12 +54,6 @@ const PathologyDetail = () => {
           onClick={() => setActiveTab('esperienze')}
         >
           Leggi Esperienze
-        </Button>
-        <Button
-          variant={activeTab === 'racconta' ? 'default' : 'outline'}
-          onClick={() => setActiveTab('racconta')}
-        >
-          Racconta la tua Esperienza
         </Button>
       </div>
 
@@ -131,15 +124,6 @@ const PathologyDetail = () => {
                     </Button>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {activeTab === 'racconta' && (
-            <Card>
-              <CardContent className="p-6">
-                <h2 className="text-xl font-semibold mb-4">Racconta la tua Esperienza</h2>
-                <ExperienceForm />
               </CardContent>
             </Card>
           )}

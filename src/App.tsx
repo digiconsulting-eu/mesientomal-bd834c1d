@@ -7,6 +7,7 @@ import { Navbar } from "./components/Navbar";
 import Index from "./pages/Index";
 import PathologySearch from "./pages/PathologySearch";
 import PathologyDetail from "./pages/PathologyDetail";
+import ShareExperience from "./pages/ShareExperience";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/pathologies" element={<PathologySearch />} />
             <Route path="/patologia/:name" element={<PathologyDetail />} />
+            <Route path="/share" element={<ShareExperience />} />
           </Routes>
         </div>
       </BrowserRouter>
