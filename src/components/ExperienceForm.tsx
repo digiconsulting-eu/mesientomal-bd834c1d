@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { useParams } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,6 +17,10 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 
+type ExperienceFormProps = {
+  name: string;
+};
+
 type ExperienceInsert = Database["public"]["Tables"]["experiences"]["Insert"];
 
 const formSchema = z.object({
@@ -31,8 +34,7 @@ const formSchema = z.object({
   social_discomfort: z.string().min(1, "Seleziona un livello di disagio"),
 });
 
-export function ExperienceForm() {
-  const { name } = useParams();
+export function ExperienceForm({ name }: ExperienceFormProps) {
   const { toast } = useToast();
   
   const form = useForm<z.infer<typeof formSchema>>({

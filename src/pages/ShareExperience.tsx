@@ -22,7 +22,7 @@ const ShareExperience = () => {
   });
 
   const filteredPathologies = pathologies?.filter(p => 
-    p.Patologia.toLowerCase().includes(searchTerm.toLowerCase())
+    p.Patologia?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -45,7 +45,7 @@ const ShareExperience = () => {
             <Card key={pathology.Patologia}>
               <CardContent className="p-6">
                 <h2 className="text-xl font-semibold mb-4">{pathology.Patologia}</h2>
-                <ExperienceForm name={pathology.Patologia} />
+                {pathology.Patologia && <ExperienceForm name={pathology.Patologia} />}
               </CardContent>
             </Card>
           ))}
