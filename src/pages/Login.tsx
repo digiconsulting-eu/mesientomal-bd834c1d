@@ -127,9 +127,9 @@ export default function Login() {
             onClick={handleGoogleLogin}
           >
             <img
-              src="/placeholder.svg"
+              src="https://www.google.com/favicon.ico"
               alt="Google"
-              className="w-5 h-5"
+              className="w-4 h-4"
             />
             Google
           </Button>
