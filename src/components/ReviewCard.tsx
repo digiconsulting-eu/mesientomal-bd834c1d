@@ -24,13 +24,15 @@ export const ReviewCard = ({ title, author, tag, content }: ReviewCardProps) => 
         </div>
       </CardHeader>
       <CardContent>
-        <p className="text-gray-600 line-clamp-3">{content}</p>
-        <Button 
-          variant="ghost" 
-          className="mt-4 text-[#3B9EE3] hover:text-[#3B9EE3] hover:bg-[#3B9EE3]/10"
-        >
-          Leer
-        </Button>
+        <div className="flex justify-between items-end">
+          <p className="text-gray-600 line-clamp-3 flex-1 mr-4">{content}</p>
+          <Button 
+            variant="default"
+            className="bg-[#3B9EE3] text-white hover:bg-[#3B9EE3]/90 shrink-0"
+          >
+            Leer
+          </Button>
+        </div>
       </CardContent>
     </Card>
   );
