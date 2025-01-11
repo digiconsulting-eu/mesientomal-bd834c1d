@@ -9,6 +9,24 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      PATOLOGIE: {
+        Row: {
+          Descrizione: string | null
+          id: number
+          Patologia: string | null
+        }
+        Insert: {
+          Descrizione?: string | null
+          id?: number
+          Patologia?: string | null
+        }
+        Update: {
+          Descrizione?: string | null
+          id?: number
+          Patologia?: string | null
+        }
+        Relationships: []
+      }
       reviews: {
         Row: {
           created_at: string
@@ -56,58 +74,32 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "PATOLOGIE"
             referencedColumns: ["Patologia"]
-          }
+          },
         ]
-      }
-      PATOLOGIE: {
-        Row: {
-          Descrizione: string | null
-          id: number
-          Patologia: string | null
-        }
-        Insert: {
-          Descrizione?: string | null
-          id?: number
-          Patologia?: string | null
-        }
-        Update: {
-          Descrizione?: string | null
-          id?: number
-          Patologia?: string | null
-        }
-        Relationships: []
       }
       users: {
         Row: {
-          id: string
           birth_year: number | null
-          gender: string | null
           created_at: string
+          gender: string | null
+          id: string
           updated_at: string
         }
         Insert: {
-          id: string
           birth_year?: number | null
-          gender?: string | null
           created_at?: string
+          gender?: string | null
+          id: string
           updated_at?: string
         }
         Update: {
-          id?: string
           birth_year?: number | null
-          gender?: string | null
           created_at?: string
+          gender?: string | null
+          id?: string
           updated_at?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "users_id_fkey"
-            columns: ["id"]
-            isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          }
-        ]
+        Relationships: []
       }
     }
     Views: {
