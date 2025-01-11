@@ -127,7 +127,7 @@ export default function Login() {
             onClick={handleGoogleLogin}
           >
             <img
-              src="/lovable-uploads/aa6af2fb-45f5-409a-a730-5b1b4c62c659.png"
+              src="/placeholder.svg"
               alt="Google"
               className="w-5 h-5"
             />
