@@ -44,8 +44,8 @@ export const Navbar = () => {
                 <Link to="/add-pathology" onClick={() => setOpen(false)} className="text-lg font-medium">Insertar Patología</Link>
                 <Link to="/symptoms" onClick={() => setOpen(false)} className="text-lg font-medium">Buscar Síntomas</Link>
                 <div className="pt-4 border-t">
-                  <Link to="/login" onClick={() => setOpen(false)} className="block text-lg font-medium mb-3">Iniciar sesión</Link>
-                  <Link to="/register" onClick={() => setOpen(false)} className="block text-lg font-medium text-primary">Registrarse</Link>
+                  <Link to="/login" onClick={() => setOpen(false)} className="block text-lg font-medium mb-3">Accedi</Link>
+                  <Link to="/register" onClick={() => setOpen(false)} className="block text-lg font-medium text-primary">Registrati</Link>
                 </div>
               </div>
             </SheetContent>
@@ -54,10 +54,10 @@ export const Navbar = () => {
 
         <div className="hidden md:flex items-center space-x-4">
           <Link to="/login">
-            <Button variant="ghost">Iniciar sesión</Button>
+            <Button variant="ghost">Accedi</Button>
           </Link>
           <Link to="/register">
-            <Button>Registrarse</Button>
+            <Button>Registrati</Button>
           </Link>
         </div>
       </div>

@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import PathologySearch from "./pages/PathologySearch";
 import PathologyDetail from "./pages/PathologyDetail";
 import ShareExperience from "./pages/ShareExperience";
+import Register from "./pages/Register";
 
 const queryClient = new QueryClient();
 
@@ -24,8 +25,8 @@ const App = () => (
             <Route path="/pathologies" element={<PathologySearch />} />
             <Route path="/patologia/:name" element={<PathologyDetail />} />
             <Route path="/cuenta-tu-experiencia" element={<ShareExperience />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Navigate to="/" />} />
-            <Route path="/register" element={<Navigate to="/" />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </div>
