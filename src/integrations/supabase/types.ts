@@ -79,25 +79,25 @@ export type Database = {
       }
       users: {
         Row: {
-          id: uuid
-          birth_year: integer | null
-          gender: text | null
-          created_at: timestamp with time zone
-          updated_at: timestamp with time zone
+          id: string
+          birth_year: number | null
+          gender: string | null
+          created_at: string
+          updated_at: string
         }
         Insert: {
-          id: uuid
-          birth_year?: integer | null
-          gender?: text | null
-          created_at?: timestamp with time zone
-          updated_at?: timestamp with time zone
+          id: string
+          birth_year?: number | null
+          gender?: string | null
+          created_at?: string
+          updated_at?: string
         }
         Update: {
-          id?: uuid
-          birth_year?: integer | null
-          gender?: text | null
-          created_at?: timestamp with time zone
-          updated_at?: timestamp with time zone
+          id?: string
+          birth_year?: number | null
+          gender?: string | null
+          created_at?: string
+          updated_at?: string
         }
         Relationships: [
           {
