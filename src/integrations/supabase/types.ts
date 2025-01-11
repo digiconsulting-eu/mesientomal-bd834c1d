@@ -9,7 +9,7 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      experiences: {
+      reviews: {
         Row: {
           created_at: string
           diagnosis_difficulty: number | null
@@ -51,12 +51,12 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "experiences_patologia_fkey"
+            foreignKeyName: "reviews_patologia_fkey"
             columns: ["patologia"]
             isOneToOne: false
             referencedRelation: "PATOLOGIE"
             referencedColumns: ["Patologia"]
-          },
+          }
         ]
       }
       PATOLOGIE: {
@@ -77,29 +77,37 @@ export type Database = {
         }
         Relationships: []
       }
-      profiles: {
+      users: {
         Row: {
-          birth_year: number | null
-          created_at: string
-          gender: string | null
-          id: string
-          updated_at: string
+          id: uuid
+          birth_year: integer | null
+          gender: text | null
+          created_at: timestamp with time zone
+          updated_at: timestamp with time zone
         }
         Insert: {
-          birth_year?: number | null
-          created_at?: string
-          gender?: string | null
-          id: string
-          updated_at?: string
+          id: uuid
+          birth_year?: integer | null
+          gender?: text | null
+          created_at?: timestamp with time zone
+          updated_at?: timestamp with time zone
         }
         Update: {
-          birth_year?: number | null
-          created_at?: string
-          gender?: string | null
-          id?: string
-          updated_at?: string
+          id?: uuid
+          birth_year?: integer | null
+          gender?: text | null
+          created_at?: timestamp with time zone
+          updated_at?: timestamp with time zone
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "users_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
     }
     Views: {

@@ -11,7 +11,7 @@ import { RatingFields } from "./experience-form/RatingFields";
 import { TreatmentField } from "./experience-form/TreatmentField";
 import { formSchema, type FormSchema } from "./experience-form/schema";
 
-type ExperienceInsert = Database["public"]["Tables"]["experiences"]["Insert"];
+type ReviewInsert = Database["public"]["Tables"]["reviews"]["Insert"];
 
 export function ExperienceForm() {
   const { toast } = useToast();
@@ -33,7 +33,7 @@ export function ExperienceForm() {
 
   async function onSubmit(values: FormSchema) {
     try {
-      const insertData: ExperienceInsert = {
+      const insertData: ReviewInsert = {
         patologia: values.patologia,
         title: values.title,
         symptoms: values.symptoms,
@@ -45,7 +45,7 @@ export function ExperienceForm() {
         pharmacological_treatment: values.pharmacological_treatment === "Si",
       };
 
-      const { error } = await supabase.from("experiences").insert(insertData);
+      const { error } = await supabase.from("reviews").insert(insertData);
 
       if (error) throw error;
 
