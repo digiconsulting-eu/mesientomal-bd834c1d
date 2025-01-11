@@ -33,7 +33,7 @@ export const Navbar = () => {
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
                 <Menu className="h-6 w-6" />
-                <span className="sr-only">Open menu</span>
+                <span className="sr-only">Abrir menú</span>
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[300px]">
@@ -44,8 +44,8 @@ export const Navbar = () => {
                 <Link to="/add-pathology" onClick={() => setOpen(false)} className="text-lg font-medium">Insertar Patología</Link>
                 <Link to="/symptoms" onClick={() => setOpen(false)} className="text-lg font-medium">Buscar Síntomas</Link>
                 <div className="pt-4 border-t">
-                  <Link to="/login" onClick={() => setOpen(false)} className="block text-lg font-medium mb-3">Accedi</Link>
-                  <Link to="/register" onClick={() => setOpen(false)} className="block text-lg font-medium text-primary">Registrati</Link>
+                  <Link to="/login" onClick={() => setOpen(false)} className="block text-lg font-medium mb-3">Iniciar Sesión</Link>
+                  <Link to="/register" onClick={() => setOpen(false)} className="block text-lg font-medium text-primary">Registrarse</Link>
                 </div>
               </div>
             </SheetContent>
@@ -54,10 +54,10 @@ export const Navbar = () => {
 
         <div className="hidden md:flex items-center space-x-4">
           <Link to="/login">
-            <Button variant="ghost">Accedi</Button>
+            <Button variant="ghost">Iniciar Sesión</Button>
           </Link>
           <Link to="/register">
-            <Button>Registrati</Button>
+            <Button>Registrarse</Button>
           </Link>
         </div>
       </div>

@@ -27,7 +27,7 @@ export default function Login() {
       if (error) {
         toast({
           variant: "destructive",
-          title: "Errore di accesso",
+          title: "Error de inicio de sesión",
           description: error.message,
         });
       } else {
@@ -37,8 +37,8 @@ export default function Login() {
       console.error("Error:", error);
       toast({
         variant: "destructive",
-        title: "Errore",
-        description: "Si è verificato un errore durante l'accesso",
+        title: "Error",
+        description: "Se produjo un error durante el inicio de sesión",
       });
     } finally {
       setIsLoading(false);
@@ -57,7 +57,7 @@ export default function Login() {
       if (error) {
         toast({
           variant: "destructive",
-          title: "Errore di accesso",
+          title: "Error de inicio de sesión",
           description: error.message,
         });
       }
@@ -65,8 +65,8 @@ export default function Login() {
       console.error("Error:", error);
       toast({
         variant: "destructive",
-        title: "Errore",
-        description: "Si è verificato un errore durante l'accesso con Google",
+        title: "Error",
+        description: "Se produjo un error durante el inicio de sesión con Google",
       });
     }
   };
@@ -75,23 +75,23 @@ export default function Login() {
     <div className="container flex items-center justify-center min-h-[calc(100vh-4rem)]">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-3xl text-center">Accedi</CardTitle>
+          <CardTitle className="text-3xl text-center">Iniciar Sesión</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleEmailLogin} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">Correo electrónico</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="nome@esempio.com"
+                placeholder="nombre@ejemplo.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">Contraseña</Label>
               <Input
                 id="password"
                 type="password"
@@ -105,7 +105,7 @@ export default function Login() {
               className="w-full bg-blue-500 hover:bg-blue-600"
               disabled={isLoading}
             >
-              {isLoading ? "Caricamento..." : "Accedi"}
+              {isLoading ? "Cargando..." : "Iniciar Sesión"}
             </Button>
           </form>
 
@@ -115,7 +115,7 @@ export default function Login() {
             </div>
             <div className="relative flex justify-center text-sm">
               <span className="bg-background px-2 text-muted-foreground">
-                OPPURE CONTINUA CON
+                O CONTINUAR CON
               </span>
             </div>
           </div>
@@ -139,12 +139,12 @@ export default function Login() {
               to="/reset-password"
               className="text-sm text-blue-500 hover:underline block"
             >
-              Hai dimenticato la password?
+              ¿Olvidaste tu contraseña?
             </Link>
             <div className="text-sm">
-              Non hai un account?{" "}
+              ¿No tienes una cuenta?{" "}
               <Link to="/register" className="text-blue-500 hover:underline">
-                Registrati
+                Regístrate
               </Link>
             </div>
           </div>
