@@ -8,22 +8,28 @@ import UpdatePassword from "@/pages/UpdatePassword";
 import Index from "@/pages/Index";
 import ShareExperience from "@/pages/ShareExperience";
 import PathologySearch from "@/pages/PathologySearch";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+// Create a client
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <BrowserRouter>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/update-password" element={<UpdatePassword />} />
-        <Route path="/cuenta-tu-experiencia" element={<ShareExperience />} />
-        <Route path="/pathologies" element={<PathologySearch />} />
-      </Routes>
-      <Toaster />
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/update-password" element={<UpdatePassword />} />
+          <Route path="/cuenta-tu-experiencia" element={<ShareExperience />} />
+          <Route path="/pathologies" element={<PathologySearch />} />
+        </Routes>
+        <Toaster />
+      </BrowserRouter>
+    </QueryClientProvider>
   );
 }
 
