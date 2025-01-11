@@ -17,14 +17,14 @@ export const ReviewCard = ({ title, author, tag, content }: ReviewCardProps) => 
             <CardTitle className="text-xl font-semibold">{title}</CardTitle>
             <p className="text-sm text-gray-500 mt-1">{author}</p>
           </div>
-          <Badge variant="secondary" className="bg-[#33A9E0]/10 text-[#33A9E0] hover:bg-[#33A9E0]/20">
+          <Badge variant="secondary" className="bg-blue-100 text-blue-800 hover:bg-blue-200">
             {tag}
           </Badge>
         </div>
       </CardHeader>
       <CardContent>
         <p className="text-gray-600 line-clamp-3">{content}</p>
-        <button className="mt-4 text-[#33A9E0] hover:underline">Leer</button>
+        <button className="mt-4 text-primary hover:underline">Leer</button>
       </CardContent>
     </Card>
   );
