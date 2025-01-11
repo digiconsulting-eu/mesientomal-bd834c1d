@@ -115,7 +115,7 @@ export default function Login() {
             </div>
             <div className="relative flex justify-center text-sm">
               <span className="bg-background px-2 text-muted-foreground">
-                O CONTINUAR CON
+                O CONTINÚA CON
               </span>
             </div>
           </div>
@@ -123,13 +123,13 @@ export default function Login() {
           <Button
             variant="outline"
             type="button"
-            className="w-full"
+            className="w-full h-[40px] px-6 flex items-center justify-center gap-3 border rounded-[4px] hover:bg-gray-50"
             onClick={handleGoogleLogin}
           >
             <img
-              src="/lovable-uploads/fb7a5688-2dbd-4868-bd73-5b767a86846c.png"
+              src="/lovable-uploads/aa6af2fb-45f5-409a-a730-5b1b4c62c659.png"
               alt="Google"
-              className="mr-2 h-5 w-5"
+              className="w-5 h-5"
             />
             Google
           </Button>
