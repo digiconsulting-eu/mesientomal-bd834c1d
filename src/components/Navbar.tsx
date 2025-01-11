@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Menu } from "lucide-react";
 import {
@@ -7,26 +7,9 @@ import {
   SheetTrigger,
 } from "./ui/sheet";
 import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "./ui/use-toast";
 
 export const Navbar = () => {
   const [open, setOpen] = useState(false);
-  const { toast } = useToast();
-  const navigate = useNavigate();
-
-  const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Non è stato possibile effettuare il logout. Riprova più tardi.",
-      });
-    } else {
-      navigate("/");
-    }
-  };
 
   return (
     <nav className="border-b">
@@ -61,16 +44,8 @@ export const Navbar = () => {
                 <Link to="/add-pathology" onClick={() => setOpen(false)} className="text-lg font-medium">Insertar Patología</Link>
                 <Link to="/symptoms" onClick={() => setOpen(false)} className="text-lg font-medium">Buscar Síntomas</Link>
                 <div className="pt-4 border-t">
-                  <Button 
-                    variant="ghost" 
-                    className="w-full justify-start p-0 mb-3" 
-                    onClick={() => {
-                      setOpen(false);
-                      handleLogout();
-                    }}
-                  >
-                    Cerrar sesión
-                  </Button>
+                  <Link to="/login" onClick={() => setOpen(false)} className="block text-lg font-medium mb-3">Iniciar sesión</Link>
+                  <Link to="/register" onClick={() => setOpen(false)} className="block text-lg font-medium text-primary">Registrarse</Link>
                 </div>
               </div>
             </SheetContent>
@@ -78,9 +53,12 @@ export const Navbar = () => {
         </div>
 
         <div className="hidden md:flex items-center space-x-4">
-          <Button variant="ghost" onClick={handleLogout}>
-            Cerrar sesión
-          </Button>
+          <Link to="/login">
+            <Button variant="ghost">Iniciar sesión</Button>
+          </Link>
+          <Link to="/register">
+            <Button>Registrarse</Button>
+          </Link>
         </div>
       </div>
     </nav>
