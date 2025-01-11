@@ -5,12 +5,14 @@ import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import ResetPassword from "@/pages/ResetPassword";
 import UpdatePassword from "@/pages/UpdatePassword";
+import Index from "@/pages/Index";
 
 function App() {
   return (
     <BrowserRouter>
       <Navbar />
       <Routes>
+        <Route path="/" element={<Index />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/reset-password" element={<ResetPassword />} />
