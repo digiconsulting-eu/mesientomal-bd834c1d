@@ -56,7 +56,7 @@ const PathologySearch = () => {
           onClick={() => setSelectedLetter("TUTTE")}
           className={`px-4 py-2 rounded ${
             selectedLetter === "TUTTE"
-              ? "bg-blue-500 text-white"
+              ? "bg-[#3B9EE3] text-white"
               : "bg-gray-100 text-gray-700 hover:bg-gray-200"
           }`}
         >
@@ -68,7 +68,7 @@ const PathologySearch = () => {
             onClick={() => setSelectedLetter(letter)}
             className={`px-4 py-2 rounded ${
               selectedLetter === letter
-                ? "bg-blue-500 text-white"
+                ? "bg-[#3B9EE3] text-white"
                 : "bg-gray-100 text-gray-700 hover:bg-gray-200"
             }`}
           >
@@ -84,7 +84,7 @@ const PathologySearch = () => {
             to={`/patologia/${encodeURIComponent(pathology.Patologia || '')}`}
             className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow"
           >
-            <h3 className="text-blue-500 font-medium">
+            <h3 className="text-[#3B9EE3] font-medium">
               {pathology.Patologia}
             </h3>
           </Link>
