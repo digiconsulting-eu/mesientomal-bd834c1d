@@ -14,8 +14,8 @@ export const Navbar = () => {
   return (
     <nav className="border-b">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link to="/" className="flex items-center space-x-2">
-          <img src="/lovable-uploads/5d31e0b1-6cd5-4054-8bc5-a570b5b85b57.png" alt="MeSientoMal.info" className="h-8" />
+        <Link to="/" className="flex items-center">
+          <img src="/lovable-uploads/5d31e0b1-6cd5-4054-8bc5-a570b5b85b57.png" alt="MeSientoMal.info" className="h-12" />
         </Link>
         
         {/* Desktop Navigation */}
