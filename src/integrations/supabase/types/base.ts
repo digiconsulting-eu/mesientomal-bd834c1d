@@ -1,3 +1,7 @@
+import { ReviewsTable } from './reviews';
+import { PatologieTable } from './patologie';
+import { UsersTable } from './users';
+
 export type Json =
   | string
   | number
