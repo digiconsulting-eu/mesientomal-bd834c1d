@@ -6,21 +6,18 @@ import { Search } from "lucide-react";
 const Index = () => {
   const reviews = [
     {
-      id: 1,
       title: "dolor de espalda",
       author: "Anónimo1027",
       tag: "ESTENOSIS LUMBAR",
       content: "dolor de espalda"
     },
     {
-      id: 2,
       title: "fuerte dolor en el ovario después de la operación",
       author: "Anónimo1024",
       tag: "FIBROTECOMA OVÁRICO",
       content: "en 2011 me extirparon un fibrotecoma ovárico de 4 cm, quitándome el 60% del ovario. Si antes de operarme tenía..."
     },
     {
-      id: 3,
       title: "La dificultad de vivir con dolor articular",
       author: "Anónimo745",
       tag: "ENTESITE",
@@ -51,8 +48,8 @@ const Index = () => {
       </div>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {reviews.map((review) => (
-          <ReviewCard key={review.id} {...review} />
+        {reviews.map((review, index) => (
+          <ReviewCard key={index} {...review} />
         ))}
       </div>
     </div>

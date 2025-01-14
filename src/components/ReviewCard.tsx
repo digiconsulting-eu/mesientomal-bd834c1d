@@ -1,17 +1,15 @@
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-import { Link } from "react-router-dom";
 
 interface ReviewCardProps {
-  id: number;
   title: string;
   author: string;
   tag: string;
   content: string;
 }
 
-export const ReviewCard = ({ id, title, author, tag, content }: ReviewCardProps) => {
+export const ReviewCard = ({ title, author, tag, content }: ReviewCardProps) => {
   return (
     <Card className="w-full">
       <CardHeader>
@@ -28,14 +26,12 @@ export const ReviewCard = ({ id, title, author, tag, content }: ReviewCardProps)
       <CardContent>
         <div className="flex justify-between items-end">
           <p className="text-gray-600 line-clamp-3 flex-1 mr-4">{content}</p>
-          <Link to={`/review/${id}`}>
-            <Button 
-              variant="default"
-              className="bg-[#3B9EE3] text-white hover:bg-[#3B9EE3]/90 shrink-0"
-            >
-              Leer
-            </Button>
-          </Link>
+          <Button 
+            variant="default"
+            className="bg-[#3B9EE3] text-white hover:bg-[#3B9EE3]/90 shrink-0"
+          >
+            Leer
+          </Button>
         </div>
       </CardContent>
     </Card>
