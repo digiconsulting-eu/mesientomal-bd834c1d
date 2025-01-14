@@ -8,6 +8,7 @@ import UpdatePassword from "@/pages/UpdatePassword";
 import Index from "@/pages/Index";
 import ShareExperience from "@/pages/ShareExperience";
 import PathologySearch from "@/pages/PathologySearch";
+import PathologyDetail from "@/pages/PathologyDetail";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // Create a client
@@ -26,6 +27,7 @@ function App() {
           <Route path="/update-password" element={<UpdatePassword />} />
           <Route path="/cuenta-tu-experiencia" element={<ShareExperience />} />
           <Route path="/pathologies" element={<PathologySearch />} />
+          <Route path="/patologia/:name" element={<PathologyDetail />} />
         </Routes>
         <Toaster />
       </BrowserRouter>
