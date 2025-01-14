@@ -1,5 +1,6 @@
 import { Toaster } from "@/components/ui/toaster";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HelmetProvider } from 'react-helmet-async';
 import { Navbar } from "@/components/Navbar";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
@@ -16,22 +17,24 @@ const queryClient = new QueryClient();
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/iniciar-sesion" element={<Login />} />
-          <Route path="/registro" element={<Register />} />
-          <Route path="/restablecer-contrasena" element={<ResetPassword />} />
-          <Route path="/actualizar-contrasena" element={<UpdatePassword />} />
-          <Route path="/cuenta-tu-experiencia" element={<ShareExperience />} />
-          <Route path="/patologias" element={<PathologySearch />} />
-          <Route path="/patologia/:name" element={<PathologyDetail />} />
-        </Routes>
-        <Toaster />
-      </BrowserRouter>
-    </QueryClientProvider>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/iniciar-sesion" element={<Login />} />
+            <Route path="/registro" element={<Register />} />
+            <Route path="/restablecer-contrasena" element={<ResetPassword />} />
+            <Route path="/actualizar-contrasena" element={<UpdatePassword />} />
+            <Route path="/cuenta-tu-experiencia" element={<ShareExperience />} />
+            <Route path="/patologias" element={<PathologySearch />} />
+            <Route path="/patologia/:name" element={<PathologyDetail />} />
+          </Routes>
+          <Toaster />
+        </BrowserRouter>
+      </QueryClientProvider>
+    </HelmetProvider>
   );
 }
 
