@@ -26,9 +26,9 @@ export const Navbar = () => {
         <div className="hidden md:flex items-center space-x-6">
           <Link to="/" className="text-gray-600 hover:text-[#3B9EE3]">Últimas Reseñas</Link>
           <Link to="/cuenta-tu-experiencia" className="text-gray-600 hover:text-[#3B9EE3]">Cuenta tu experiencia</Link>
-          <Link to="/pathologies" className="text-gray-600 hover:text-[#3B9EE3]">Buscar Patología</Link>
-          <Link to="/add-pathology" className="text-gray-600 hover:text-[#3B9EE3]">Insertar Patología</Link>
-          <Link to="/symptoms" className="text-gray-600 hover:text-[#3B9EE3]">Buscar Síntomas</Link>
+          <Link to="/patologias" className="text-gray-600 hover:text-[#3B9EE3]">Buscar Patología</Link>
+          <Link to="/agregar-patologia" className="text-gray-600 hover:text-[#3B9EE3]">Insertar Patología</Link>
+          <Link to="/sintomas" className="text-gray-600 hover:text-[#3B9EE3]">Buscar Síntomas</Link>
         </div>
 
         {/* Mobile Navigation */}
@@ -44,12 +44,12 @@ export const Navbar = () => {
               <div className="flex flex-col space-y-4 mt-8">
                 <Link to="/" onClick={() => setOpen(false)} className="text-lg font-medium">Últimas Reseñas</Link>
                 <Link to="/cuenta-tu-experiencia" onClick={() => setOpen(false)} className="text-lg font-medium">Cuenta tu experiencia</Link>
-                <Link to="/pathologies" onClick={() => setOpen(false)} className="text-lg font-medium">Buscar Patología</Link>
-                <Link to="/add-pathology" onClick={() => setOpen(false)} className="text-lg font-medium">Insertar Patología</Link>
-                <Link to="/symptoms" onClick={() => setOpen(false)} className="text-lg font-medium">Buscar Síntomas</Link>
+                <Link to="/patologias" onClick={() => setOpen(false)} className="text-lg font-medium">Buscar Patología</Link>
+                <Link to="/agregar-patologia" onClick={() => setOpen(false)} className="text-lg font-medium">Insertar Patología</Link>
+                <Link to="/sintomas" onClick={() => setOpen(false)} className="text-lg font-medium">Buscar Síntomas</Link>
                 <div className="pt-4 border-t">
-                  <Link to="/login" onClick={() => setOpen(false)} className="block text-lg font-medium mb-3">Iniciar Sesión</Link>
-                  <Link to="/register" onClick={() => setOpen(false)} className="block text-lg font-medium text-[#3B9EE3]">Registrarse</Link>
+                  <Link to="/iniciar-sesion" onClick={() => setOpen(false)} className="block text-lg font-medium mb-3">Iniciar Sesión</Link>
+                  <Link to="/registro" onClick={() => setOpen(false)} className="block text-lg font-medium text-[#3B9EE3]">Registrarse</Link>
                 </div>
               </div>
             </SheetContent>
@@ -57,10 +57,10 @@ export const Navbar = () => {
         </div>
 
         <div className="hidden md:flex items-center space-x-4">
-          <Link to="/login">
+          <Link to="/iniciar-sesion">
             <Button variant="ghost">Iniciar Sesión</Button>
           </Link>
-          <Link to="/register">
+          <Link to="/registro">
             <Button>Registrarse</Button>
           </Link>
         </div>

@@ -21,12 +21,12 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/update-password" element={<UpdatePassword />} />
+          <Route path="/iniciar-sesion" element={<Login />} />
+          <Route path="/registro" element={<Register />} />
+          <Route path="/restablecer-contrasena" element={<ResetPassword />} />
+          <Route path="/actualizar-contrasena" element={<UpdatePassword />} />
           <Route path="/cuenta-tu-experiencia" element={<ShareExperience />} />
-          <Route path="/pathologies" element={<PathologySearch />} />
+          <Route path="/patologias" element={<PathologySearch />} />
           <Route path="/patologia/:name" element={<PathologyDetail />} />
         </Routes>
         <Toaster />
