@@ -17,10 +17,16 @@ const ReviewDetail = () => {
     const fetchReview = async () => {
       if (!id) return;
       
+      const numericId = parseInt(id);
+      if (isNaN(numericId)) {
+        console.error("Invalid review ID");
+        return;
+      }
+      
       const { data, error } = await supabase
         .from("reviews")
         .select("*, PATOLOGIE(Patologia)")
-        .eq("id", id)
+        .eq("id", numericId)
         .maybeSingle();
 
       if (error) {
