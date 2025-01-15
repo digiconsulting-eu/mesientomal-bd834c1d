@@ -1,96 +1,61 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Helmet } from 'react-helmet-async';
 import { Input } from "@/components/ui/input";
-import { supabase } from "@/integrations/supabase/client";
-import { Tables } from "@/integrations/supabase/types";
-
-type Pathology = Tables<"PATOLOGIE">;
+import { Button } from "@/components/ui/button";
+import { Search } from "lucide-react";
+import { ReviewCard } from "@/components/ReviewCard";
 
 const PathologySearch = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [pathologies, setPathologies] = useState<Pathology[]>([]);
-  const [selectedLetter, setSelectedLetter] = useState("TUTTE");
-
-  const alphabet = "ABCDEFGHIJLMNOPQRSTUVZ".split("");
-
-  useEffect(() => {
-    fetchPathologies();
-  }, []);
-
-  const fetchPathologies = async () => {
-    const { data, error } = await supabase
-      .from("PATOLOGIE")
-      .select("*")
-      .order("Patologia");
-
-    if (error) {
-      console.error("Error fetching pathologies:", error);
-      return;
+  const reviews = [
+    {
+      title: "Mi experiencia con la migraña crónica",
+      author: "Anónimo238",
+      tag: "MIGRAÑA",
+      content: "He sufrido de migrañas durante más de 10 años. Los episodios suelen durar..."
+    },
+    {
+      title: "Viviendo con artritis reumatoide",
+      author: "Anónimo456",
+      tag: "ARTRITIS REUMATOIDE",
+      content: "Fui diagnosticada con artritis reumatoide hace 5 años. Al principio fue muy difícil..."
+    },
+    {
+      title: "Mi lucha contra la fibromialgia",
+      author: "Anónimo789",
+      tag: "FIBROMIALGIA",
+      content: "La fibromialgia ha cambiado completamente mi vida. Los dolores constantes..."
     }
-
-    setPathologies(data || []);
-  };
-
-  const filteredPathologies = pathologies.filter((pathology) => {
-    const matchesSearch = pathology.Patologia?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesLetter =
-      selectedLetter === "TUTTE" ||
-      pathology.Patologia?.startsWith(selectedLetter);
-    return matchesSearch && matchesLetter;
-  });
+  ];
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8 text-gray-800">Buscar Patología</h1>
+    <>
+      <Helmet>
+        <title>Buscar Patologías - MeSientoMal.info</title>
+        <meta name="description" content="Explora nuestra base de datos de patologías y encuentra experiencias de pacientes con condiciones similares a la tuya." />
+      </Helmet>
       
-      <Input
-        type="text"
-        placeholder="Buscar una patología..."
-        className="w-full mb-8"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">Buscar Patologías</h1>
+          <p className="text-xl text-gray-600">Encuentra experiencias de otros pacientes</p>
+          
+          <div className="max-w-2xl mx-auto mt-8 flex gap-2">
+            <Input 
+              placeholder="Buscar una patología..." 
+              className="h-12"
+            />
+            <Button size="lg">
+              <Search className="h-5 w-5" />
+            </Button>
+          </div>
+        </div>
 
-      <div className="flex flex-wrap gap-2 mb-8">
-        <button
-          onClick={() => setSelectedLetter("TUTTE")}
-          className={`px-4 py-2 rounded ${
-            selectedLetter === "TUTTE"
-              ? "bg-[#3B9EE3] text-white"
-              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-          }`}
-        >
-          TODAS
-        </button>
-        {alphabet.map((letter) => (
-          <button
-            key={letter}
-            onClick={() => setSelectedLetter(letter)}
-            className={`px-4 py-2 rounded ${
-              selectedLetter === letter
-                ? "bg-[#3B9EE3] text-white"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-            }`}
-          >
-            {letter}
-          </button>
-        ))}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {reviews.map((review, index) => (
+            <ReviewCard key={index} {...review} />
+          ))}
+        </div>
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {filteredPathologies.map((pathology) => (
-          <Link
-            key={pathology.id}
-            to={`/patologia/${encodeURIComponent(pathology.Patologia || '')}`}
-            className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow"
-          >
-            <h3 className="text-[#3B9EE3] font-medium">
-              {pathology.Patologia}
-            </h3>
-          </Link>
-        ))}
-      </div>
-    </div>
+    </>
   );
 };
 
