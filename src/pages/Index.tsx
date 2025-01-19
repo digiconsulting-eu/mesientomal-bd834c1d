@@ -7,22 +7,40 @@ import { Helmet } from 'react-helmet-async';
 const Index = () => {
   const reviews = [
     {
-      title: "dolor de espalda",
-      author: "Anónimo1027",
-      tag: "ESTENOSIS LUMBAR",
-      content: "dolor de espalda"
+      title: "miglioramenti delle reazioni con dieta detox",
+      author: "Anonimo1028",
+      tag: "ALLERGIA AL NICHEL E SNAS",
+      content: "ci ho messo molto a capire cosa mi causasse dermatiti ed eczema a chiazze.. che non..."
     },
     {
-      title: "fuerte dolor en el ovario después de la operación",
-      author: "Anónimo1024",
-      tag: "FIBROTECOMA OVÁRICO",
-      content: "en 2011 me extirparon un fibrotecoma ovárico de 4 cm, quitándome el 60% del ovario. Si antes de operarme tenía..."
+      title: "mal di schiena",
+      author: "Anonimo1027",
+      tag: "STENOSI LOMBARE",
+      content: "mal di schiena..."
     },
     {
-      title: "La dificultad de vivir con dolor articular",
-      author: "Anónimo745",
+      title: "forte dolore all'ovaio dopo l'operazione",
+      author: "Anonimo1024",
+      tag: "FIBROTECOMA OVARICO",
+      content: "nel 2011 mi hanno tolto un fibrotecoma ovarico di 4 cm, tagliendomi il 60% dell'ovaio. Se prima di..."
+    },
+    {
+      title: "La difficoltà di vivere con il dolore articolare",
+      author: "Anonimo745",
       tag: "ENTESITE",
-      content: "El dolor articular causado por la entesitis ha sido insoportable. La hinchazón y la rigidez me hacían..."
+      content: "Il dolore articolare causato dall'entesitis è stato insopportabile. Il gonfiore e la rigidità mi rendeva..."
+    },
+    {
+      title: "Indispensabile il dentista",
+      author: "Anonimo245",
+      tag: "ASCESSO GENGIVALE",
+      content: "L'ascesso gengivale è stato devastante, con un dolore forte che non passava con nessun..."
+    },
+    {
+      title: "Da adolescente, l'acne mi ha rovinato l'autostima",
+      author: "Anonimo850",
+      tag: "ACNE",
+      content: "L'acne è stata una battaglia lunga per me. Quando ero più giovane, mi sentivo vergognato e isolato..."
     }
   ];
 
@@ -33,25 +51,30 @@ const Index = () => {
         <meta name="description" content="Descubre experiencias reales de pacientes. Una comunidad donde compartir y encontrar información sobre diferentes patologías y tratamientos." />
       </Helmet>
       
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-12">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Comparte tu experiencia</h1>
-          <p className="text-xl text-gray-600">Ayuda a otros pacientes compartiendo tu historia</p>
+          <h1 className="text-4xl font-bold text-[#3B9EE3] mb-4">Condividi la tua esperienza</h1>
+          <p className="text-xl text-gray-600">Aiuta altri pazienti condividendo la tua storia</p>
           
           <div className="max-w-2xl mx-auto mt-8 flex gap-2">
             <Input 
-              placeholder="Buscar una patología..." 
-              className="h-12"
+              placeholder="Cerca una patologia..." 
+              className="h-12 text-base"
             />
-            <Button size="lg">
+            <Button size="lg" className="bg-[#3B9EE3] hover:bg-[#3B9EE3]/90">
               <Search className="h-5 w-5" />
             </Button>
           </div>
         </div>
 
         <div className="mb-8 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-gray-900">Reseñas destacadas</h2>
-          <Button variant="link">Ver todas las reseñas</Button>
+          <h2 className="text-2xl font-bold text-gray-900">Recensioni in evidenza</h2>
+          <Button 
+            variant="outline" 
+            className="border-[#3B9EE3] text-[#3B9EE3] hover:bg-[#3B9EE3]/10"
+          >
+            Mostra tutte le recensioni
+          </Button>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">

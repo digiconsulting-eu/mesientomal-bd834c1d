@@ -1,6 +1,6 @@
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
+import { ArrowRight } from "lucide-react";
 
 interface ReviewCardProps {
   title: string;
@@ -11,29 +11,27 @@ interface ReviewCardProps {
 
 export const ReviewCard = ({ title, author, tag, content }: ReviewCardProps) => {
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <div className="flex items-start justify-between">
-          <div>
-            <CardTitle className="text-xl font-semibold">{title}</CardTitle>
-            <p className="text-sm text-gray-500 mt-1">{author}</p>
-          </div>
-          <Badge variant="secondary" className="bg-[#3B9EE3]/10 text-[#3B9EE3] hover:bg-[#3B9EE3]/20 border-0">
-            {tag}
-          </Badge>
+    <Card className="p-6 hover:shadow-lg transition-shadow">
+      <div className="space-y-4">
+        <div>
+          <h3 className="text-xl font-semibold text-gray-900 mb-1">{title}</h3>
+          <p className="text-sm text-gray-500">{author}</p>
         </div>
-      </CardHeader>
-      <CardContent>
-        <div className="flex justify-between items-end">
-          <p className="text-gray-600 line-clamp-3 flex-1 mr-4">{content}</p>
-          <Button 
-            variant="default"
-            className="bg-[#3B9EE3] text-white hover:bg-[#3B9EE3]/90 shrink-0"
-          >
-            Leer
-          </Button>
-        </div>
-      </CardContent>
+
+        <Badge 
+          variant="secondary" 
+          className="bg-[#3B9EE3]/10 text-[#3B9EE3] hover:bg-[#3B9EE3]/20 border-0"
+        >
+          {tag}
+        </Badge>
+
+        <p className="text-gray-600 line-clamp-2">{content}</p>
+
+        <button className="w-full bg-[#3B9EE3] text-white py-3 px-4 rounded-lg hover:bg-[#3B9EE3]/90 transition-colors flex items-center justify-center gap-2">
+          Leggi l'esperienza completa
+          <ArrowRight className="h-4 w-4" />
+        </button>
+      </div>
     </Card>
   );
 };
