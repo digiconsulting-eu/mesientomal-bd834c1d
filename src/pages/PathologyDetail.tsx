@@ -71,14 +71,14 @@ const PathologyDetail = () => {
   return (
     <>
       <Helmet>
-        <title>{name} - Información y Experiencias | MeSientoMal.info</title>
-        <meta name="description" content={`Información detallada y experiencias de pacientes sobre ${name}. Conoce síntomas, tratamientos y testimonios reales.`} />
+        <title>{name?.toUpperCase()} - Información y Experiencias | MeSientoMal.info</title>
+        <meta name="description" content={`Información detallada y experiencias de pacientes sobre ${name?.toUpperCase()}. Conoce síntomas, tratamientos y testimonios reales.`} />
       </Helmet>
       
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-6xl mx-auto">
           <div className="flex justify-between items-center mb-8">
-            <h1 className="text-3xl font-bold text-sky-500">{name}</h1>
+            <h1 className="text-3xl font-bold text-sky-500">{name?.toUpperCase()}</h1>
             <Button variant="outline" className="border-sky-500 text-sky-500 hover:bg-sky-50">
               Seguir
             </Button>
@@ -162,7 +162,7 @@ const PathologyDetail = () => {
 
               <div id="description" className="bg-white rounded-lg p-6 border border-sky-500">
                 <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-xl font-semibold">¿Qué es {name}?</h2>
+                  <h2 className="text-xl font-semibold">¿Qué es {name?.toUpperCase()}?</h2>
                   <Button variant="ghost" size="icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
                   </Button>
@@ -181,7 +181,7 @@ const PathologyDetail = () => {
                     {reviews?.map((review) => (
                       <div key={review.id} className="p-4 bg-white rounded-lg border">
                         <h3 className="font-semibold mb-2">{review.title}</h3>
-                        <Badge className="mb-2" variant="secondary">{review.patologia}</Badge>
+                        <Badge className="mb-2" variant="secondary">{review.patologia.toUpperCase()}</Badge>
                         <p className="text-gray-700">{review.experience}</p>
                       </div>
                     ))}
