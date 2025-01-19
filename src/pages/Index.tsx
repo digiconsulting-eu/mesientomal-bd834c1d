@@ -53,7 +53,7 @@ const Index = () => {
       
       <div className="container mx-auto px-4 py-12">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-[#3B9EE3] mb-4">Condividi la tua esperienza</h1>
+          <h1 className="text-4xl font-bold text-primary mb-4">Condividi la tua esperienza</h1>
           <p className="text-xl text-gray-600">Aiuta altri pazienti condividendo la tua storia</p>
           
           <div className="max-w-2xl mx-auto mt-8 flex gap-2">
@@ -61,7 +61,7 @@ const Index = () => {
               placeholder="Cerca una patologia..." 
               className="h-12 text-base"
             />
-            <Button size="lg" className="bg-[#3B9EE3] hover:bg-[#3B9EE3]/90">
+            <Button size="lg">
               <Search className="h-5 w-5" />
             </Button>
           </div>
@@ -71,7 +71,7 @@ const Index = () => {
           <h2 className="text-2xl font-bold text-gray-900">Recensioni in evidenza</h2>
           <Button 
             variant="outline" 
-            className="border-[#3B9EE3] text-[#3B9EE3] hover:bg-[#3B9EE3]/10"
+            className="border-primary text-primary hover:bg-primary/10"
           >
             Mostra tutte le recensioni
           </Button>

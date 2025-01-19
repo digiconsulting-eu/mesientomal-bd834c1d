@@ -20,14 +20,14 @@ export const ReviewCard = ({ title, author, tag, content }: ReviewCardProps) => 
 
         <Badge 
           variant="secondary" 
-          className="bg-[#3B9EE3]/10 text-[#3B9EE3] hover:bg-[#3B9EE3]/20 border-0"
+          className="bg-primary/10 text-primary hover:bg-primary/20 border-0"
         >
           {tag}
         </Badge>
 
         <p className="text-gray-600 line-clamp-2">{content}</p>
 
-        <button className="w-full bg-[#3B9EE3] text-white py-3 px-4 rounded-lg hover:bg-[#3B9EE3]/90 transition-colors flex items-center justify-center gap-2">
+        <button className="w-full bg-primary text-white py-3 px-4 rounded-lg hover:bg-[#0284C7] transition-colors flex items-center justify-center gap-2">
           Leggi l'esperienza completa
           <ArrowRight className="h-4 w-4" />
         </button>
