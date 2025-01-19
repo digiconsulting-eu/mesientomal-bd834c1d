@@ -1,16 +1,14 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-import { UseFormReturn } from "react-hook-form";
-import { FormSchema } from "./schema";
-import { Input } from "@/components/ui/input";
-import { useState } from "react";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { UseFormReturn } from "react-hook-form";
+import { FormSchema } from "./schema";
+import { useState } from "react";
 
 type PathologySelectProps = {
   form: UseFormReturn<FormSchema>;
@@ -20,7 +18,7 @@ export function PathologySelect({ form }: PathologySelectProps) {
   const [open, setOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const { data: pathologies } = useQuery({
+  const { data: pathologies, isLoading } = useQuery({
     queryKey: ['pathologies', searchTerm],
     queryFn: async () => {
       const query = supabase
@@ -34,7 +32,7 @@ export function PathologySelect({ form }: PathologySelectProps) {
       
       const { data, error } = await query;
       if (error) throw error;
-      return data;
+      return data || [];
     }
   });
 
@@ -56,6 +54,7 @@ export function PathologySelect({ form }: PathologySelectProps) {
                     "w-full justify-between",
                     !field.value && "text-muted-foreground"
                   )}
+                  disabled={isLoading}
                 >
                   {field.value
                     ? pathologies?.find(
@@ -75,7 +74,7 @@ export function PathologySelect({ form }: PathologySelectProps) {
                 />
                 <CommandEmpty>No se encontraron patologías.</CommandEmpty>
                 <CommandGroup className="max-h-60 overflow-auto">
-                  {pathologies?.map((pathology) => (
+                  {(pathologies || []).map((pathology) => (
                     <CommandItem
                       key={pathology.Patologia}
                       value={pathology.Patologia}
