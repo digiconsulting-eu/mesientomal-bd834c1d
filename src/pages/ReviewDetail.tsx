@@ -127,15 +127,15 @@ const ReviewDetail = () => {
 
             <div className="space-y-8">
               <div>
-                <Badge 
-                  variant="secondary" 
-                  className="mb-4 bg-[#0EA5E9]/10 text-[#0EA5E9] hover:bg-[#0EA5E9]/20 border-0"
-                >
-                  {review.patologia?.Patologia}
-                </Badge>
                 <h1 className="text-3xl font-bold text-gray-900 mb-2">
                   {review.title}
                 </h1>
+                <Badge 
+                  variant="secondary" 
+                  className="mb-2 bg-[#0EA5E9]/10 text-[#0EA5E9] hover:bg-[#0EA5E9]/20 border-0"
+                >
+                  {review.patologia?.Patologia}
+                </Badge>
                 <div className="flex items-center gap-2 text-gray-600">
                   <span>{review.author}</span>
                   <span>•</span>
