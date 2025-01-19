@@ -26,7 +26,6 @@ const Index = () => {
       if (error) throw error;
       return data.map(review => ({
         title: review.title,
-        author_username: review.author_username,
         patologia: review.patologia?.Patologia || 'Desconocida',
         content: review.experience || ''
       }));

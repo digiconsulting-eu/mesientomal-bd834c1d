@@ -4,12 +4,11 @@ import { ArrowRight } from "lucide-react";
 
 interface ReviewCardProps {
   title: string;
-  author_username: string;
   patologia: string;
   content: string;
 }
 
-export const ReviewCard = ({ title, author_username, patologia, content }: ReviewCardProps) => {
+export const ReviewCard = ({ title, patologia, content }: ReviewCardProps) => {
   const formattedUrl = title.replace(/\s+/g, '-');
 
   return (
@@ -17,7 +16,6 @@ export const ReviewCard = ({ title, author_username, patologia, content }: Revie
       <div className="space-y-4">
         <div>
           <h3 className="text-xl font-semibold text-gray-900 mb-1">{title}</h3>
-          <p className="text-sm text-gray-500">{author_username}</p>
         </div>
 
         <Badge 
