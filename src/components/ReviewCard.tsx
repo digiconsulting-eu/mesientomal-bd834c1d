@@ -33,7 +33,7 @@ export const ReviewCard = ({ title, author_username, patologia, content }: Revie
           className="w-full bg-primary text-white py-3 px-4 rounded-lg hover:bg-[#0284C7] transition-colors flex items-center justify-center gap-2"
           onClick={() => window.location.href = `/review/${encodeURIComponent(formattedUrl)}`}
         >
-          Leggi l'esperienza completa
+          Leer experiencia completa
           <ArrowRight className="h-4 w-4" />
         </button>
       </div>
