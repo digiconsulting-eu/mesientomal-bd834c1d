@@ -18,7 +18,7 @@ export function PathologySelect({ form }: PathologySelectProps) {
   const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
 
-  const { data: pathologies = [], isLoading } = useQuery({
+  const { data: pathologies, isLoading } = useQuery({
     queryKey: ['pathologies'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -31,7 +31,7 @@ export function PathologySelect({ form }: PathologySelectProps) {
     }
   });
 
-  const filteredPathologies = pathologies.filter((pathology) => {
+  const filteredPathologies = (pathologies || []).filter((pathology) => {
     if (!pathology.Patologia) return false;
     if (!searchValue) return true;
     return pathology.Patologia.toLowerCase().includes(searchValue.toLowerCase());
@@ -58,9 +58,9 @@ export function PathologySelect({ form }: PathologySelectProps) {
                   disabled={isLoading}
                 >
                   {field.value
-                    ? pathologies.find(
+                    ? pathologies?.find(
                         (pathology) => pathology.Patologia === field.value
-                      )?.Patologia.toUpperCase()
+                      )?.Patologia?.toUpperCase()
                     : "Selecciona una patología"}
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
@@ -77,7 +77,7 @@ export function PathologySelect({ form }: PathologySelectProps) {
                 <CommandEmpty>
                   {isLoading ? "Cargando..." : "No se encontraron patologías."}
                 </CommandEmpty>
-                <CommandGroup className="max-h-60 overflow-auto">
+                <CommandGroup>
                   {!isLoading && filteredPathologies.map((pathology) => (
                     pathology.Patologia && (
                       <CommandItem
