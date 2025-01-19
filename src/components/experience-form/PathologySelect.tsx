@@ -18,7 +18,7 @@ export function PathologySelect({ form }: PathologySelectProps) {
   const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
 
-  const { data: pathologies, isLoading } = useQuery({
+  const { data: pathologies = [], isLoading } = useQuery({
     queryKey: ['pathologies'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -28,8 +28,7 @@ export function PathologySelect({ form }: PathologySelectProps) {
       
       if (error) throw error;
       return data?.filter(p => p.Patologia != null && p.Patologia.trim() !== '') || [];
-    },
-    initialData: [] // Provide initial empty array to prevent undefined
+    }
   });
 
   const filteredPathologies = pathologies.filter((pathology) => {
@@ -78,7 +77,7 @@ export function PathologySelect({ form }: PathologySelectProps) {
                 <CommandEmpty>
                   {isLoading ? "Cargando..." : "No se encontraron patologías."}
                 </CommandEmpty>
-                <CommandGroup className="max-h-[300px] overflow-y-auto">
+                <CommandGroup>
                   {!isLoading && filteredPathologies.map((pathology) => (
                     pathology.Patologia && (
                       <CommandItem
