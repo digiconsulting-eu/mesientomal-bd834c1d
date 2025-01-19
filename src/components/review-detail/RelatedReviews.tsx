@@ -19,7 +19,7 @@ export const RelatedReviews = ({ reviews, patologiaName }: RelatedReviewsProps) 
   return (
     <div>
       <h2 className="text-xl font-semibold text-gray-900 mb-6">
-        Altre esperienze su {patologiaName}
+        Otras experiencias sobre {patologiaName}
       </h2>
       <div className="space-y-4">
         {reviews?.map((review) => (

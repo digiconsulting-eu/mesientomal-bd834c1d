@@ -14,7 +14,7 @@ export const ReviewHeader = ({ title, patologia, author, createdAt }: ReviewHead
   const navigate = useNavigate();
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('it-IT', {
+    return new Date(dateString).toLocaleDateString('es-ES', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric'
@@ -29,7 +29,7 @@ export const ReviewHeader = ({ title, patologia, author, createdAt }: ReviewHead
         onClick={() => navigate(`/pathology/${encodeURIComponent(patologia)}`)}
       >
         <ArrowLeft className="mr-2 h-4 w-4" />
-        Leggi tutte le esperienze su {patologia}
+        Leer todas las experiencias sobre {patologia}
       </Button>
 
       <div>

@@ -29,22 +29,22 @@ export const ReviewRatings = ({
   return (
     <div className="space-y-6">
       <section>
-        <h3 className="font-medium text-gray-900 mb-2">Difficoltà di Diagnosi</h3>
+        <h3 className="font-medium text-gray-900 mb-2">Dificultad de Diagnóstico</h3>
         {renderRatingBar(diagnosisDifficulty)}
       </section>
 
       <section>
-        <h3 className="font-medium text-gray-900 mb-2">Gravità dei Sintomi</h3>
+        <h3 className="font-medium text-gray-900 mb-2">Gravedad de los Síntomas</h3>
         {renderRatingBar(symptomSeverity)}
       </section>
 
       <section>
-        <h3 className="font-medium text-gray-900 mb-2">Possibilità di Guarigione</h3>
+        <h3 className="font-medium text-gray-900 mb-2">Posibilidad de Curación</h3>
         {renderRatingBar(healingPossibility)}
       </section>
 
       <section>
-        <h3 className="font-medium text-gray-900 mb-2">Disagio Sociale</h3>
+        <h3 className="font-medium text-gray-900 mb-2">Malestar Social</h3>
         {renderRatingBar(socialDiscomfort)}
       </section>
     </div>
