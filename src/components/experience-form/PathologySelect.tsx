@@ -18,7 +18,7 @@ export function PathologySelect({ form }: PathologySelectProps) {
   const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
 
-  const { data: pathologies = [] } = useQuery({
+  const { data: pathologies = [], isLoading } = useQuery({
     queryKey: ['pathologies'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -27,7 +27,6 @@ export function PathologySelect({ form }: PathologySelectProps) {
         .order("Patologia");
       
       if (error) throw error;
-      // Filter out null values and ensure we have valid pathologies
       return data?.filter(p => p.Patologia != null && p.Patologia.trim() !== '') || [];
     },
     initialData: []
@@ -57,6 +56,7 @@ export function PathologySelect({ form }: PathologySelectProps) {
                     "w-full justify-between",
                     !field.value && "text-muted-foreground"
                   )}
+                  disabled={isLoading}
                 >
                   {field.value
                     ? pathologies.find(
@@ -75,30 +75,33 @@ export function PathologySelect({ form }: PathologySelectProps) {
                   onValueChange={setSearchValue}
                   className="h-9"
                 />
-                <CommandEmpty>No se encontraron patologías.</CommandEmpty>
-                <CommandGroup className="max-h-60 overflow-auto">
-                  {filteredPathologies.map((pathology) => (
-                    <CommandItem
-                      key={pathology.Patologia}
-                      value={pathology.Patologia}
-                      onSelect={() => {
-                        form.setValue("patologia", pathology.Patologia);
-                        setSearchValue("");
-                        setOpen(false);
-                      }}
-                    >
-                      <Check
-                        className={cn(
-                          "mr-2 h-4 w-4",
-                          field.value === pathology.Patologia 
-                            ? "opacity-100"
-                            : "opacity-0"
-                        )}
-                      />
-                      {pathology.Patologia}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
+                {filteredPathologies.length === 0 ? (
+                  <CommandEmpty>No se encontraron patologías.</CommandEmpty>
+                ) : (
+                  <CommandGroup className="max-h-60 overflow-auto">
+                    {filteredPathologies.map((pathology) => (
+                      <CommandItem
+                        key={pathology.Patologia}
+                        value={pathology.Patologia}
+                        onSelect={() => {
+                          form.setValue("patologia", pathology.Patologia);
+                          setSearchValue("");
+                          setOpen(false);
+                        }}
+                      >
+                        <Check
+                          className={cn(
+                            "mr-2 h-4 w-4",
+                            field.value === pathology.Patologia 
+                              ? "opacity-100"
+                              : "opacity-0"
+                          )}
+                        />
+                        {pathology.Patologia}
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                )}
               </Command>
             </PopoverContent>
           </Popover>
