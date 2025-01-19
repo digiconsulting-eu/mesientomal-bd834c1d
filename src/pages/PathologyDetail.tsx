@@ -153,7 +153,7 @@ const PathologyDetail = () => {
               </div>
 
               <div className="bg-sky-50 rounded-lg p-6">
-                <Link to={`/compartir-experiencia?patologia=${encodeURIComponent(name || '')}`}>
+                <Link to={`/cuenta-tu-experiencia?patologia=${encodeURIComponent(name || '')}`}>
                   <h2 className="text-xl font-semibold text-sky-500 mb-2 hover:text-sky-600">
                     Comparte tu Experiencia
                   </h2>
