@@ -28,8 +28,7 @@ export function PathologySelect({ form }: PathologySelectProps) {
       
       if (error) throw error;
       return data?.filter(p => p.Patologia != null && p.Patologia.trim() !== '') || [];
-    },
-    initialData: []
+    }
   });
 
   const filteredPathologies = pathologies.filter((pathology) => {
@@ -68,7 +67,7 @@ export function PathologySelect({ form }: PathologySelectProps) {
               </FormControl>
             </PopoverTrigger>
             <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
-              <Command shouldFilter={false}>
+              <Command>
                 <CommandInput 
                   placeholder="Buscar patología..." 
                   value={searchValue}
@@ -78,8 +77,8 @@ export function PathologySelect({ form }: PathologySelectProps) {
                 <CommandEmpty>
                   {isLoading ? "Cargando..." : "No se encontraron patologías."}
                 </CommandEmpty>
-                <CommandGroup className="max-h-60 overflow-auto">
-                  {!isLoading && filteredPathologies.map((pathology) => (
+                <CommandGroup>
+                  {filteredPathologies.map((pathology) => (
                     pathology.Patologia && (
                       <CommandItem
                         key={pathology.Patologia}
