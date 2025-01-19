@@ -23,7 +23,7 @@ export function ExperienceForm() {
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      patologia: "",
+      patologia: preselectedPathology || "",
       title: "",
       symptoms: "",
       experience: "",
@@ -34,13 +34,6 @@ export function ExperienceForm() {
       social_discomfort: "3",
     },
   });
-
-  // Set the preselected pathology when the component mounts
-  useEffect(() => {
-    if (preselectedPathology) {
-      form.setValue("patologia", preselectedPathology);
-    }
-  }, [preselectedPathology, form]);
 
   async function onSubmit(values: FormSchema) {
     try {
