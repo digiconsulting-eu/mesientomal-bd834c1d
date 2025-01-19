@@ -18,7 +18,7 @@ export function PathologySelect({ form }: PathologySelectProps) {
   const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
 
-  const { data: pathologies = [], isLoading } = useQuery({
+  const { data: pathologies, isLoading } = useQuery({
     queryKey: ['pathologies'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -32,11 +32,11 @@ export function PathologySelect({ form }: PathologySelectProps) {
     initialData: []
   });
 
-  const filteredPathologies = !isLoading ? pathologies.filter((pathology) => {
+  const filteredPathologies = pathologies.filter((pathology) => {
     if (!pathology.Patologia) return false;
     if (!searchValue) return true;
     return pathology.Patologia.toLowerCase().includes(searchValue.toLowerCase());
-  }) : [];
+  });
 
   return (
     <FormField
@@ -67,8 +67,8 @@ export function PathologySelect({ form }: PathologySelectProps) {
                 </Button>
               </FormControl>
             </PopoverTrigger>
-            <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
-              <Command shouldFilter={false}>
+            <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+              <Command>
                 <CommandInput 
                   placeholder="Buscar patología..." 
                   value={searchValue}
