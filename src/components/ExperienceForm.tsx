@@ -10,11 +10,15 @@ import { BasicInfo } from "./experience-form/BasicInfo";
 import { RatingFields } from "./experience-form/RatingFields";
 import { TreatmentField } from "./experience-form/TreatmentField";
 import { formSchema, type FormSchema } from "./experience-form/schema";
+import { useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
 
 type ReviewInsert = Database["public"]["Tables"]["reviews"]["Insert"];
 
 export function ExperienceForm() {
   const { toast } = useToast();
+  const [searchParams] = useSearchParams();
+  const preselectedPathology = searchParams.get("patologia");
   
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -30,6 +34,13 @@ export function ExperienceForm() {
       social_discomfort: "3",
     },
   });
+
+  // Set the preselected pathology when the component mounts
+  useEffect(() => {
+    if (preselectedPathology) {
+      form.setValue("patologia", preselectedPathology);
+    }
+  }, [preselectedPathology, form]);
 
   async function onSubmit(values: FormSchema) {
     try {
