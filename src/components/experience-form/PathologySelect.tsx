@@ -27,15 +27,16 @@ export function PathologySelect({ form }: PathologySelectProps) {
         .order("Patologia");
       
       if (error) throw error;
-      return data || [];
+      return data?.filter(p => p.Patologia != null) || [];
     },
     initialData: []
   });
 
-  const filteredPathologies = pathologies.filter(
-    (pathology) => pathology.Patologia && 
-    pathology.Patologia.toLowerCase().includes(searchValue.toLowerCase())
-  );
+  const filteredPathologies = searchValue === "" 
+    ? pathologies 
+    : pathologies.filter(
+        (pathology) => pathology.Patologia?.toLowerCase().includes(searchValue.toLowerCase())
+      );
 
   return (
     <FormField
@@ -65,23 +66,29 @@ export function PathologySelect({ form }: PathologySelectProps) {
                 </Button>
               </FormControl>
             </PopoverTrigger>
-            <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
+            <PopoverContent 
+              className="w-[var(--radix-popover-trigger-width)] p-0" 
+              align="start"
+              side="bottom"
+            >
               <Command shouldFilter={false}>
                 <CommandInput 
                   placeholder="Buscar patología..." 
                   value={searchValue}
                   onValueChange={setSearchValue}
                 />
-                <CommandEmpty>No se encontraron patologías.</CommandEmpty>
-                <CommandGroup className="max-h-[300px] overflow-y-auto">
-                  {filteredPathologies.map((pathology) => (
-                    pathology.Patologia && (
+                {filteredPathologies.length === 0 ? (
+                  <CommandEmpty>No se encontraron patologías.</CommandEmpty>
+                ) : (
+                  <CommandGroup className="max-h-[300px] overflow-y-auto">
+                    {filteredPathologies.map((pathology) => (
                       <CommandItem
                         key={pathology.Patologia}
-                        value={pathology.Patologia}
+                        value={pathology.Patologia || ""}
                         onSelect={() => {
                           form.setValue("patologia", pathology.Patologia || "");
                           setOpen(false);
+                          setSearchValue("");
                         }}
                       >
                         <Check
@@ -94,9 +101,9 @@ export function PathologySelect({ form }: PathologySelectProps) {
                         />
                         {pathology.Patologia}
                       </CommandItem>
-                    )
-                  ))}
-                </CommandGroup>
+                    ))}
+                  </CommandGroup>
+                )}
               </Command>
             </PopoverContent>
           </Popover>
