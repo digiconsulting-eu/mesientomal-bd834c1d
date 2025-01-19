@@ -61,7 +61,7 @@ export function PathologySelect({ form }: PathologySelectProps) {
                   {field.value
                     ? pathologies.find(
                         (pathology) => pathology.Patologia === field.value
-                      )?.Patologia
+                      )?.Patologia.toUpperCase()
                     : "Selecciona una patología"}
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
@@ -98,7 +98,7 @@ export function PathologySelect({ form }: PathologySelectProps) {
                               : "opacity-0"
                           )}
                         />
-                        {pathology.Patologia}
+                        {pathology.Patologia.toUpperCase()}
                       </CommandItem>
                     )
                   ))}
