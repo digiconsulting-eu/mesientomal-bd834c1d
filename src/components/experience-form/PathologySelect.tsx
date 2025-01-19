@@ -16,6 +16,7 @@ type PathologySelectProps = {
 
 export function PathologySelect({ form }: PathologySelectProps) {
   const [open, setOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
 
   const { data: pathologies = [] } = useQuery({
     queryKey: ['pathologies'],
@@ -31,6 +32,11 @@ export function PathologySelect({ form }: PathologySelectProps) {
     initialData: []
   });
 
+  const filteredPathologies = pathologies.filter(
+    (pathology) => pathology.Patologia && 
+    pathology.Patologia.toLowerCase().includes(searchValue.toLowerCase())
+  );
+
   return (
     <FormField
       control={form.control}
@@ -44,6 +50,7 @@ export function PathologySelect({ form }: PathologySelectProps) {
                 <Button
                   variant="outline"
                   role="combobox"
+                  aria-expanded={open}
                   className={cn(
                     "w-full justify-between",
                     !field.value && "text-muted-foreground"
@@ -58,18 +65,22 @@ export function PathologySelect({ form }: PathologySelectProps) {
                 </Button>
               </FormControl>
             </PopoverTrigger>
-            <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0">
-              <Command>
-                <CommandInput placeholder="Buscar patología..." />
+            <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
+              <Command shouldFilter={false}>
+                <CommandInput 
+                  placeholder="Buscar patología..." 
+                  value={searchValue}
+                  onValueChange={setSearchValue}
+                />
                 <CommandEmpty>No se encontraron patologías.</CommandEmpty>
                 <CommandGroup className="max-h-[300px] overflow-y-auto">
-                  {pathologies.map((pathology) => (
+                  {filteredPathologies.map((pathology) => (
                     pathology.Patologia && (
                       <CommandItem
                         key={pathology.Patologia}
                         value={pathology.Patologia}
-                        onSelect={(value) => {
-                          form.setValue("patologia", value);
+                        onSelect={() => {
+                          form.setValue("patologia", pathology.Patologia || "");
                           setOpen(false);
                         }}
                       >
