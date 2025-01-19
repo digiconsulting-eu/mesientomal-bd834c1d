@@ -11,7 +11,7 @@ interface ReviewCardProps {
 
 export const ReviewCard = ({ title, author, tag, content }: ReviewCardProps) => {
   return (
-    <Card className="p-6 hover:shadow-lg transition-shadow">
+    <Card className="p-6 hover:shadow-lg transition-shadow border-primary">
       <div className="space-y-4">
         <div>
           <h3 className="text-xl font-semibold text-gray-900 mb-1">{title}</h3>
