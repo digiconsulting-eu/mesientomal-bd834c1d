@@ -18,7 +18,7 @@ export function PathologySelect({ form }: PathologySelectProps) {
   const [open, setOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const { data: pathologies = [], isLoading } = useQuery({
+  const { data: pathologies = [] } = useQuery({
     queryKey: ['pathologies', searchTerm],
     queryFn: async () => {
       const query = supabase
@@ -33,7 +33,8 @@ export function PathologySelect({ form }: PathologySelectProps) {
       const { data, error } = await query;
       if (error) throw error;
       return data || [];
-    }
+    },
+    initialData: []
   });
 
   return (
@@ -54,7 +55,6 @@ export function PathologySelect({ form }: PathologySelectProps) {
                     "w-full justify-between",
                     !field.value && "text-muted-foreground"
                   )}
-                  disabled={isLoading}
                 >
                   {field.value
                     ? pathologies.find(
@@ -65,8 +65,13 @@ export function PathologySelect({ form }: PathologySelectProps) {
                 </Button>
               </FormControl>
             </PopoverTrigger>
-            <PopoverContent className="w-[--radix-popover-trigger-width] p-0" side="bottom" align="start">
-              <Command>
+            <PopoverContent 
+              className="w-[var(--radix-popover-trigger-width)] p-0" 
+              side="bottom" 
+              align="start"
+              sideOffset={4}
+            >
+              <Command shouldFilter={false}>
                 <CommandInput 
                   placeholder="Buscar patología..." 
                   value={searchTerm}
@@ -87,7 +92,9 @@ export function PathologySelect({ form }: PathologySelectProps) {
                       <Check
                         className={cn(
                           "mr-2 h-4 w-4",
-                          field.value === pathology.Patologia ? "opacity-100" : "opacity-0"
+                          field.value === pathology.Patologia 
+                            ? "opacity-100" 
+                            : "opacity-0"
                         )}
                       />
                       {pathology.Patologia}
