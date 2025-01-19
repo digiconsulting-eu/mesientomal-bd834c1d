@@ -16,6 +16,7 @@ type PathologySelectProps = {
 
 export function PathologySelect({ form }: PathologySelectProps) {
   const [open, setOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
 
   const { data: pathologies = [] } = useQuery({
     queryKey: ['pathologies'],
@@ -30,6 +31,12 @@ export function PathologySelect({ form }: PathologySelectProps) {
       return data?.filter(p => p.Patologia != null && p.Patologia.trim() !== '') || [];
     },
     initialData: []
+  });
+
+  const filteredPathologies = pathologies.filter((pathology) => {
+    if (!pathology.Patologia) return false;
+    if (!searchValue) return true;
+    return pathology.Patologia.toLowerCase().includes(searchValue.toLowerCase());
   });
 
   return (
@@ -60,35 +67,36 @@ export function PathologySelect({ form }: PathologySelectProps) {
                 </Button>
               </FormControl>
             </PopoverTrigger>
-            <PopoverContent className="w-full p-0">
-              <Command>
+            <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
+              <Command shouldFilter={false}>
                 <CommandInput 
                   placeholder="Cerca una patologia..." 
+                  value={searchValue}
+                  onValueChange={setSearchValue}
                   className="h-9"
                 />
                 <CommandEmpty>No se encontraron patologías.</CommandEmpty>
                 <CommandGroup className="max-h-60 overflow-auto">
-                  {pathologies.map((pathology) => (
-                    pathology.Patologia && (
-                      <CommandItem
-                        value={pathology.Patologia}
-                        key={pathology.Patologia}
-                        onSelect={() => {
-                          form.setValue("patologia", pathology.Patologia);
-                          setOpen(false);
-                        }}
-                      >
-                        <Check
-                          className={cn(
-                            "mr-2 h-4 w-4",
-                            field.value === pathology.Patologia 
-                              ? "opacity-100"
-                              : "opacity-0"
-                          )}
-                        />
-                        {pathology.Patologia}
-                      </CommandItem>
-                    )
+                  {filteredPathologies.map((pathology) => (
+                    <CommandItem
+                      key={pathology.Patologia}
+                      value={pathology.Patologia}
+                      onSelect={() => {
+                        form.setValue("patologia", pathology.Patologia);
+                        setSearchValue("");
+                        setOpen(false);
+                      }}
+                    >
+                      <Check
+                        className={cn(
+                          "mr-2 h-4 w-4",
+                          field.value === pathology.Patologia 
+                            ? "opacity-100"
+                            : "opacity-0"
+                        )}
+                      />
+                      {pathology.Patologia}
+                    </CommandItem>
                   ))}
                 </CommandGroup>
               </Command>
