@@ -26,18 +26,13 @@ const PathologySearch = () => {
   const filteredPathologies = pathologies?.filter(p => {
     if (!p.Patologia) return false;
     
-    // First apply search filter
-    const matchesSearch = searchTerm 
-      ? p.Patologia.toLowerCase().includes(searchTerm.toLowerCase())
-      : true;
+    // If there's a search term, it takes precedence and searches through ALL pathologies
+    if (searchTerm) {
+      return p.Patologia.toLowerCase().includes(searchTerm.toLowerCase());
+    }
     
-    // Then apply letter filter only if a specific letter is selected
-    const matchesLetter = selectedLetter === "TUTTE" 
-      ? true 
-      : p.Patologia.startsWith(selectedLetter);
-    
-    // Return true if EITHER the search term matches OR the letter matches
-    return matchesSearch || matchesLetter;
+    // If no search term, filter by selected letter
+    return selectedLetter === "TUTTE" || p.Patologia.startsWith(selectedLetter);
   });
 
   return (
