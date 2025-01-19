@@ -28,7 +28,8 @@ export function PathologySelect({ form }: PathologySelectProps) {
       
       if (error) throw error;
       return data?.filter(p => p.Patologia != null && p.Patologia.trim() !== '') || [];
-    }
+    },
+    initialData: []
   });
 
   const filteredPathologies = pathologies.filter((pathology) => {
@@ -69,39 +70,38 @@ export function PathologySelect({ form }: PathologySelectProps) {
             <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
               <Command>
                 <CommandInput 
-                  placeholder="Cerca una patologia..." 
+                  placeholder="Buscar patología..." 
                   value={searchValue}
                   onValueChange={setSearchValue}
                   className="h-9"
                 />
-                {isLoading ? (
-                  <CommandEmpty>Cargando patologías...</CommandEmpty>
-                ) : filteredPathologies.length === 0 ? (
-                  <CommandEmpty>No se encontraron patologías.</CommandEmpty>
-                ) : (
+                <CommandEmpty>
+                  {isLoading ? "Cargando..." : "No se encontraron patologías."}
+                </CommandEmpty>
+                {!isLoading && (
                   <CommandGroup className="max-h-60 overflow-auto">
                     {filteredPathologies.map((pathology) => (
-                      <CommandItem
-                        key={pathology.Patologia}
-                        value={pathology.Patologia || ""}
-                        onSelect={() => {
-                          if (pathology.Patologia) {
+                      pathology.Patologia && (
+                        <CommandItem
+                          key={pathology.Patologia}
+                          value={pathology.Patologia}
+                          onSelect={() => {
                             form.setValue("patologia", pathology.Patologia);
                             setSearchValue("");
                             setOpen(false);
-                          }
-                        }}
-                      >
-                        <Check
-                          className={cn(
-                            "mr-2 h-4 w-4",
-                            field.value === pathology.Patologia 
-                              ? "opacity-100"
-                              : "opacity-0"
-                          )}
-                        />
-                        {pathology.Patologia}
-                      </CommandItem>
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              field.value === pathology.Patologia 
+                                ? "opacity-100"
+                                : "opacity-0"
+                            )}
+                          />
+                          {pathology.Patologia}
+                        </CommandItem>
+                      )
                     ))}
                   </CommandGroup>
                 )}
