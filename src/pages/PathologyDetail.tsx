@@ -135,33 +135,28 @@ const PathologyDetail = () => {
             {/* Main Content Column */}
             <div className="md:col-span-2 space-y-6">
               <div className="bg-sky-50 rounded-lg p-6">
-                <h2 className="text-xl font-semibold text-sky-500 mb-2">Resumen</h2>
-                <Button 
-                  variant="ghost" 
-                  className="text-sky-500"
+                <h2 
+                  className="text-xl font-semibold text-sky-500 mb-2 hover:cursor-pointer hover:text-sky-600"
                   onClick={() => scrollToSection('description')}
                 >
-                  Ver más
-                </Button>
+                  Resumen
+                </h2>
               </div>
 
               <div className="bg-sky-50 rounded-lg p-6">
-                <h2 className="text-xl font-semibold text-sky-500 mb-2">Leer Experiencias</h2>
-                <Button 
-                  variant="ghost" 
-                  className="text-sky-500"
+                <h2 
+                  className="text-xl font-semibold text-sky-500 mb-2 hover:cursor-pointer hover:text-sky-600"
                   onClick={() => scrollToSection('experiences')}
                 >
-                  Ver experiencias
-                </Button>
+                  Leer Experiencias
+                </h2>
               </div>
 
               <div className="bg-sky-50 rounded-lg p-6">
-                <h2 className="text-xl font-semibold text-sky-500 mb-2">Comparte tu Experiencia</h2>
                 <Link to={`/compartir-experiencia?patologia=${encodeURIComponent(name || '')}`}>
-                  <Button variant="ghost" className="text-sky-500">
-                    Compartir mi experiencia
-                  </Button>
+                  <h2 className="text-xl font-semibold text-sky-500 mb-2 hover:text-sky-600">
+                    Comparte tu Experiencia
+                  </h2>
                 </Link>
               </div>
 
