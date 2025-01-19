@@ -65,21 +65,22 @@ export function PathologySelect({ form }: PathologySelectProps) {
                 </Button>
               </FormControl>
             </PopoverTrigger>
-            <PopoverContent className="w-full p-0" align="start">
+            <PopoverContent className="w-[--radix-popover-trigger-width] p-0" side="bottom" align="start">
               <Command>
                 <CommandInput 
                   placeholder="Buscar patología..." 
                   value={searchTerm}
                   onValueChange={setSearchTerm}
+                  className="h-9"
                 />
                 <CommandEmpty>No se encontraron patologías.</CommandEmpty>
-                <CommandGroup className="max-h-60 overflow-auto">
+                <CommandGroup>
                   {pathologies.map((pathology) => (
                     <CommandItem
                       key={pathology.Patologia}
                       value={pathology.Patologia}
-                      onSelect={() => {
-                        form.setValue("patologia", pathology.Patologia);
+                      onSelect={(value) => {
+                        form.setValue("patologia", value);
                         setOpen(false);
                       }}
                     >
