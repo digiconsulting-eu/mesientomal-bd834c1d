@@ -8,12 +8,12 @@ import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
 const ReviewDetail = () => {
-  const { reviewId } = useParams();
+  const { reviewTitle } = useParams();
   const navigate = useNavigate();
-  const decodedTitle = decodeURIComponent(reviewId || "");
+  const decodedTitle = decodeURIComponent(reviewTitle || "");
 
-  const { data: review } = useQuery({
-    queryKey: ['review', reviewId],
+  const { data: review, isError } = useQuery({
+    queryKey: ['review', reviewTitle],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('reviews')
@@ -23,12 +23,29 @@ const ReviewDetail = () => {
           author:author_username
         `)
         .eq('title', decodedTitle)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
+      if (!data) throw new Error('Review not found');
       return data;
     }
   });
+
+  if (isError) {
+    return (
+      <div className="container mx-auto px-4 py-8 text-center">
+        <h1 className="text-2xl font-bold text-gray-900 mb-4">Review not found</h1>
+        <Button
+          variant="ghost"
+          onClick={() => navigate('/')}
+          className="inline-flex items-center"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back to home
+        </Button>
+      </div>
+    );
+  }
 
   if (!review) return null;
 
