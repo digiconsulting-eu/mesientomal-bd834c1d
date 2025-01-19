@@ -3,6 +3,7 @@ import { Navbar } from "./components/Navbar";
 import Index from "./pages/Index";
 import ReviewDetail from "./pages/ReviewDetail";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { HelmetProvider } from 'react-helmet-async';
 
 // Create a client
 const queryClient = new QueryClient({
@@ -16,17 +17,19 @@ const queryClient = new QueryClient({
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <Router>
-        <Navbar />
-        <main>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/:pathologyName/esperienza/:reviewTitle" element={<ReviewDetail />} />
-          </Routes>
-        </main>
-      </Router>
-    </QueryClientProvider>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <Navbar />
+          <main>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/:pathologyName/esperienza/:reviewTitle" element={<ReviewDetail />} />
+            </Routes>
+          </main>
+        </Router>
+      </QueryClientProvider>
+    </HelmetProvider>
   );
 }
 
