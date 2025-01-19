@@ -3,46 +3,30 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 import { Helmet } from 'react-helmet-async';
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
-  const reviews = [
-    {
-      title: "miglioramenti delle reazioni con dieta detox",
-      author: "Anonimo1028",
-      tag: "ALLERGIA AL NICHEL E SNAS",
-      content: "ci ho messo molto a capire cosa mi causasse dermatiti ed eczema a chiazze.. che non..."
-    },
-    {
-      title: "mal di schiena",
-      author: "Anonimo1027",
-      tag: "STENOSI LOMBARE",
-      content: "mal di schiena..."
-    },
-    {
-      title: "forte dolore all'ovaio dopo l'operazione",
-      author: "Anonimo1024",
-      tag: "FIBROTECOMA OVARICO",
-      content: "nel 2011 mi hanno tolto un fibrotecoma ovarico di 4 cm, tagliendomi il 60% dell'ovaio. Se prima di..."
-    },
-    {
-      title: "La difficoltà di vivere con il dolore articolare",
-      author: "Anonimo745",
-      tag: "ENTESITE",
-      content: "Il dolore articolare causato dall'entesitis è stato insopportabile. Il gonfiore e la rigidità mi rendeva..."
-    },
-    {
-      title: "Indispensabile il dentista",
-      author: "Anonimo245",
-      tag: "ASCESSO GENGIVALE",
-      content: "L'ascesso gengivale è stato devastante, con un dolore forte che non passava con nessun..."
-    },
-    {
-      title: "Da adolescente, l'acne mi ha rovinato l'autostima",
-      author: "Anonimo850",
-      tag: "ACNE",
-      content: "L'acne è stata una battaglia lunga per me. Quando ero più giovane, mi sentivo vergognato e isolato..."
+  const { data: reviews } = useQuery({
+    queryKey: ['featured-reviews'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('reviews')
+        .select(`
+          *,
+          patologia:PATOLOGIE(Patologia)
+        `)
+        .limit(6);
+      
+      if (error) throw error;
+      return data.map(review => ({
+        title: review.title,
+        author_username: review.author_username,
+        patologia: review.patologia?.Patologia || 'Unknown',
+        content: review.experience || ''
+      }));
     }
-  ];
+  });
 
   return (
     <>
@@ -78,7 +62,7 @@ const Index = () => {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {reviews.map((review, index) => (
+          {reviews?.map((review, index) => (
             <ReviewCard key={index} {...review} />
           ))}
         </div>

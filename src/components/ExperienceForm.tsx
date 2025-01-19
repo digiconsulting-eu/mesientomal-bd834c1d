@@ -11,7 +11,7 @@ import { RatingFields } from "./experience-form/RatingFields";
 import { TreatmentField } from "./experience-form/TreatmentField";
 import { formSchema, type FormSchema } from "./experience-form/schema";
 import { useSearchParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 type ReviewInsert = Database["public"]["Tables"]["reviews"]["Insert"];
 
@@ -19,6 +19,23 @@ export function ExperienceForm() {
   const { toast } = useToast();
   const [searchParams] = useSearchParams();
   const preselectedPathology = searchParams.get("patologia");
+
+  // Get current user's username
+  const { data: userData } = useQuery({
+    queryKey: ["user-profile"],
+    queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("No user found");
+      
+      const { data: profile } = await supabase
+        .from("users")
+        .select("username")
+        .eq("id", user.id)
+        .single();
+      
+      return profile;
+    }
+  });
   
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -37,8 +54,24 @@ export function ExperienceForm() {
 
   async function onSubmit(values: FormSchema) {
     try {
+      if (!userData?.username) {
+        throw new Error("User not authenticated");
+      }
+
+      // First get the patologia ID
+      const { data: pathologyData } = await supabase
+        .from("PATOLOGIE")
+        .select("id")
+        .eq("Patologia", values.patologia)
+        .single();
+
+      if (!pathologyData) {
+        throw new Error("Patología no encontrada");
+      }
+
       const insertData: ReviewInsert = {
-        patologia: values.patologia,
+        patologia_id: pathologyData.id,
+        author_username: userData.username,
         title: values.title,
         symptoms: values.symptoms,
         experience: values.experience,

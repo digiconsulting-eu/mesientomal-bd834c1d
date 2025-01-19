@@ -29,12 +29,13 @@ export type Database = {
       }
       reviews: {
         Row: {
+          author_username: string
           created_at: string
           diagnosis_difficulty: number | null
           experience: string | null
           healing_possibility: number | null
           id: number
-          patologia: string | null
+          patologia_id: number
           pharmacological_treatment: boolean | null
           social_discomfort: number | null
           symptom_severity: number | null
@@ -42,12 +43,13 @@ export type Database = {
           title: string
         }
         Insert: {
+          author_username: string
           created_at?: string
           diagnosis_difficulty?: number | null
           experience?: string | null
           healing_possibility?: number | null
           id?: number
-          patologia?: string | null
+          patologia_id: number
           pharmacological_treatment?: boolean | null
           social_discomfort?: number | null
           symptom_severity?: number | null
@@ -55,12 +57,13 @@ export type Database = {
           title: string
         }
         Update: {
+          author_username?: string
           created_at?: string
           diagnosis_difficulty?: number | null
           experience?: string | null
           healing_possibility?: number | null
           id?: number
-          patologia?: string | null
+          patologia_id?: number
           pharmacological_treatment?: boolean | null
           social_discomfort?: number | null
           symptom_severity?: number | null
@@ -69,11 +72,18 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "reviews_patologia_fkey"
-            columns: ["patologia"]
+            foreignKeyName: "reviews_author_username_fkey"
+            columns: ["author_username"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["username"]
+          },
+          {
+            foreignKeyName: "reviews_patologia_id_fkey"
+            columns: ["patologia_id"]
             isOneToOne: false
             referencedRelation: "PATOLOGIE"
-            referencedColumns: ["Patologia"]
+            referencedColumns: ["id"]
           },
         ]
       }
