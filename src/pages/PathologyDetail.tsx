@@ -27,12 +27,18 @@ const PathologyDetail = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('reviews')
-        .select('*')
-        .eq('patologia', name);
+        .select(`
+          *,
+          PATOLOGIE (
+            Patologia
+          )
+        `)
+        .eq('patologia_id', pathologyData?.id);
       
       if (error) throw error;
       return data;
-    }
+    },
+    enabled: !!pathologyData?.id
   });
 
   // Calculate averages from reviews
@@ -181,7 +187,9 @@ const PathologyDetail = () => {
                     {reviews?.map((review) => (
                       <div key={review.id} className="p-4 bg-white rounded-lg border">
                         <h3 className="font-semibold mb-2">{review.title}</h3>
-                        <Badge className="mb-2" variant="secondary">{review.patologia.toUpperCase()}</Badge>
+                        <Badge className="mb-2" variant="secondary">
+                          {review.PATOLOGIE?.Patologia?.toUpperCase()}
+                        </Badge>
                         <p className="text-gray-700">{review.experience}</p>
                       </div>
                     ))}
