@@ -119,10 +119,10 @@ const ReviewDetail = () => {
             <Button
               variant="ghost"
               className="mb-6 -ml-4"
-              onClick={() => navigate(-1)}
+              onClick={() => navigate(`/pathology/${encodeURIComponent(review.patologia?.Patologia || '')}`)}
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Indietro
+              Leggi tutte le esperienze su {review.patologia?.Patologia}
             </Button>
 
             <div className="space-y-8">
