@@ -19,7 +19,8 @@ export function PathologySelect({ form }: PathologySelectProps) {
         .order("Patologia");
       
       if (error) throw error;
-      return data?.filter(p => p.Patologia != null) || [];
+      // Filter out null values and ensure we have valid pathologies
+      return data?.filter(p => p.Patologia != null && p.Patologia.trim() !== '') || [];
     },
     initialData: []
   });
@@ -42,12 +43,14 @@ export function PathologySelect({ form }: PathologySelectProps) {
             </FormControl>
             <SelectContent>
               {pathologies.map((pathology) => (
-                <SelectItem 
-                  key={pathology.Patologia} 
-                  value={pathology.Patologia || ""}
-                >
-                  {pathology.Patologia}
-                </SelectItem>
+                pathology.Patologia && (
+                  <SelectItem 
+                    key={pathology.Patologia}
+                    value={pathology.Patologia}
+                  >
+                    {pathology.Patologia}
+                  </SelectItem>
+                )
               ))}
             </SelectContent>
           </Select>
