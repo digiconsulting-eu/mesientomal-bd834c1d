@@ -11,14 +11,35 @@ import { RatingFields } from "./experience-form/RatingFields";
 import { TreatmentField } from "./experience-form/TreatmentField";
 import { formSchema, type FormSchema } from "./experience-form/schema";
 import { useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 type ReviewInsert = Database["public"]["Tables"]["reviews"]["Insert"];
 
 export function ExperienceForm() {
   const { toast } = useToast();
   const [searchParams] = useSearchParams();
+  const [username, setUsername] = useState<string | null>(null);
   const preselectedPathology = searchParams.get("patologia");
   
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data: userData } = await supabase
+          .from('users')
+          .select('username')
+          .eq('id', user.id)
+          .single();
+        
+        if (userData) {
+          setUsername(userData.username);
+        }
+      }
+    };
+    
+    getUser();
+  }, []);
+
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -35,6 +56,15 @@ export function ExperienceForm() {
   });
 
   async function onSubmit(values: FormSchema) {
+    if (!username) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Debes iniciar sesión para compartir tu experiencia.",
+      });
+      return;
+    }
+
     try {
       // First get the patologia ID
       const { data: pathologyData } = await supabase
@@ -57,6 +87,7 @@ export function ExperienceForm() {
         healing_possibility: parseInt(values.healing_possibility),
         social_discomfort: parseInt(values.social_discomfort),
         pharmacological_treatment: values.pharmacological_treatment === "Si",
+        author_username: username,
       };
 
       const { error } = await supabase.from("reviews").insert(insertData);

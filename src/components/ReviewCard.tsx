@@ -6,9 +6,10 @@ interface ReviewCardProps {
   title: string;
   patologia: string;
   content: string;
+  author: string;
 }
 
-export const ReviewCard = ({ title, patologia, content }: ReviewCardProps) => {
+export const ReviewCard = ({ title, patologia, content, author }: ReviewCardProps) => {
   const formattedUrl = title.replace(/\s+/g, '-');
 
   return (
@@ -16,6 +17,7 @@ export const ReviewCard = ({ title, patologia, content }: ReviewCardProps) => {
       <div className="space-y-4">
         <div>
           <h3 className="text-xl font-semibold text-gray-900 mb-1">{title}</h3>
+          <p className="text-sm text-gray-500">Por {author}</p>
         </div>
 
         <Badge 

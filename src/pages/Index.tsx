@@ -19,7 +19,8 @@ const Index = () => {
         .from('reviews')
         .select(`
           *,
-          patologia:PATOLOGIE(Patologia)
+          patologia:PATOLOGIE(Patologia),
+          users(username)
         `)
         .limit(6);
       
@@ -27,7 +28,8 @@ const Index = () => {
       return data.map(review => ({
         title: review.title,
         patologia: review.patologia?.Patologia || 'Desconocida',
-        content: review.experience || ''
+        content: review.experience || '',
+        author: review.users?.username || 'Anónimo'
       }));
     }
   });
