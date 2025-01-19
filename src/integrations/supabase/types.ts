@@ -84,6 +84,7 @@ export type Database = {
           gender: string | null
           id: string
           updated_at: string
+          username: string | null
         }
         Insert: {
           birth_year?: number | null
@@ -91,6 +92,7 @@ export type Database = {
           gender?: string | null
           id: string
           updated_at?: string
+          username?: string | null
         }
         Update: {
           birth_year?: number | null
@@ -98,6 +100,7 @@ export type Database = {
           gender?: string | null
           id?: string
           updated_at?: string
+          username?: string | null
         }
         Relationships: []
       }
