@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from "@/integrations/supabase/client";
@@ -59,6 +59,13 @@ const PathologyDetail = () => {
     if (value >= 4) return "Alto";
     if (value >= 2) return "Medio";
     return "Bajo";
+  };
+  
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   };
   
   return (
@@ -129,17 +136,36 @@ const PathologyDetail = () => {
             <div className="md:col-span-2 space-y-6">
               <div className="bg-sky-50 rounded-lg p-6">
                 <h2 className="text-xl font-semibold text-sky-500 mb-2">Resumen</h2>
+                <Button 
+                  variant="ghost" 
+                  className="text-sky-500"
+                  onClick={() => scrollToSection('description')}
+                >
+                  Ver más
+                </Button>
               </div>
 
               <div className="bg-sky-50 rounded-lg p-6">
                 <h2 className="text-xl font-semibold text-sky-500 mb-2">Leer Experiencias</h2>
+                <Button 
+                  variant="ghost" 
+                  className="text-sky-500"
+                  onClick={() => scrollToSection('experiences')}
+                >
+                  Ver experiencias
+                </Button>
               </div>
 
               <div className="bg-sky-50 rounded-lg p-6">
                 <h2 className="text-xl font-semibold text-sky-500 mb-2">Comparte tu Experiencia</h2>
+                <Link to={`/compartir-experiencia?patologia=${encodeURIComponent(name || '')}`}>
+                  <Button variant="ghost" className="text-sky-500">
+                    Compartir mi experiencia
+                  </Button>
+                </Link>
               </div>
 
-              <div className="bg-white rounded-lg p-6 border border-sky-500">
+              <div id="description" className="bg-white rounded-lg p-6 border border-sky-500">
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-xl font-semibold">¿Qué es {name}?</h2>
                   <Button variant="ghost" size="icon">
@@ -151,7 +177,7 @@ const PathologyDetail = () => {
                 </p>
               </div>
 
-              <div className="bg-white rounded-lg p-6 border border-sky-500">
+              <div id="experiences" className="bg-white rounded-lg p-6 border border-sky-500">
                 <h2 className="text-xl font-semibold mb-4">Experiencias ({reviews?.length || 0})</h2>
                 {reviews?.length === 0 ? (
                   <p className="text-gray-600">Aún no hay experiencias para esta patología.</p>
