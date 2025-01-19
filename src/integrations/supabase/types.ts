@@ -29,7 +29,6 @@ export type Database = {
       }
       reviews: {
         Row: {
-          author_username: string
           created_at: string
           diagnosis_difficulty: number | null
           experience: string | null
@@ -43,7 +42,6 @@ export type Database = {
           title: string
         }
         Insert: {
-          author_username: string
           created_at?: string
           diagnosis_difficulty?: number | null
           experience?: string | null
@@ -57,7 +55,6 @@ export type Database = {
           title: string
         }
         Update: {
-          author_username?: string
           created_at?: string
           diagnosis_difficulty?: number | null
           experience?: string | null
@@ -71,13 +68,6 @@ export type Database = {
           title?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "reviews_author_username_fkey"
-            columns: ["author_username"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["username"]
-          },
           {
             foreignKeyName: "reviews_patologia_id_fkey"
             columns: ["patologia_id"]
@@ -100,7 +90,7 @@ export type Database = {
           birth_year?: number | null
           created_at?: string
           gender?: string | null
-          id: string
+          id?: string
           updated_at?: string
           username: string
         }

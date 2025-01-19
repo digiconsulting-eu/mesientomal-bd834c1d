@@ -4,20 +4,35 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { UseFormReturn } from "react-hook-form";
 import { FormSchema } from "./schema";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 type PathologySelectProps = {
   form: UseFormReturn<FormSchema>;
 };
 
 export function PathologySelect({ form }: PathologySelectProps) {
+  const [open, setOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+
   const { data: pathologies } = useQuery({
-    queryKey: ["pathologies"],
+    queryKey: ['pathologies', searchTerm],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const query = supabase
         .from("PATOLOGIE")
         .select("Patologia")
         .order("Patologia");
       
+      if (searchTerm) {
+        query.ilike('Patologia', `%${searchTerm}%`);
+      }
+      
+      const { data, error } = await query;
       if (error) throw error;
       return data;
     }
@@ -28,24 +43,60 @@ export function PathologySelect({ form }: PathologySelectProps) {
       control={form.control}
       name="patologia"
       render={({ field }) => (
-        <FormItem>
+        <FormItem className="flex flex-col">
           <FormLabel>Patología *</FormLabel>
-          <Select onValueChange={field.onChange} defaultValue={field.value}>
-            <FormControl>
-              <SelectTrigger>
-                <SelectValue placeholder="Selecciona una patología" />
-              </SelectTrigger>
-            </FormControl>
-            <SelectContent>
-              {pathologies?.map((pathology) => (
-                pathology.Patologia && (
-                  <SelectItem key={pathology.Patologia} value={pathology.Patologia}>
-                    {pathology.Patologia}
-                  </SelectItem>
-                )
-              ))}
-            </SelectContent>
-          </Select>
+          <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+              <FormControl>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={open}
+                  className={cn(
+                    "w-full justify-between",
+                    !field.value && "text-muted-foreground"
+                  )}
+                >
+                  {field.value
+                    ? pathologies?.find(
+                        (pathology) => pathology.Patologia === field.value
+                      )?.Patologia
+                    : "Selecciona una patología"}
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </FormControl>
+            </PopoverTrigger>
+            <PopoverContent className="w-full p-0">
+              <Command>
+                <CommandInput 
+                  placeholder="Buscar patología..." 
+                  value={searchTerm}
+                  onValueChange={setSearchTerm}
+                />
+                <CommandEmpty>No se encontraron patologías.</CommandEmpty>
+                <CommandGroup className="max-h-60 overflow-auto">
+                  {pathologies?.map((pathology) => (
+                    <CommandItem
+                      key={pathology.Patologia}
+                      value={pathology.Patologia}
+                      onSelect={() => {
+                        form.setValue("patologia", pathology.Patologia);
+                        setOpen(false);
+                      }}
+                    >
+                      <Check
+                        className={cn(
+                          "mr-2 h-4 w-4",
+                          field.value === pathology.Patologia ? "opacity-100" : "opacity-0"
+                        )}
+                      />
+                      {pathology.Patologia}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </Command>
+            </PopoverContent>
+          </Popover>
           <FormMessage />
         </FormItem>
       )}
