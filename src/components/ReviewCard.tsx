@@ -10,6 +10,8 @@ interface ReviewCardProps {
 }
 
 export const ReviewCard = ({ title, author, tag, content }: ReviewCardProps) => {
+  const formattedUrl = title.replace(/\s+/g, '-');
+
   return (
     <Card className="p-6 hover:shadow-lg transition-shadow border-primary">
       <div className="space-y-4">
@@ -27,11 +29,14 @@ export const ReviewCard = ({ title, author, tag, content }: ReviewCardProps) => 
 
         <p className="text-gray-600 line-clamp-2">{content}</p>
 
-        <button className="w-full bg-primary text-white py-3 px-4 rounded-lg hover:bg-[#0284C7] transition-colors flex items-center justify-center gap-2">
+        <button 
+          className="w-full bg-primary text-white py-3 px-4 rounded-lg hover:bg-[#0284C7] transition-colors flex items-center justify-center gap-2"
+          onClick={() => window.location.href = `/review/${encodeURIComponent(formattedUrl)}`}
+        >
           Leggi l'esperienza completa
           <ArrowRight className="h-4 w-4" />
         </button>
       </div>
     </Card>
   );
-};
+}

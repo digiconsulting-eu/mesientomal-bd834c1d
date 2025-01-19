@@ -6,8 +6,10 @@ type PathologyItemProps = {
 };
 
 export function PathologyItem({ name }: PathologyItemProps) {
+  const formattedUrl = name.replace(/\s+/g, '-');
+  
   return (
-    <Link to={`/patologia/${encodeURIComponent(name)}`}>
+    <Link to={`/patologia/${encodeURIComponent(formattedUrl)}`}>
       <Card className="p-4 hover:shadow-md transition-shadow border-primary">
         <h3 className="text-primary font-medium">{name.toUpperCase()}</h3>
       </Card>
