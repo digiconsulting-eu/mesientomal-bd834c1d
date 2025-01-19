@@ -28,10 +28,11 @@ export function PathologySelect({ form }: PathologySelectProps) {
       
       if (error) throw error;
       return data?.filter(p => p.Patologia != null && p.Patologia.trim() !== '') || [];
-    }
+    },
+    initialData: [] // Provide initial empty array to prevent undefined
   });
 
-  const filteredPathologies = (pathologies || []).filter((pathology) => {
+  const filteredPathologies = pathologies.filter((pathology) => {
     if (!pathology.Patologia) return false;
     if (!searchValue) return true;
     return pathology.Patologia.toLowerCase().includes(searchValue.toLowerCase());
@@ -58,7 +59,7 @@ export function PathologySelect({ form }: PathologySelectProps) {
                   disabled={isLoading}
                 >
                   {field.value
-                    ? pathologies?.find(
+                    ? pathologies.find(
                         (pathology) => pathology.Patologia === field.value
                       )?.Patologia?.toUpperCase()
                     : "Selecciona una patología"}
@@ -77,7 +78,7 @@ export function PathologySelect({ form }: PathologySelectProps) {
                 <CommandEmpty>
                   {isLoading ? "Cargando..." : "No se encontraron patologías."}
                 </CommandEmpty>
-                <CommandGroup>
+                <CommandGroup className="max-h-[300px] overflow-y-auto">
                   {!isLoading && filteredPathologies.map((pathology) => (
                     pathology.Patologia && (
                       <CommandItem
