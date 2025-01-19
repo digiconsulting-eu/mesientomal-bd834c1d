@@ -22,7 +22,7 @@ function App() {
         <main>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/review/:reviewId" element={<ReviewDetail />} />
+            <Route path="/:pathologyName/esperienza/:reviewTitle" element={<ReviewDetail />} />
           </Routes>
         </main>
       </Router>

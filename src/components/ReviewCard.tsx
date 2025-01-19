@@ -10,7 +10,8 @@ interface ReviewCardProps {
 }
 
 export const ReviewCard = ({ title, patologia, content, author }: ReviewCardProps) => {
-  const formattedUrl = title.replace(/\s+/g, '-');
+  const formattedTitle = title.toLowerCase().replace(/\s+/g, '-');
+  const formattedPatologia = patologia.toLowerCase().replace(/\s+/g, '-');
 
   return (
     <Card className="p-6 hover:shadow-lg transition-shadow border-primary">
@@ -31,7 +32,7 @@ export const ReviewCard = ({ title, patologia, content, author }: ReviewCardProp
 
         <button 
           className="w-full bg-primary text-white py-3 px-4 rounded-lg hover:bg-[#0284C7] transition-colors flex items-center justify-center gap-2"
-          onClick={() => window.location.href = `/review/${encodeURIComponent(formattedUrl)}`}
+          onClick={() => window.location.href = `/${encodeURIComponent(formattedPatologia)}/esperienza/${encodeURIComponent(formattedTitle)}`}
         >
           Leer experiencia completa
           <ArrowRight className="h-4 w-4" />
