@@ -28,8 +28,7 @@ export function PathologySelect({ form }: PathologySelectProps) {
       
       if (error) throw error;
       return data?.filter(p => p.Patologia != null && p.Patologia.trim() !== '') || [];
-    },
-    initialData: []
+    }
   });
 
   const filteredPathologies = pathologies.filter((pathology) => {
@@ -68,25 +67,29 @@ export function PathologySelect({ form }: PathologySelectProps) {
               </FormControl>
             </PopoverTrigger>
             <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
-              <Command shouldFilter={false}>
+              <Command>
                 <CommandInput 
                   placeholder="Cerca una patologia..." 
                   value={searchValue}
                   onValueChange={setSearchValue}
                   className="h-9"
                 />
-                {filteredPathologies.length === 0 ? (
+                {isLoading ? (
+                  <CommandEmpty>Cargando patologías...</CommandEmpty>
+                ) : filteredPathologies.length === 0 ? (
                   <CommandEmpty>No se encontraron patologías.</CommandEmpty>
                 ) : (
                   <CommandGroup className="max-h-60 overflow-auto">
                     {filteredPathologies.map((pathology) => (
                       <CommandItem
                         key={pathology.Patologia}
-                        value={pathology.Patologia}
+                        value={pathology.Patologia || ""}
                         onSelect={() => {
-                          form.setValue("patologia", pathology.Patologia);
-                          setSearchValue("");
-                          setOpen(false);
+                          if (pathology.Patologia) {
+                            form.setValue("patologia", pathology.Patologia);
+                            setSearchValue("");
+                            setOpen(false);
+                          }
                         }}
                       >
                         <Check
