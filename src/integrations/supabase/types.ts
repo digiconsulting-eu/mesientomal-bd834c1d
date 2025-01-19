@@ -30,7 +30,7 @@ export type Database = {
       reviews: {
         Row: {
           author_username: string | null
-          created_at: string
+          created_at: string | null
           diagnosis_difficulty: number | null
           experience: string | null
           healing_possibility: number | null
@@ -44,7 +44,7 @@ export type Database = {
         }
         Insert: {
           author_username?: string | null
-          created_at?: string
+          created_at?: string | null
           diagnosis_difficulty?: number | null
           experience?: string | null
           healing_possibility?: number | null
@@ -58,7 +58,7 @@ export type Database = {
         }
         Update: {
           author_username?: string | null
-          created_at?: string
+          created_at?: string | null
           diagnosis_difficulty?: number | null
           experience?: string | null
           healing_possibility?: number | null
