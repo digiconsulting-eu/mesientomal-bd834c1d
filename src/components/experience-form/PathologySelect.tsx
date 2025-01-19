@@ -18,7 +18,7 @@ export function PathologySelect({ form }: PathologySelectProps) {
   const [open, setOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const { data: pathologies } = useQuery({
+  const { data: pathologies = [] } = useQuery({
     queryKey: ['pathologies', searchTerm],
     queryFn: async () => {
       const query = supabase
@@ -64,40 +64,43 @@ export function PathologySelect({ form }: PathologySelectProps) {
                 </Button>
               </FormControl>
             </PopoverTrigger>
-            {open && (
-              <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0">
-                <Command>
-                  <CommandInput 
-                    placeholder="Buscar patología..." 
-                    value={searchTerm}
-                    onValueChange={setSearchTerm}
-                  />
-                  <CommandEmpty>No se encontraron patologías.</CommandEmpty>
-                  <CommandGroup>
-                    {pathologies.map((pathology) => (
-                      <CommandItem
-                        key={pathology.Patologia}
-                        value={pathology.Patologia}
-                        onSelect={(value) => {
-                          form.setValue("patologia", value);
-                          setOpen(false);
-                        }}
-                      >
-                        <Check
-                          className={cn(
-                            "mr-2 h-4 w-4",
-                            field.value === pathology.Patologia 
-                              ? "opacity-100" 
-                              : "opacity-0"
-                          )}
-                        />
-                        {pathology.Patologia}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                </Command>
-              </PopoverContent>
-            )}
+            <PopoverContent 
+              className="w-[var(--radix-popover-trigger-width)] p-0"
+              align="start"
+              sideOffset={4}
+            >
+              <Command>
+                <CommandInput 
+                  placeholder="Buscar patología..." 
+                  value={searchTerm}
+                  onValueChange={setSearchTerm}
+                  className="h-9"
+                />
+                <CommandEmpty>No se encontraron patologías.</CommandEmpty>
+                <CommandGroup className="max-h-[200px] overflow-y-auto">
+                  {pathologies.map((pathology) => (
+                    <CommandItem
+                      key={pathology.Patologia}
+                      value={pathology.Patologia}
+                      onSelect={(value) => {
+                        form.setValue("patologia", value);
+                        setOpen(false);
+                      }}
+                    >
+                      <Check
+                        className={cn(
+                          "mr-2 h-4 w-4",
+                          field.value === pathology.Patologia 
+                            ? "opacity-100" 
+                            : "opacity-0"
+                        )}
+                      />
+                      {pathology.Patologia}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </Command>
+            </PopoverContent>
           </Popover>
           <FormMessage />
         </FormItem>
