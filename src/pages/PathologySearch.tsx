@@ -1,57 +1,71 @@
 import { Helmet } from 'react-helmet-async';
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
-import { ReviewCard } from "@/components/ReviewCard";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useState } from "react";
+import { AlphabetFilter } from "@/components/AlphabetFilter";
+import { PathologyItem } from "@/components/PathologyItem";
 
 const PathologySearch = () => {
-  const reviews = [
-    {
-      title: "Mi experiencia con la migraña crónica",
-      author: "Anónimo238",
-      tag: "MIGRAÑA",
-      content: "He sufrido de migrañas durante más de 10 años. Los episodios suelen durar..."
-    },
-    {
-      title: "Viviendo con artritis reumatoide",
-      author: "Anónimo456",
-      tag: "ARTRITIS REUMATOIDE",
-      content: "Fui diagnosticada con artritis reumatoide hace 5 años. Al principio fue muy difícil..."
-    },
-    {
-      title: "Mi lucha contra la fibromialgia",
-      author: "Anónimo789",
-      tag: "FIBROMIALGIA",
-      content: "La fibromialgia ha cambiado completamente mi vida. Los dolores constantes..."
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedLetter, setSelectedLetter] = useState("TUTTE");
+
+  const { data: pathologies } = useQuery({
+    queryKey: ["pathologies"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("PATOLOGIE")
+        .select("Patologia")
+        .order("Patologia");
+      
+      if (error) throw error;
+      return data;
     }
-  ];
+  });
+
+  const filteredPathologies = pathologies?.filter(p => {
+    if (!p.Patologia) return false;
+    
+    const matchesSearch = p.Patologia.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesLetter = selectedLetter === "TUTTE" || p.Patologia.startsWith(selectedLetter);
+    
+    return matchesSearch && matchesLetter;
+  });
 
   return (
     <>
       <Helmet>
-        <title>Buscar Patologías - MeSientoMal.info</title>
-        <meta name="description" content="Explora nuestra base de datos de patologías y encuentra experiencias de pacientes con condiciones similares a la tuya." />
+        <title>Cerca Patologia - MeSientoMal.info</title>
+        <meta name="description" content="Cerca tra le patologie e scopri le esperienze di altri pazienti." />
       </Helmet>
       
       <div className="container mx-auto px-4 py-8">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Buscar Patologías</h1>
-          <p className="text-xl text-gray-600">Encuentra experiencias de otros pacientes</p>
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-900 mb-8">Cerca Patologia</h1>
           
-          <div className="max-w-2xl mx-auto mt-8 flex gap-2">
+          <div className="max-w-3xl mx-auto">
             <Input 
-              placeholder="Buscar una patología..." 
-              className="h-12"
+              placeholder="Cerca una patologia..." 
+              className="h-12 text-lg"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <Button size="lg">
-              <Search className="h-5 w-5" />
-            </Button>
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {reviews.map((review, index) => (
-            <ReviewCard key={index} {...review} />
+        <AlphabetFilter 
+          selectedLetter={selectedLetter} 
+          onLetterSelect={setSelectedLetter}
+        />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filteredPathologies?.map((pathology) => (
+            pathology.Patologia && (
+              <PathologyItem 
+                key={pathology.Patologia} 
+                name={pathology.Patologia} 
+              />
+            )
           ))}
         </div>
       </div>
