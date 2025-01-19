@@ -12,9 +12,11 @@ const ReviewDetail = () => {
   const navigate = useNavigate();
   const decodedTitle = decodeURIComponent(reviewTitle || "");
 
-  const { data: review, isError } = useQuery({
+  const { data: review, isError, isLoading } = useQuery({
     queryKey: ['review', reviewTitle],
     queryFn: async () => {
+      if (!decodedTitle) throw new Error('Review title is required');
+      
       const { data, error } = await supabase
         .from('reviews')
         .select(`
@@ -28,7 +30,8 @@ const ReviewDetail = () => {
       if (error) throw error;
       if (!data) throw new Error('Review not found');
       return data;
-    }
+    },
+    retry: false
   });
 
   const { data: relatedReviews } = useQuery({
@@ -53,26 +56,35 @@ const ReviewDetail = () => {
     enabled: !!review?.patologia?.Patologia
   });
 
-  if (isError) {
+  if (isLoading) {
     return (
       <div className="container mx-auto px-4 py-8 text-center">
-        <h1 className="text-2xl font-bold text-gray-900 mb-4">Review not found</h1>
+        <p className="text-gray-600">Caricamento...</p>
+      </div>
+    );
+  }
+
+  if (isError || !review) {
+    return (
+      <div className="container mx-auto px-4 py-8 text-center">
+        <h1 className="text-2xl font-bold text-gray-900 mb-4">Recensione non trovata</h1>
+        <p className="text-gray-600 mb-6">
+          La recensione che stai cercando non esiste o è stata rimossa.
+        </p>
         <Button
           variant="ghost"
           onClick={() => navigate('/')}
           className="inline-flex items-center"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to home
+          Torna alla home
         </Button>
       </div>
     );
   }
 
-  if (!review) return null;
-
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('es-ES', {
+    return new Date(dateString).toLocaleDateString('it-IT', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric'
@@ -110,7 +122,7 @@ const ReviewDetail = () => {
               onClick={() => navigate(-1)}
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Volver
+              Indietro
             </Button>
 
             <div className="space-y-8">
