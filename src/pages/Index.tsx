@@ -72,7 +72,7 @@ const Index = () => {
       
       <div className="container mx-auto px-4 py-12">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-primary mb-4">Comparte tu experiencia</h1>
+          <h1 className="text-4xl font-bold text-primary mb-4">Comparte tu experiencia médica</h1>
           <p className="text-xl text-gray-600">Ayuda a otros pacientes compartiendo tu historia</p>
           
           <div className="max-w-2xl mx-auto mt-8">
