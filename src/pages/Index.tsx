@@ -20,7 +20,7 @@ const Index = () => {
         .select(`
           *,
           patologia:PATOLOGIE(Patologia),
-          users(username)
+          author:author_username
         `)
         .limit(6);
       
@@ -29,7 +29,7 @@ const Index = () => {
         title: review.title,
         patologia: review.patologia?.Patologia || 'Desconocida',
         content: review.experience || '',
-        author: review.users?.username || 'Anónimo'
+        author: review.author || 'Anónimo'
       }));
     }
   });
