@@ -116,6 +116,15 @@ const ReviewDetail = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
+            <Button
+              variant="ghost"
+              className="mb-6 -ml-4"
+              onClick={() => navigate(`/pathology/${encodeURIComponent(review.patologia?.Patologia || '')}`)}
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Leggi tutte le esperienze su {review.patologia?.Patologia}
+            </Button>
+
             <div className="space-y-8">
               <div>
                 <Badge 
@@ -124,17 +133,9 @@ const ReviewDetail = () => {
                 >
                   {review.patologia?.Patologia}
                 </Badge>
-                <h1 className="text-3xl font-bold text-gray-900 mb-4">
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">
                   {review.title}
                 </h1>
-                <Button
-                  variant="ghost"
-                  className="-ml-4"
-                  onClick={() => navigate(`/pathology/${encodeURIComponent(review.patologia?.Patologia || '')}`)}
-                >
-                  <ArrowLeft className="mr-2 h-4 w-4" />
-                  Leggi tutte le esperienze su {review.patologia?.Patologia}
-                </Button>
                 <div className="flex items-center gap-2 text-gray-600">
                   <span>{review.author}</span>
                   <span>•</span>
