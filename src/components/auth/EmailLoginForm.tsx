@@ -72,7 +72,8 @@ export const EmailLoginForm = ({ onSuccess, isLoading, setIsLoading }: EmailLogi
       </div>
       <Button
         type="submit"
-        className="w-full bg-blue-500 hover:bg-blue-600"
+        className="w-full"
+        style={{ backgroundColor: "#1EAEDB" }}
         disabled={isLoading}
       >
         {isLoading ? "Cargando..." : "Iniciar Sesión"}
