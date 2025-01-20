@@ -1,22 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Static Pages -->
-  <url>
-    <loc>https://mesientormal.info</loc>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://mesientormal.info/sitemap-static.xml</loc>
     <lastmod>2024-03-20</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://mesientormal.info/patologias</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://mesientormal.info/sitemap-patologias.xml</loc>
     <lastmod>2024-03-20</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mesientormal.info/cuenta-tu-experiencia</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://mesientormal.info/sitemap-reviews.xml</loc>
     <lastmod>2024-03-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-</urlset>
+  </sitemap>
+</sitemapindex>
