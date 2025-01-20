@@ -2,10 +2,11 @@ import { Helmet } from 'react-helmet-async';
 import { Input } from "@/components/ui/input";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AlphabetFilter } from "@/components/AlphabetFilter";
 import { PathologyItem } from "@/components/PathologyItem";
 import { Skeleton } from "@/components/ui/skeleton";
+import { generateAllSitemaps } from "@/utils/generateSitemaps";
 
 const PathologySearch = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -40,6 +41,11 @@ const PathologySearch = () => {
     // If no filters are active, return all pathologies
     return true;
   });
+
+  useEffect(() => {
+    // Generate sitemaps when component mounts
+    generateAllSitemaps();
+  }, []);
 
   return (
     <>
