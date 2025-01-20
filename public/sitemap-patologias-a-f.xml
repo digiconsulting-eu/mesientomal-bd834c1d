@@ -7,6 +7,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://mesientomal.info/patologia/alcoholismo</loc>
+    <lastmod>2024-03-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/alzheimer</loc>
+    <lastmod>2024-03-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://mesientomal.info/patologia/anorexia</loc>
     <lastmod>2024-03-20</lastmod>
     <changefreq>weekly</changefreq>
@@ -14,6 +26,12 @@
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/ansiedad</loc>
+    <lastmod>2024-03-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/autismo</loc>
     <lastmod>2024-03-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -31,7 +49,25 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://mesientomal.info/patologia/dislexia</loc>
+    <lastmod>2024-03-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://mesientomal.info/patologia/esquizofrenia</loc>
+    <lastmod>2024-03-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/fibromialgia</loc>
+    <lastmod>2024-03-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/fobia-social</loc>
     <lastmod>2024-03-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
