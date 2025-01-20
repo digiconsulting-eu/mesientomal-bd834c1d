@@ -4,6 +4,8 @@ import ReviewDetail from "./pages/ReviewDetail";
 import ShareExperience from "./pages/ShareExperience";
 import PathologySearch from "./pages/PathologySearch";
 import Admin from "./pages/Admin";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -27,6 +29,8 @@ function App() {
                 <Route path="/admin/recensioni" element={<div>Gestione Recensioni</div>} />
                 <Route path="/admin/utenti" element={<div>Gestione Utenti</div>} />
                 <Route path="/admin/importazione" element={<div>Importazione Dati</div>} />
+                <Route path="/iniciar-sesion" element={<Login />} />
+                <Route path="/registro" element={<Register />} />
               </Routes>
             </main>
           </div>
