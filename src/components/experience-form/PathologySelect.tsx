@@ -1,14 +1,13 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
+import { Command, CommandEmpty, CommandGroup, CommandInput } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { UseFormReturn } from "react-hook-form";
 import { FormSchema } from "./schema";
 import { useState } from "react";
+import { PathologyButton } from "./pathology-select/PathologyButton";
+import { PathologyCommandItem } from "./pathology-select/PathologyCommandItem";
 
 type PathologySelectProps = {
   form: UseFormReturn<FormSchema>;
@@ -27,7 +26,7 @@ export function PathologySelect({ form }: PathologySelectProps) {
         .order("Patologia");
       
       if (error) throw error;
-      console.log("Total number of pathologies:", data?.length); // Added this log
+      console.log("Total number of pathologies:", data?.length);
       return data?.filter(p => p.Patologia != null && p.Patologia.trim() !== '') || [];
     }
   });
@@ -48,23 +47,14 @@ export function PathologySelect({ form }: PathologySelectProps) {
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
               <FormControl>
-                <Button
-                  variant="outline"
-                  role="combobox"
-                  aria-expanded={open}
-                  className={cn(
-                    "w-full justify-between",
-                    !field.value && "text-muted-foreground"
-                  )}
-                  disabled={isLoading}
-                >
-                  {field.value
-                    ? pathologies.find(
-                        (pathology) => pathology.Patologia === field.value
-                      )?.Patologia?.toUpperCase()
-                    : "Selecciona una patología"}
-                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                </Button>
+                <PathologyButton 
+                  value={field.value}
+                  open={open}
+                  isLoading={isLoading}
+                  pathologyName={pathologies.find(
+                    (pathology) => pathology.Patologia === field.value
+                  )?.Patologia}
+                />
               </FormControl>
             </PopoverTrigger>
             <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
@@ -81,25 +71,16 @@ export function PathologySelect({ form }: PathologySelectProps) {
                 <CommandGroup>
                   {!isLoading && filteredPathologies.map((pathology) => (
                     pathology.Patologia && (
-                      <CommandItem
+                      <PathologyCommandItem
                         key={pathology.Patologia}
-                        value={pathology.Patologia}
-                        onSelect={() => {
-                          form.setValue("patologia", pathology.Patologia);
+                        pathology={pathology}
+                        currentValue={field.value}
+                        onSelect={(value) => {
+                          form.setValue("patologia", value);
                           setSearchValue("");
                           setOpen(false);
                         }}
-                      >
-                        <Check
-                          className={cn(
-                            "mr-2 h-4 w-4",
-                            field.value === pathology.Patologia 
-                              ? "opacity-100"
-                              : "opacity-0"
-                          )}
-                        />
-                        {pathology.Patologia.toUpperCase()}
-                      </CommandItem>
+                      />
                     )
                   ))}
                 </CommandGroup>
