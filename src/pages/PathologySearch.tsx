@@ -5,12 +5,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
 import { AlphabetFilter } from "@/components/AlphabetFilter";
 import { PathologyItem } from "@/components/PathologyItem";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const PathologySearch = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedLetter, setSelectedLetter] = useState("TODAS");
+  const [selectedLetter, setSelectedLetter] = useState("TUTTE");
 
-  const { data: pathologies } = useQuery({
+  const { data: pathologies, isLoading } = useQuery({
     queryKey: ["pathologies"],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -26,20 +27,25 @@ const PathologySearch = () => {
   const filteredPathologies = pathologies?.filter(p => {
     if (!p.Patologia) return false;
     
-    // If there's a search term, it takes precedence and searches through ALL pathologies
+    // If there's a search term, filter by it
     if (searchTerm) {
       return p.Patologia.toLowerCase().includes(searchTerm.toLowerCase());
     }
     
-    // If no search term, filter by selected letter
-    return selectedLetter === "TODAS" || p.Patologia.startsWith(selectedLetter);
+    // If a letter is selected (and it's not "TUTTE"), filter by that letter
+    if (selectedLetter !== "TUTTE") {
+      return p.Patologia.toUpperCase().startsWith(selectedLetter);
+    }
+    
+    // If no filters are active, return all pathologies
+    return true;
   });
 
   return (
     <>
       <Helmet>
         <title>Buscar Patología - MeSientoMal.info</title>
-        <meta name="description" content="Busca entre las patologías y descubre las experiencias de otros pacientes." />
+        <meta name="description" content="Busca entre todas las patologías y descubre las experiencias de otros pacientes." />
       </Helmet>
       
       <div className="container mx-auto px-4 py-8">
@@ -61,16 +67,24 @@ const PathologySearch = () => {
           onLetterSelect={setSelectedLetter}
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredPathologies?.map((pathology) => (
-            pathology.Patologia && (
-              <PathologyItem 
-                key={pathology.Patologia} 
-                name={pathology.Patologia} 
-              />
-            )
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[...Array(12)].map((_, i) => (
+              <Skeleton key={i} className="h-20" />
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredPathologies?.map((pathology) => (
+              pathology.Patologia && (
+                <PathologyItem 
+                  key={pathology.Patologia} 
+                  name={pathology.Patologia} 
+                />
+              )
+            ))}
+          </div>
+        )}
       </div>
     </>
   );
