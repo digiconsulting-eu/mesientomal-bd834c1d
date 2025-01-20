@@ -22,7 +22,6 @@ import { useToast } from "@/components/ui/use-toast";
 const formSchema = z.object({
   email: z.string().email("Por favor, introduce un email válido"),
   password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
-  username: z.string().min(3, "El nombre de usuario debe tener al menos 3 caracteres"),
   birthYear: z.string()
     .refine((val) => {
       const year = parseInt(val);
@@ -45,7 +44,6 @@ const Register = () => {
     defaultValues: {
       email: "",
       password: "",
-      username: "",
       birthYear: "",
       gender: "",
       termsAccepted: false,
@@ -67,7 +65,6 @@ const Register = () => {
         .from('users')
         .insert([
           {
-            username: values.username,
             birth_year: parseInt(values.birthYear),
             gender: values.gender,
           },
@@ -127,20 +124,6 @@ const Register = () => {
                     <FormLabel>Contraseña</FormLabel>
                     <FormControl>
                       <Input type="password" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="username"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nombre de usuario</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
