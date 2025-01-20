@@ -42,7 +42,7 @@ export const Navbar = () => {
         
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-6">
-          <Link to="/" className="text-gray-600 hover:text-[#3B9EE3]">Últimas Reseñas</Link>
+          <Link to="/ultimas-resenas" className="text-gray-600 hover:text-[#3B9EE3]">Últimas Reseñas</Link>
           <Link to="/cuenta-tu-experiencia" className="text-gray-600 hover:text-[#3B9EE3]">Cuenta tu Experiencia</Link>
           <Link to="/patologias" className="text-gray-600 hover:text-[#3B9EE3]">Buscar Patología</Link>
           <Link to="/agregar-patologia" className="text-gray-600 hover:text-[#3B9EE3]">Añadir Patología</Link>
@@ -63,7 +63,7 @@ export const Navbar = () => {
             </SheetTrigger>
             <SheetContent side="right" className="w-[300px]">
               <div className="flex flex-col space-y-4 mt-8">
-                <Link to="/" onClick={() => setOpen(false)} className="text-lg font-medium">Últimas Reseñas</Link>
+                <Link to="/ultimas-resenas" onClick={() => setOpen(false)} className="text-lg font-medium">Últimas Reseñas</Link>
                 <Link to="/cuenta-tu-experiencia" onClick={() => setOpen(false)} className="text-lg font-medium">Cuenta tu Experiencia</Link>
                 <Link to="/patologias" onClick={() => setOpen(false)} className="text-lg font-medium">Buscar Patología</Link>
                 <Link to="/agregar-patologia" onClick={() => setOpen(false)} className="text-lg font-medium">Añadir Patología</Link>
