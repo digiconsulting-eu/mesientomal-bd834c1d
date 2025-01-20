@@ -7,6 +7,7 @@ async function fetchPathologies() {
     .order("Patologia");
     
   if (error) throw error;
+  console.log("Total pathologies for sitemap:", data?.length);
   return data?.filter(p => p.Patologia != null) || [];
 }
 
@@ -54,8 +55,7 @@ export async function generateAllSitemaps() {
       const endIndex = startIndex + URLS_PER_FILE;
       const content = generateSitemapContent(pathologies, startIndex, endIndex);
       
-      // In a real environment, you would write these files to the filesystem
-      console.log(`Generated sitemap-patologias-${i + 1}.xml`);
+      console.log(`Generated sitemap-patologias-${i + 1}.xml with URLs from ${startIndex + 1} to ${Math.min(endIndex, pathologies.length)}`);
       console.log(content);
     }
 
@@ -63,6 +63,8 @@ export async function generateAllSitemaps() {
     const indexContent = generateIndexSitemap(totalFiles);
     console.log('Generated sitemap index file');
     console.log(indexContent);
+    console.log(`Total number of pathologies: ${pathologies.length}`);
+    console.log(`Total number of sitemap files needed: ${totalFiles}`);
 
   } catch (error) {
     console.error('Error generating sitemaps:', error);

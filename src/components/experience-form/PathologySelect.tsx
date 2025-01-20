@@ -27,6 +27,7 @@ export function PathologySelect({ form }: PathologySelectProps) {
         .order("Patologia");
       
       if (error) throw error;
+      console.log("Total number of pathologies:", data?.length); // Added this log
       return data?.filter(p => p.Patologia != null && p.Patologia.trim() !== '') || [];
     }
   });
