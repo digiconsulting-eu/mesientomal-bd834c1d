@@ -1,16 +1,95 @@
-import { EmailLoginForm } from "@/components/auth/EmailLoginForm";
-import { GoogleLoginButton } from "@/components/auth/GoogleLoginButton";
-import { LoginLinks } from "@/components/auth/LoginLinks";
-import { Helmet } from 'react-helmet-async';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from 'react-helmet-async';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/components/ui/use-toast";
+
+const formSchema = z.object({
+  email: z.string().email("Por favor, introduce un email válido"),
+  password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
+  username: z.string().min(3, "El nombre de usuario debe tener al menos 3 caracteres"),
+  birthYear: z.string()
+    .refine((val) => {
+      const year = parseInt(val);
+      const currentYear = new Date().getFullYear();
+      return year >= 1900 && year <= currentYear;
+    }, "Por favor, introduce un año válido"),
+  gender: z.string(),
+  termsAccepted: z.boolean().refine((val) => val === true, {
+    message: "Debes aceptar los términos y condiciones",
+  }),
+});
 
 const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { toast } = useToast();
 
-  const handleSuccess = () => {
-    navigate("/"); // Redirect to home page on successful registration
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      username: "",
+      birthYear: "",
+      gender: "",
+      termsAccepted: false,
+    },
+  });
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    setIsLoading(true);
+    try {
+      const { error: signUpError } = await supabase.auth.signUp({
+        email: values.email,
+        password: values.password,
+      });
+
+      if (signUpError) throw signUpError;
+
+      // Create user profile
+      const { error: profileError } = await supabase
+        .from('users')
+        .insert([
+          {
+            username: values.username,
+            birth_year: parseInt(values.birthYear),
+            gender: values.gender,
+          },
+        ]);
+
+      if (profileError) throw profileError;
+
+      toast({
+        title: "Registro exitoso",
+        description: "Por favor, verifica tu email para completar el registro.",
+      });
+
+      navigate("/iniciar-sesion");
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Error en el registro",
+        description: error.message,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -20,17 +99,119 @@ const Register = () => {
         <meta name="description" content="Únete a nuestra comunidad de pacientes. Regístrate para compartir tus experiencias y encontrar apoyo en personas con condiciones similares." />
       </Helmet>
       
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold text-center mb-8">Registro</h1>
-        <EmailLoginForm 
-          onSuccess={handleSuccess}
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
-        />
-        <div className="mt-4">
-          <GoogleLoginButton />
+      <div className="container mx-auto px-4 py-8 max-w-md">
+        <div className="bg-white rounded-lg shadow-md p-8">
+          <h1 className="text-2xl font-bold text-center mb-8">Registro</h1>
+          
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input placeholder="tu@email.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Contraseña</FormLabel>
+                    <FormControl>
+                      <Input type="password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nombre de usuario</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="birthYear"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Año de nacimiento</FormLabel>
+                    <FormControl>
+                      <Input type="number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="gender"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Género</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecciona tu género" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="male">Masculino</SelectItem>
+                        <SelectItem value="female">Femenino</SelectItem>
+                        <SelectItem value="other">Otro</SelectItem>
+                        <SelectItem value="prefer_not_to_say">Prefiero no decirlo</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="termsAccepted"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <div className="space-y-1 leading-none">
+                      <FormLabel>
+                        Acepto los términos y condiciones
+                      </FormLabel>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading ? "Registrando..." : "Registrarse"}
+              </Button>
+            </form>
+          </Form>
         </div>
-        <LoginLinks />
       </div>
     </>
   );
