@@ -3,6 +3,7 @@ import Index from "./pages/Index";
 import ReviewDetail from "./pages/ReviewDetail";
 import ShareExperience from "./pages/ShareExperience";
 import PathologySearch from "./pages/PathologySearch";
+import LatestReviews from "./pages/LatestReviews";
 import Admin from "./pages/Admin";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -23,6 +24,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/patologias" element={<PathologySearch />} />
+                <Route path="/ultimas-resenas" element={<LatestReviews />} />
                 <Route path="/:pathologyName/esperienza/:reviewTitle" element={<ReviewDetail />} />
                 <Route path="/cuenta-tu-experiencia" element={<ShareExperience />} />
                 <Route path="/admin" element={<Admin />} />
