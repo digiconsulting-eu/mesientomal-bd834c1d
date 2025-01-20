@@ -3,6 +3,7 @@ import Index from "./pages/Index";
 import ReviewDetail from "./pages/ReviewDetail";
 import ShareExperience from "./pages/ShareExperience";
 import PathologySearch from "./pages/PathologySearch";
+import Admin from "./pages/Admin";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -22,6 +23,10 @@ function App() {
                 <Route path="/patologias" element={<PathologySearch />} />
                 <Route path="/:pathologyName/esperienza/:reviewTitle" element={<ReviewDetail />} />
                 <Route path="/cuenta-tu-experiencia" element={<ShareExperience />} />
+                <Route path="/admin" element={<Admin />} />
+                <Route path="/admin/recensioni" element={<div>Gestione Recensioni</div>} />
+                <Route path="/admin/utenti" element={<div>Gestione Utenti</div>} />
+                <Route path="/admin/importazione" element={<div>Importazione Dati</div>} />
               </Routes>
             </main>
           </div>
