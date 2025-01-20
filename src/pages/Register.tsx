@@ -62,21 +62,15 @@ const Register = () => {
       const { error: signUpError } = await supabase.auth.signUp({
         email: values.email,
         password: values.password,
+        options: {
+          data: {
+            birth_year: parseInt(values.birthYear),
+            gender: values.gender,
+          }
+        }
       });
 
       if (signUpError) throw signUpError;
-
-      // Create user profile
-      const { error: profileError } = await supabase
-        .from('users')
-        .insert([
-          {
-            birth_year: parseInt(values.birthYear),
-            gender: values.gender,
-          },
-        ]);
-
-      if (profileError) throw profileError;
 
       toast({
         title: "Registro exitoso",
