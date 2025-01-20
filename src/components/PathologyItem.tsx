@@ -6,7 +6,7 @@ type PathologyItemProps = {
 };
 
 export function PathologyItem({ name }: PathologyItemProps) {
-  const formattedUrl = name.replace(/\s+/g, '-');
+  const formattedUrl = name.replace(/\s+/g, '-').toUpperCase();
   
   return (
     <Link to={`/patologia/${encodeURIComponent(formattedUrl)}`}>
