@@ -17,11 +17,13 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
+import { GoogleLoginButton } from "@/components/auth/GoogleLoginButton";
 
 const formSchema = z.object({
   email: z.string().email("Por favor, introduce un email válido"),
   password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
+  confirmPassword: z.string(),
   birthYear: z.string()
     .refine((val) => {
       const year = parseInt(val);
@@ -32,6 +34,9 @@ const formSchema = z.object({
   termsAccepted: z.boolean().refine((val) => val === true, {
     message: "Debes aceptar los términos y condiciones",
   }),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Las contraseñas no coinciden",
+  path: ["confirmPassword"],
 });
 
 const Register = () => {
@@ -44,6 +49,7 @@ const Register = () => {
     defaultValues: {
       email: "",
       password: "",
+      confirmPassword: "",
       birthYear: "",
       gender: "",
       termsAccepted: false,
@@ -132,6 +138,20 @@ const Register = () => {
 
               <FormField
                 control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Confirmar Contraseña</FormLabel>
+                    <FormControl>
+                      <Input type="password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
                 name="birthYear"
                 render={({ field }) => (
                   <FormItem>
@@ -192,6 +212,19 @@ const Register = () => {
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? "Registrando..." : "Registrarse"}
               </Button>
+
+              <div className="relative my-6">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="bg-white px-2 text-muted-foreground">
+                    O continúa con
+                  </span>
+                </div>
+              </div>
+
+              <GoogleLoginButton />
             </form>
           </Form>
         </div>
