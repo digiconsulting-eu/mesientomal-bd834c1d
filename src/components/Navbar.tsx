@@ -42,11 +42,11 @@ export const Navbar = () => {
         
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-6">
-          <Link to="/" className="text-gray-600 hover:text-[#3B9EE3]">Ultime Recensioni</Link>
-          <Link to="/cuenta-tu-experiencia" className="text-gray-600 hover:text-[#3B9EE3]">Racconta la tua esperienza</Link>
-          <Link to="/patologias" className="text-gray-600 hover:text-[#3B9EE3]">Cerca Patologia</Link>
-          <Link to="/agregar-patologia" className="text-gray-600 hover:text-[#3B9EE3]">Inserisci Patologia</Link>
-          <Link to="/sintomas" className="text-gray-600 hover:text-[#3B9EE3]">Cerca Sintomi</Link>
+          <Link to="/" className="text-gray-600 hover:text-[#3B9EE3]">Últimas Reseñas</Link>
+          <Link to="/cuenta-tu-experiencia" className="text-gray-600 hover:text-[#3B9EE3]">Cuenta tu Experiencia</Link>
+          <Link to="/patologias" className="text-gray-600 hover:text-[#3B9EE3]">Buscar Patología</Link>
+          <Link to="/agregar-patologia" className="text-gray-600 hover:text-[#3B9EE3]">Añadir Patología</Link>
+          <Link to="/sintomas" className="text-gray-600 hover:text-[#3B9EE3]">Buscar Síntomas</Link>
           {isAdmin && (
             <Link to="/admin" className="text-gray-600 hover:text-[#3B9EE3]">Admin</Link>
           )}
@@ -58,16 +58,16 @@ export const Navbar = () => {
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
                 <Menu className="h-6 w-6" />
-                <span className="sr-only">Apri menù</span>
+                <span className="sr-only">Abrir menú</span>
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[300px]">
               <div className="flex flex-col space-y-4 mt-8">
-                <Link to="/" onClick={() => setOpen(false)} className="text-lg font-medium">Ultime Recensioni</Link>
-                <Link to="/cuenta-tu-experiencia" onClick={() => setOpen(false)} className="text-lg font-medium">Racconta la tua esperienza</Link>
-                <Link to="/patologias" onClick={() => setOpen(false)} className="text-lg font-medium">Cerca Patologia</Link>
-                <Link to="/agregar-patologia" onClick={() => setOpen(false)} className="text-lg font-medium">Inserisci Patologia</Link>
-                <Link to="/sintomas" onClick={() => setOpen(false)} className="text-lg font-medium">Cerca Sintomi</Link>
+                <Link to="/" onClick={() => setOpen(false)} className="text-lg font-medium">Últimas Reseñas</Link>
+                <Link to="/cuenta-tu-experiencia" onClick={() => setOpen(false)} className="text-lg font-medium">Cuenta tu Experiencia</Link>
+                <Link to="/patologias" onClick={() => setOpen(false)} className="text-lg font-medium">Buscar Patología</Link>
+                <Link to="/agregar-patologia" onClick={() => setOpen(false)} className="text-lg font-medium">Añadir Patología</Link>
+                <Link to="/sintomas" onClick={() => setOpen(false)} className="text-lg font-medium">Buscar Síntomas</Link>
                 {isAdmin && (
                   <Link to="/admin" onClick={() => setOpen(false)} className="text-lg font-medium">Admin</Link>
                 )}
