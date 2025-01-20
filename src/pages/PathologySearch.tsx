@@ -8,7 +8,7 @@ import { PathologyItem } from "@/components/PathologyItem";
 
 const PathologySearch = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedLetter, setSelectedLetter] = useState("TUTTE");
+  const [selectedLetter, setSelectedLetter] = useState("TODAS");
 
   const { data: pathologies } = useQuery({
     queryKey: ["pathologies"],
@@ -32,23 +32,23 @@ const PathologySearch = () => {
     }
     
     // If no search term, filter by selected letter
-    return selectedLetter === "TUTTE" || p.Patologia.startsWith(selectedLetter);
+    return selectedLetter === "TODAS" || p.Patologia.startsWith(selectedLetter);
   });
 
   return (
     <>
       <Helmet>
-        <title>Cerca Patologia - MeSientoMal.info</title>
-        <meta name="description" content="Cerca tra le patologie e scopri le esperienze di altri pazienti." />
+        <title>Buscar Patología - MeSientoMal.info</title>
+        <meta name="description" content="Busca entre las patologías y descubre las experiencias de otros pacientes." />
       </Helmet>
       
       <div className="container mx-auto px-4 py-8">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-8">Cerca Patologia</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-8">Buscar Patología</h1>
           
           <div className="max-w-3xl mx-auto">
             <Input 
-              placeholder="Cerca una patologia..." 
+              placeholder="Buscar una patología..." 
               className="h-12 text-lg"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
