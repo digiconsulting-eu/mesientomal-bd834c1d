@@ -8,14 +8,13 @@ import { execSync } from 'child_process';
 const generateSitemapsPlugin = () => ({
   name: 'generate-sitemaps',
   buildStart: async () => {
-    if (process.env.NODE_ENV === 'production') {
-      console.log('Generazione sitemap prima del build...');
-      try {
-        execSync('node scripts/generateSitemaps.js', { stdio: 'inherit' });
-      } catch (error) {
-        console.error('Errore durante la generazione dei sitemap:', error);
-        throw error;
-      }
+    console.log('Inizio della generazione dei sitemap...');
+    try {
+      execSync('node scripts/generateSitemaps.js', { stdio: 'inherit' });
+      console.log('Generazione dei sitemap completata con successo!');
+    } catch (error) {
+      console.error('Errore durante la generazione dei sitemap:', error);
+      throw error;
     }
   },
 });
@@ -37,5 +36,7 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     copyPublicDir: true,
+    outDir: 'dist',
+    assetsDir: 'assets',
   }
 }));
