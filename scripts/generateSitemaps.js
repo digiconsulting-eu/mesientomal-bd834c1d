@@ -16,7 +16,7 @@ const OUTPUT_DIR = './public';
 
 async function generateSitemaps() {
   try {
-    console.log('Inizio della generazione dei sitemap...');
+    console.log('Starting sitemap generation...');
 
     // Fetch data from Supabase with error handling
     const { data: pathologies, error: pathologiesError } = await supabase
@@ -117,7 +117,6 @@ ${pathologyChunks.map((_, i) => `  <sitemap>
     await writeFile(join(OUTPUT_DIR, 'sitemap.xml'), sitemapIndex);
     console.log('Generated sitemap.xml');
 
-    // Print summary
     console.log('\nSitemap Generation Summary:');
     console.log(`Total pathologies: ${pathologies.length}`);
     console.log(`Total reviews: ${reviews.length}`);
