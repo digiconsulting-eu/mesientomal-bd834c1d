@@ -4,11 +4,10 @@ import path from 'path';
 import { componentTagger } from "lovable-tagger";
 import { execSync } from 'child_process';
 
-// Plugin personalizzato per generare i sitemap durante il build
 const generateSitemapsPlugin = () => ({
   name: 'generate-sitemaps',
   buildStart: async () => {
-    console.log('Inizio della generazione dei sitemap...');
+    console.log('Starting sitemap generation...');
     try {
       execSync('node scripts/generateSitemaps.js', { 
         stdio: 'inherit',
@@ -18,9 +17,9 @@ const generateSitemapsPlugin = () => ({
           SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlndWx3endpdHV2b3p3bmVndWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYzMzEwMzQsImV4cCI6MjA1MTkwNzAzNH0.dgmg0NtpfbcZm4SoS2rbEiWKC4PpgqkNghTdsqZCavA'
         }
       });
-      console.log('Generazione dei sitemap completata con successo!');
+      console.log('Sitemap generation completed successfully!');
     } catch (error) {
-      console.error('Errore durante la generazione dei sitemap:', error);
+      console.error('Error during sitemap generation:', error);
       throw error;
     }
   },
