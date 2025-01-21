@@ -10,7 +10,7 @@ const generateSitemapsPlugin = () => ({
     console.log('Generazione sitemap prima del build...');
     try {
       // Usa node invece di bun per compatibilità con Netlify
-      execSync('node scripts/generateSitemaps.ts', { stdio: 'inherit' });
+      execSync('node scripts/generateSitemaps.js', { stdio: 'inherit' });
     } catch (error) {
       console.error('Errore durante la generazione dei sitemap:', error);
       throw error;
