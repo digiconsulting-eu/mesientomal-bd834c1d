@@ -3,7 +3,6 @@ import { generateAllSitemaps } from "../src/utils/generateSitemaps.js";
 console.log("Iniziando la generazione dei sitemap...");
 console.log("Directory corrente:", process.cwd());
 
-// Esegui il generatore di sitemap
 generateAllSitemaps()
   .then(() => {
     console.log("Generazione dei sitemap completata con successo!");
@@ -13,7 +12,6 @@ generateAllSitemaps()
     console.log("- sitemap-patologias-[1-5].xml");
     console.log("- sitemap-reviews.xml");
     
-    // Lista i file generati per verifica
     const fs = require('fs');
     const path = require('path');
     const publicDir = path.join(process.cwd(), 'public');
