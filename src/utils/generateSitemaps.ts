@@ -15,7 +15,12 @@ function generateSitemapContent(pathologies: { Patologia: string | null }[], sta
   const urls = pathologies.slice(startIndex, endIndex)
     .map(p => {
       if (!p.Patologia) return '';
-      const formattedUrl = p.Patologia.toLowerCase().replace(/\s+/g, '-');
+      const formattedUrl = p.Patologia.toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/[^a-z0-9-]/g, '');
+      
       return `
   <url>
     <loc>https://mesientomal.info/patologia/${formattedUrl}</loc>
