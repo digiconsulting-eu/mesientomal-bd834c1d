@@ -1,22 +1,27 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react-swc";
-import path from "path";
-import { componentTagger } from "lovable-tagger";
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react-swc';
+import path from 'path';
+import { execSync } from 'child_process';
 
-// https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
-  server: {
-    host: "::",
-    port: 8080,
+// Plugin personalizzato per generare i sitemap durante il build
+const generateSitemapsPlugin = () => ({
+  name: 'generate-sitemaps',
+  buildStart: async () => {
+    console.log('Generazione sitemap prima del build...');
+    try {
+      execSync('bun run scripts/generateSitemaps.ts', { stdio: 'inherit' });
+    } catch (error) {
+      console.error('Errore durante la generazione dei sitemap:', error);
+      throw error;
+    }
   },
-  plugins: [
-    react(),
-    mode === 'development' &&
-    componentTagger(),
-  ].filter(Boolean),
+});
+
+export default defineConfig({
+  plugins: [react(), generateSitemapsPlugin()],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      '@': path.resolve(__dirname, './src'),
     },
   },
-}));
+});
