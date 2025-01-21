@@ -8,7 +8,10 @@ async function fetchPathologies() {
     .select("Patologia")
     .order('Patologia');
     
-  if (error) throw error;
+  if (error) {
+    console.error("Error fetching pathologies:", error);
+    throw error;
+  }
   console.log("Total pathologies for sitemap:", data?.length);
   return data?.filter(p => p.Patologia != null) || [];
 }
@@ -19,7 +22,10 @@ async function fetchReviews() {
     .select("id, title, patologia_id, PATOLOGIE(Patologia)")
     .order('created_at', { ascending: false });
     
-  if (error) throw error;
+  if (error) {
+    console.error("Error fetching reviews:", error);
+    throw error;
+  }
   console.log("Total reviews for sitemap:", data?.length);
   return data || [];
 }
