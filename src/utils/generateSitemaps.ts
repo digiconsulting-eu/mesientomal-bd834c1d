@@ -67,7 +67,7 @@ function generateIndexSitemap(totalFiles: number) {
 export async function generateAllSitemaps() {
   try {
     const pathologies = await fetchPathologies();
-    const URLS_PER_FILE = 140; // We'll split the 695 pathologies into files of ~140 URLs each
+    const URLS_PER_FILE = 140; // We'll split the pathologies into files of ~140 URLs each
     const totalFiles = Math.ceil(pathologies.length / URLS_PER_FILE);
 
     // Generate individual sitemap files
@@ -76,6 +76,7 @@ export async function generateAllSitemaps() {
       const endIndex = startIndex + URLS_PER_FILE;
       const content = generateSitemapContent(pathologies, startIndex, endIndex);
       
+      // Write to sitemap-patologias-{i+1}.xml
       console.log(`Generated sitemap-patologias-${i + 1}.xml with URLs from ${startIndex + 1} to ${Math.min(endIndex, pathologies.length)}`);
       console.log(content);
     }
