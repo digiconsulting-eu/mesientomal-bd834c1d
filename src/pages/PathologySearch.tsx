@@ -15,13 +15,13 @@ const PathologySearch = () => {
   const { data: pathologies, isLoading } = useQuery({
     queryKey: ["pathologies"],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error, count } = await supabase
         .from("PATOLOGIE")
-        .select("Patologia")
-        .order("Patologia");
+        .select("Patologia", { count: 'exact' });
       
       if (error) throw error;
-      console.log("Total number of pathologies:", data?.length);
+      console.log("Total number of pathologies:", count);
+      console.log("Pathologies data:", data);
       return data;
     }
   });
