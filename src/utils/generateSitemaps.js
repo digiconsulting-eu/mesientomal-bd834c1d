@@ -1,179 +1,99 @@
-import { supabase } from "../integrations/supabase/client.js";
-import fs from 'fs';
-import path from 'path';
+import { writeFile } from 'fs/promises';
+import { join } from 'path';
+import { supabase } from '../integrations/supabase/client.js';
 
-async function fetchPathologies() {
-  const { data, error } = await supabase
-    .from("PATOLOGIE")
-    .select("Patologia")
-    .order('Patologia');
-    
-  if (error) {
-    console.error("Errore nel recupero delle patologie:", error);
-    throw error;
-  }
-  console.log("Totale patologie per il sitemap:", data?.length);
-  return data?.filter(p => p.Patologia != null) || [];
+const SITE_URL = 'https://mesientomal.info';
+const SITEMAP_PATH = 'public';
+
+async function writeXMLFile(filename, content) {
+  const filePath = join(process.cwd(), SITEMAP_PATH, filename);
+  await writeFile(filePath, content, 'utf8');
+  console.log(`${filename} generato con successo`);
 }
 
-async function fetchReviews() {
-  const { data, error } = await supabase
-    .from("reviews")
-    .select("id, title, patologia_id, PATOLOGIE(Patologia)")
-    .order('created_at', { ascending: false });
-    
-  if (error) {
-    console.error("Errore nel recupero delle recensioni:", error);
-    throw error;
-  }
-  console.log("Totale recensioni per il sitemap:", data?.length);
-  return data || [];
-}
-
-function formatUrl(str) {
-  return str.toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/[^a-z0-9-]/g, '');
-}
-
-function generateStaticSitemap() {
-  console.log("Generazione del sitemap statico...");
-  const content = `<?xml version="1.0" encoding="UTF-8"?>
+function generateSitemapXML(urls) {
+  return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://mesientomal.info</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://mesientomal.info/patologias</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mesientomal.info/cuenta-tu-experiencia</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
+  ${urls.join('\n  ')}
 </urlset>`;
-
-  fs.writeFileSync(path.join(process.cwd(), 'public', 'sitemap-static.xml'), content);
-  console.log('Sitemap statico generato con successo');
 }
 
-function generatePathologySitemap(pathologies, fileIndex) {
-  console.log(`Generazione del sitemap delle patologie ${fileIndex}...`);
-  const urls = pathologies.map(p => {
-    if (!p.Patologia) return '';
-    const formattedUrl = formatUrl(p.Patologia);
-    
-    return `  <url>
-    <loc>https://mesientomal.info/patologia/${formattedUrl}</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>`;
-  }).join('\n');
-
-  const content = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls}
-</urlset>`;
-
-  fs.writeFileSync(
-    path.join(process.cwd(), 'public', `sitemap-patologias-${fileIndex}.xml`),
-    content
-  );
-  console.log(`Sitemap delle patologie ${fileIndex} generato con successo`);
-}
-
-function generateReviewsSitemap(reviews) {
-  console.log("Generazione del sitemap delle recensioni...");
-  const urls = reviews.map(review => {
-    const pathologyName = review.PATOLOGIE?.Patologia;
-    if (!pathologyName) return '';
-    
-    const formattedPathology = formatUrl(pathologyName);
-    const formattedTitle = formatUrl(review.title);
-    
-    return `  <url>
-    <loc>https://mesientomal.info/${formattedPathology}/esperienza/${formattedTitle}</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
-    <changefreq>never</changefreq>
-    <priority>0.6</priority>
-  </url>`;
-  }).join('\n');
-
-  const content = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls}
-</urlset>`;
-
-  fs.writeFileSync(path.join(process.cwd(), 'public', 'sitemap-reviews.xml'), content);
-  console.log('Sitemap delle recensioni generato con successo');
-}
-
-function generateIndexSitemap(totalPathologyFiles) {
-  console.log("Generazione del sitemap index...");
-  let sitemaps = `  <sitemap>
-    <loc>https://mesientomal.info/sitemap-static.xml</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
-  </sitemap>`;
-
-  for (let i = 1; i <= totalPathologyFiles; i++) {
-    sitemaps += `\n  <sitemap>
-    <loc>https://mesientomal.info/sitemap-patologias-${i}.xml</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
-  </sitemap>`;
-  }
-
-  sitemaps += `\n  <sitemap>
-    <loc>https://mesientomal.info/sitemap-reviews.xml</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
-  </sitemap>`;
-
-  const content = `<?xml version="1.0" encoding="UTF-8"?>
+function generateSitemapIndexXML(sitemaps) {
+  return `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${sitemaps}
+  ${sitemaps.join('\n  ')}
 </sitemapindex>`;
-
-  fs.writeFileSync(path.join(process.cwd(), 'public', 'sitemap.xml'), content);
-  console.log('Sitemap index generato con successo');
 }
 
 export async function generateAllSitemaps() {
-  try {
-    console.log('Inizio della generazione dei sitemap...');
-    
-    const pathologies = await fetchPathologies();
-    const reviews = await fetchReviews();
+  console.log("Inizio della generazione dei sitemap...");
 
-    generateStaticSitemap();
+  // Fetch data from Supabase
+  const { data: pathologies, error: pathologiesError, count: pathologiesCount } = await supabase
+    .from('PATOLOGIE')
+    .select('Patologia', { count: 'exact' });
 
-    const URLS_PER_FILE = 140;
-    const totalPathologyFiles = Math.ceil(pathologies.length / URLS_PER_FILE);
+  if (pathologiesError) throw pathologiesError;
+  console.log("Totale patologie per il sitemap:", pathologiesCount);
 
-    for (let i = 0; i < totalPathologyFiles; i++) {
-      const startIndex = i * URLS_PER_FILE;
-      const endIndex = startIndex + URLS_PER_FILE;
-      const pathologiesForFile = pathologies.slice(startIndex, endIndex);
-      generatePathologySitemap(pathologiesForFile, i + 1);
-    }
+  const { data: reviews, error: reviewsError, count: reviewsCount } = await supabase
+    .from('reviews')
+    .select('title, patologia_id, PATOLOGIE(Patologia)', { count: 'exact' });
 
-    generateReviewsSitemap(reviews);
-    generateIndexSitemap(totalPathologyFiles);
+  if (reviewsError) throw reviewsError;
+  console.log("Totale recensioni per il sitemap:", reviewsCount);
 
-    console.log(`\nRiepilogo della generazione dei sitemap:`);
-    console.log(`Totale patologie: ${pathologies.length}`);
-    console.log(`Totale recensioni: ${reviews.length}`);
-    console.log(`Totale file sitemap: ${totalPathologyFiles + 2}`);
-  } catch (error) {
-    console.error('Errore durante la generazione dei sitemap:', error);
-    throw error;
+  // Generate static sitemap
+  console.log("Generazione del sitemap statico...");
+  const staticUrls = [
+    `<url><loc>${SITE_URL}</loc><changefreq>daily</changefreq><priority>1.0</priority></url>`,
+    `<url><loc>${SITE_URL}/patologias</loc><changefreq>daily</changefreq><priority>0.8</priority></url>`,
+    `<url><loc>${SITE_URL}/ultimas-resenas</loc><changefreq>daily</changefreq><priority>0.8</priority></url>`,
+    `<url><loc>${SITE_URL}/cuenta-tu-experiencia</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>`,
+  ];
+  await writeXMLFile('sitemap-static.xml', generateSitemapXML(staticUrls));
+
+  // Generate pathology sitemaps
+  const ITEMS_PER_SITEMAP = 150;
+  const totalPathologySitemaps = Math.ceil(pathologiesCount / ITEMS_PER_SITEMAP);
+
+  for (let i = 0; i < totalPathologySitemaps; i++) {
+    console.log(`Generazione del sitemap delle patologie ${i + 1}...`);
+    const start = i * ITEMS_PER_SITEMAP;
+    const end = start + ITEMS_PER_SITEMAP;
+    const currentPathologies = pathologies.slice(start, end);
+
+    const pathologyUrls = currentPathologies.map(p => 
+      `<url><loc>${SITE_URL}/patologia/${encodeURIComponent(p.Patologia)}</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>`
+    );
+
+    await writeXMLFile(`sitemap-patologias-${i + 1}.xml`, generateSitemapXML(pathologyUrls));
   }
+
+  // Generate reviews sitemap
+  console.log("Generazione del sitemap delle recensioni...");
+  const reviewUrls = reviews.map(review => {
+    const pathologyName = review.PATOLOGIE?.Patologia;
+    if (!pathologyName) return null;
+    return `<url><loc>${SITE_URL}/${encodeURIComponent(pathologyName)}/esperienza/${encodeURIComponent(review.title)}</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>`;
+  }).filter(Boolean);
+
+  await writeXMLFile('sitemap-reviews.xml', generateSitemapXML(reviewUrls));
+
+  // Generate sitemap index
+  console.log("Generazione del sitemap index...");
+  const sitemaps = [
+    `<sitemap><loc>${SITE_URL}/sitemap-static.xml</loc></sitemap>`,
+    ...Array.from({ length: totalPathologySitemaps }, (_, i) => 
+      `<sitemap><loc>${SITE_URL}/sitemap-patologias-${i + 1}.xml</loc></sitemap>`
+    ),
+    `<sitemap><loc>${SITE_URL}/sitemap-reviews.xml</loc></sitemap>`,
+  ];
+
+  await writeXMLFile('sitemap.xml', generateSitemapIndexXML(sitemaps));
+
+  console.log("\nRiepilogo della generazione dei sitemap:");
+  console.log(`Totale patologie: ${pathologiesCount}`);
+  console.log(`Totale recensioni: ${reviewsCount}`);
+  console.log(`Totale file sitemap: ${sitemaps.length}`);
 }
