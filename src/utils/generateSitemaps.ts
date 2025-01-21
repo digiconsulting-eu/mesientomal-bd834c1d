@@ -1,10 +1,12 @@
 import { supabase } from "@/integrations/supabase/client";
+import fs from 'fs';
+import path from 'path';
 
 async function fetchPathologies() {
   const { data, error } = await supabase
     .from("PATOLOGIE")
     .select("Patologia")
-    .order("Patologia");
+    .order('Patologia');
     
   if (error) throw error;
   console.log("Total pathologies for sitemap:", data?.length);
@@ -14,19 +16,27 @@ async function fetchPathologies() {
 async function fetchReviews() {
   const { data, error } = await supabase
     .from("reviews")
-    .select("id, title")
-    .order("created_at", { ascending: false });
+    .select("id, title, patologia_id")
+    .order('created_at', { ascending: false });
     
   if (error) throw error;
   console.log("Total reviews for sitemap:", data?.length);
   return data || [];
 }
 
+function formatUrl(str: string) {
+  return str.toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '');
+}
+
 function generateStaticSitemap() {
-  return `<?xml version="1.0" encoding="UTF-8"?>
+  const content = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://mesientomal.info/</loc>
+    <loc>https://mesientomal.info</loc>
     <lastmod>2024-03-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
@@ -34,95 +44,102 @@ function generateStaticSitemap() {
   <url>
     <loc>https://mesientomal.info/patologias</loc>
     <lastmod>2024-03-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/cuenta-tu-experiencia</loc>
     <lastmod>2024-03-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://mesientomal.info/login</loc>
+    <loc>https://mesientomal.info/iniciar-sesion</loc>
     <lastmod>2024-03-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://mesientomal.info/register</loc>
+    <loc>https://mesientomal.info/registro</loc>
     <lastmod>2024-03-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
 </urlset>`;
+
+  fs.writeFileSync(path.join(process.cwd(), 'public', 'sitemap-static.xml'), content);
+  console.log('Generated static sitemap');
 }
 
-function generatePathologySitemap(pathologies: { Patologia: string | null }[], startIndex: number, endIndex: number) {
-  const urls = pathologies.slice(startIndex, endIndex)
-    .map(p => {
-      if (!p.Patologia) return '';
-      const formattedUrl = p.Patologia.toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/[^a-z0-9-]/g, '');
-      
-      return `
-  <url>
+function generatePathologySitemap(pathologies: { Patologia: string | null }[], fileIndex: number) {
+  const urls = pathologies.map(p => {
+    if (!p.Patologia) return '';
+    const formattedUrl = formatUrl(p.Patologia);
+    
+    return `  <url>
     <loc>https://mesientomal.info/patologia/${formattedUrl}</loc>
     <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>`;
-    })
-    .join('');
+  }).join('\n');
 
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls}
+  const content = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls}
 </urlset>`;
+
+  fs.writeFileSync(
+    path.join(process.cwd(), 'public', `sitemap-patologias-${fileIndex}.xml`),
+    content
+  );
+  console.log(`Generated pathology sitemap ${fileIndex}`);
 }
 
 function generateReviewsSitemap(reviews: { id: number, title: string }[]) {
-  const urls = reviews.map(review => `
-  <url>
+  const urls = reviews.map(review => `  <url>
     <loc>https://mesientomal.info/experiencia/${review.id}</loc>
     <lastmod>2024-03-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>`).join('');
+    <changefreq>never</changefreq>
+    <priority>0.6</priority>
+  </url>`).join('\n');
 
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls}
+  const content = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls}
 </urlset>`;
+
+  fs.writeFileSync(path.join(process.cwd(), 'public', 'sitemap-reviews.xml'), content);
+  console.log('Generated reviews sitemap');
 }
 
 function generateIndexSitemap(totalPathologyFiles: number) {
-  let sitemaps = `
-  <sitemap>
+  let sitemaps = `  <sitemap>
     <loc>https://mesientomal.info/sitemap-static.xml</loc>
     <lastmod>2024-03-21</lastmod>
   </sitemap>`;
 
   // Add pathology sitemaps
   for (let i = 1; i <= totalPathologyFiles; i++) {
-    sitemaps += `
-  <sitemap>
+    sitemaps += `\n  <sitemap>
     <loc>https://mesientomal.info/sitemap-patologias-${i}.xml</loc>
     <lastmod>2024-03-21</lastmod>
   </sitemap>`;
   }
 
   // Add reviews sitemap
-  sitemaps += `
-  <sitemap>
+  sitemaps += `\n  <sitemap>
     <loc>https://mesientomal.info/sitemap-reviews.xml</loc>
     <lastmod>2024-03-21</lastmod>
   </sitemap>`;
 
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${sitemaps}
+  const content = `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${sitemaps}
 </sitemapindex>`;
+
+  fs.writeFileSync(path.join(process.cwd(), 'public', 'sitemap.xml'), content);
+  console.log('Generated sitemap index');
 }
 
 export async function generateAllSitemaps() {
@@ -132,40 +149,37 @@ export async function generateAllSitemaps() {
     const reviews = await fetchReviews();
 
     // Generate static sitemap
-    const staticSitemap = generateStaticSitemap();
-    console.log('Generated static sitemap');
-    console.log(staticSitemap);
+    generateStaticSitemap();
 
-    // Generate pathology sitemaps
+    // Generate pathology sitemaps (140 URLs per file)
     const URLS_PER_FILE = 140;
     const totalPathologyFiles = Math.ceil(pathologies.length / URLS_PER_FILE);
 
-    // Generate individual pathology sitemap files
     for (let i = 0; i < totalPathologyFiles; i++) {
       const startIndex = i * URLS_PER_FILE;
       const endIndex = startIndex + URLS_PER_FILE;
-      const content = generatePathologySitemap(pathologies, startIndex, endIndex);
-      
-      console.log(`Generated sitemap-patologias-${i + 1}.xml with URLs from ${startIndex + 1} to ${Math.min(endIndex, pathologies.length)}`);
-      console.log(content);
+      const pathologiesForFile = pathologies.slice(startIndex, endIndex);
+      generatePathologySitemap(pathologiesForFile, i + 1);
     }
 
     // Generate reviews sitemap
-    const reviewsSitemap = generateReviewsSitemap(reviews);
-    console.log('Generated reviews sitemap');
-    console.log(reviewsSitemap);
+    generateReviewsSitemap(reviews);
 
     // Generate index sitemap
-    const indexSitemap = generateIndexSitemap(totalPathologyFiles);
-    console.log('Generated sitemap index file');
-    console.log(indexSitemap);
+    generateIndexSitemap(totalPathologyFiles);
 
     // Log summary
-    console.log(`Total number of pathologies: ${pathologies.length}`);
-    console.log(`Total number of reviews: ${reviews.length}`);
-    console.log(`Total number of sitemap files: ${totalPathologyFiles + 2}`); // +2 for static and reviews sitemaps
+    console.log(`\nSitemap Generation Summary:`);
+    console.log(`Total pathologies: ${pathologies.length}`);
+    console.log(`Total reviews: ${reviews.length}`);
+    console.log(`Total sitemap files: ${totalPathologyFiles + 2}`); // +2 for static and reviews sitemaps
   } catch (error) {
     console.error('Error generating sitemaps:', error);
     throw error;
   }
+}
+
+// Run the generator if this file is executed directly
+if (require.main === module) {
+  generateAllSitemaps().catch(console.error);
 }
