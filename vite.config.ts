@@ -11,7 +11,7 @@ const generateSitemapsPlugin = () => ({
     if (process.env.NODE_ENV === 'production') {
       console.log('Generazione sitemap prima del build...');
       try {
-        execSync('node --loader ts-node/esm scripts/generateSitemaps.js', { stdio: 'inherit' });
+        execSync('node scripts/generateSitemaps.js', { stdio: 'inherit' });
       } catch (error) {
         console.error('Errore durante la generazione dei sitemap:', error);
         throw error;
