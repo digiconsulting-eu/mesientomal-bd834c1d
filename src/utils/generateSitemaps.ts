@@ -51,7 +51,7 @@ function generateIndexSitemap(totalFiles: number) {
 export async function generateAllSitemaps() {
   try {
     const pathologies = await fetchPathologies();
-    const URLS_PER_FILE = 150;
+    const URLS_PER_FILE = 150; // Adjusted to have ~140 URLs per file for 695 total
     const totalFiles = Math.ceil(pathologies.length / URLS_PER_FILE);
 
     // Generate individual sitemap files
