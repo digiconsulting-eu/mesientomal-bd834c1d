@@ -16,7 +16,7 @@ async function fetchPathologies() {
 async function fetchReviews() {
   const { data, error } = await supabase
     .from("reviews")
-    .select("id, title, patologia_id")
+    .select("id, title, patologia_id, PATOLOGIE(Patologia)")
     .order('created_at', { ascending: false });
     
   if (error) throw error;
@@ -37,33 +37,21 @@ function generateStaticSitemap() {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://mesientomal.info</loc>
-    <lastmod>2024-03-21</lastmod>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologias</loc>
-    <lastmod>2024-03-21</lastmod>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/cuenta-tu-experiencia</loc>
-    <lastmod>2024-03-21</lastmod>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://mesientomal.info/iniciar-sesion</loc>
-    <lastmod>2024-03-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://mesientomal.info/registro</loc>
-    <lastmod>2024-03-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
 </urlset>`;
 
@@ -78,7 +66,7 @@ function generatePathologySitemap(pathologies: { Patologia: string | null }[], f
     
     return `  <url>
     <loc>https://mesientomal.info/patologia/${formattedUrl}</loc>
-    <lastmod>2024-03-21</lastmod>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>`;
@@ -96,13 +84,21 @@ ${urls}
   console.log(`Generated pathology sitemap ${fileIndex}`);
 }
 
-function generateReviewsSitemap(reviews: { id: number, title: string }[]) {
-  const urls = reviews.map(review => `  <url>
-    <loc>https://mesientomal.info/experiencia/${review.id}</loc>
-    <lastmod>2024-03-21</lastmod>
+function generateReviewsSitemap(reviews: any[]) {
+  const urls = reviews.map(review => {
+    const pathologyName = review.PATOLOGIE?.Patologia;
+    if (!pathologyName) return '';
+    
+    const formattedPathology = formatUrl(pathologyName);
+    const formattedTitle = formatUrl(review.title);
+    
+    return `  <url>
+    <loc>https://mesientomal.info/${formattedPathology}/esperienza/${formattedTitle}</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>never</changefreq>
     <priority>0.6</priority>
-  </url>`).join('\n');
+  </url>`;
+  }).join('\n');
 
   const content = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -116,21 +112,21 @@ ${urls}
 function generateIndexSitemap(totalPathologyFiles: number) {
   let sitemaps = `  <sitemap>
     <loc>https://mesientomal.info/sitemap-static.xml</loc>
-    <lastmod>2024-03-21</lastmod>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
   </sitemap>`;
 
   // Add pathology sitemaps
   for (let i = 1; i <= totalPathologyFiles; i++) {
     sitemaps += `\n  <sitemap>
     <loc>https://mesientomal.info/sitemap-patologias-${i}.xml</loc>
-    <lastmod>2024-03-21</lastmod>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
   </sitemap>`;
   }
 
   // Add reviews sitemap
   sitemaps += `\n  <sitemap>
     <loc>https://mesientomal.info/sitemap-reviews.xml</loc>
-    <lastmod>2024-03-21</lastmod>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
   </sitemap>`;
 
   const content = `<?xml version="1.0" encoding="UTF-8"?>
@@ -144,6 +140,8 @@ ${sitemaps}
 
 export async function generateAllSitemaps() {
   try {
+    console.log('Starting sitemap generation...');
+    
     // Fetch all data
     const pathologies = await fetchPathologies();
     const reviews = await fetchReviews();
@@ -168,7 +166,6 @@ export async function generateAllSitemaps() {
     // Generate index sitemap
     generateIndexSitemap(totalPathologyFiles);
 
-    // Log summary
     console.log(`\nSitemap Generation Summary:`);
     console.log(`Total pathologies: ${pathologies.length}`);
     console.log(`Total reviews: ${reviews.length}`);
@@ -177,9 +174,4 @@ export async function generateAllSitemaps() {
     console.error('Error generating sitemaps:', error);
     throw error;
   }
-}
-
-// Run the generator if this file is executed directly
-if (require.main === module) {
-  generateAllSitemaps().catch(console.error);
 }
