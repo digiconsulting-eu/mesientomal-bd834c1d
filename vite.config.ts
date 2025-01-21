@@ -9,7 +9,8 @@ const generateSitemapsPlugin = () => ({
   buildStart: async () => {
     console.log('Generazione sitemap prima del build...');
     try {
-      execSync('bun run scripts/generateSitemaps.ts', { stdio: 'inherit' });
+      // Usa node invece di bun per compatibilità con Netlify
+      execSync('node scripts/generateSitemaps.ts', { stdio: 'inherit' });
     } catch (error) {
       console.error('Errore durante la generazione dei sitemap:', error);
       throw error;
@@ -18,10 +19,18 @@ const generateSitemapsPlugin = () => ({
 });
 
 export default defineConfig({
+  server: {
+    host: "::",
+    port: 8080,
+  },
   plugins: [react(), generateSitemapsPlugin()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
   },
+  build: {
+    // Assicurati che i file sitemap vengano copiati nella cartella di build
+    copyPublicDir: true,
+  }
 });
