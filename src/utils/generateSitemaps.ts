@@ -37,11 +37,27 @@ function generateSitemapContent(pathologies: { Patologia: string | null }[], sta
 }
 
 function generateIndexSitemap(totalFiles: number) {
-  const sitemaps = Array.from({ length: totalFiles }, (_, i) => `
+  let sitemaps = `
   <sitemap>
-    <loc>https://mesientomal.info/sitemap-patologias-${i + 1}.xml</loc>
+    <loc>https://mesientomal.info/sitemap-static.xml</loc>
     <lastmod>2024-03-21</lastmod>
-  </sitemap>`).join('');
+  </sitemap>`;
+
+  // Add pathology sitemaps
+  for (let i = 1; i <= totalFiles; i++) {
+    sitemaps += `
+  <sitemap>
+    <loc>https://mesientomal.info/sitemap-patologias-${i}.xml</loc>
+    <lastmod>2024-03-21</lastmod>
+  </sitemap>`;
+  }
+
+  // Add reviews sitemap
+  sitemaps += `
+  <sitemap>
+    <loc>https://mesientomal.info/sitemap-reviews.xml</loc>
+    <lastmod>2024-03-21</lastmod>
+  </sitemap>`;
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${sitemaps}
@@ -51,7 +67,7 @@ function generateIndexSitemap(totalFiles: number) {
 export async function generateAllSitemaps() {
   try {
     const pathologies = await fetchPathologies();
-    const URLS_PER_FILE = 150; // Adjusted to have ~140 URLs per file for 695 total
+    const URLS_PER_FILE = 140; // Adjusted to have ~140 URLs per file for 695 total pathologies
     const totalFiles = Math.ceil(pathologies.length / URLS_PER_FILE);
 
     // Generate individual sitemap files
