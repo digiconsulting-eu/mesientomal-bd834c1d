@@ -1,4 +1,4 @@
-import { generateAllSitemaps } from "../src/utils/generateSitemaps";
+import { generateAllSitemaps } from "../src/utils/generateSitemaps.js";
 
 console.log("Iniziando la generazione dei sitemap...");
 console.log("Directory corrente:", process.cwd());

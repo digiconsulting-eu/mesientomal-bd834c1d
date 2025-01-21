@@ -1,4 +1,4 @@
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "../integrations/supabase/client.js";
 import fs from 'fs';
 import path from 'path';
 
@@ -30,7 +30,7 @@ async function fetchReviews() {
   return data || [];
 }
 
-function formatUrl(str: string) {
+function formatUrl(str) {
   return str.toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
@@ -66,7 +66,7 @@ function generateStaticSitemap() {
   console.log('Sitemap statico generato con successo');
 }
 
-function generatePathologySitemap(pathologies: { Patologia: string | null }[], fileIndex: number) {
+function generatePathologySitemap(pathologies, fileIndex) {
   console.log(`Generazione del sitemap delle patologie ${fileIndex}...`);
   const urls = pathologies.map(p => {
     if (!p.Patologia) return '';
@@ -92,7 +92,7 @@ ${urls}
   console.log(`Sitemap delle patologie ${fileIndex} generato con successo`);
 }
 
-function generateReviewsSitemap(reviews: any[]) {
+function generateReviewsSitemap(reviews) {
   console.log("Generazione del sitemap delle recensioni...");
   const urls = reviews.map(review => {
     const pathologyName = review.PATOLOGIE?.Patologia;
@@ -118,7 +118,7 @@ ${urls}
   console.log('Sitemap delle recensioni generato con successo');
 }
 
-function generateIndexSitemap(totalPathologyFiles: number) {
+function generateIndexSitemap(totalPathologyFiles) {
   console.log("Generazione del sitemap index...");
   let sitemaps = `  <sitemap>
     <loc>https://mesientomal.info/sitemap-static.xml</loc>
