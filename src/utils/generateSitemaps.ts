@@ -9,10 +9,10 @@ async function fetchPathologies() {
     .order('Patologia');
     
   if (error) {
-    console.error("Error fetching pathologies:", error);
+    console.error("Errore nel recupero delle patologie:", error);
     throw error;
   }
-  console.log("Total pathologies for sitemap:", data?.length);
+  console.log("Totale patologie per il sitemap:", data?.length);
   return data?.filter(p => p.Patologia != null) || [];
 }
 
@@ -23,10 +23,10 @@ async function fetchReviews() {
     .order('created_at', { ascending: false });
     
   if (error) {
-    console.error("Error fetching reviews:", error);
+    console.error("Errore nel recupero delle recensioni:", error);
     throw error;
   }
-  console.log("Total reviews for sitemap:", data?.length);
+  console.log("Totale recensioni per il sitemap:", data?.length);
   return data || [];
 }
 
@@ -39,6 +39,7 @@ function formatUrl(str: string) {
 }
 
 function generateStaticSitemap() {
+  console.log("Generazione del sitemap statico...");
   const content = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
@@ -62,10 +63,11 @@ function generateStaticSitemap() {
 </urlset>`;
 
   fs.writeFileSync(path.join(process.cwd(), 'public', 'sitemap-static.xml'), content);
-  console.log('Generated static sitemap');
+  console.log('Sitemap statico generato con successo');
 }
 
 function generatePathologySitemap(pathologies: { Patologia: string | null }[], fileIndex: number) {
+  console.log(`Generazione del sitemap delle patologie ${fileIndex}...`);
   const urls = pathologies.map(p => {
     if (!p.Patologia) return '';
     const formattedUrl = formatUrl(p.Patologia);
@@ -87,10 +89,11 @@ ${urls}
     path.join(process.cwd(), 'public', `sitemap-patologias-${fileIndex}.xml`),
     content
   );
-  console.log(`Generated pathology sitemap ${fileIndex}`);
+  console.log(`Sitemap delle patologie ${fileIndex} generato con successo`);
 }
 
 function generateReviewsSitemap(reviews: any[]) {
+  console.log("Generazione del sitemap delle recensioni...");
   const urls = reviews.map(review => {
     const pathologyName = review.PATOLOGIE?.Patologia;
     if (!pathologyName) return '';
@@ -112,16 +115,17 @@ ${urls}
 </urlset>`;
 
   fs.writeFileSync(path.join(process.cwd(), 'public', 'sitemap-reviews.xml'), content);
-  console.log('Generated reviews sitemap');
+  console.log('Sitemap delle recensioni generato con successo');
 }
 
 function generateIndexSitemap(totalPathologyFiles: number) {
+  console.log("Generazione del sitemap index...");
   let sitemaps = `  <sitemap>
     <loc>https://mesientomal.info/sitemap-static.xml</loc>
     <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
   </sitemap>`;
 
-  // Add pathology sitemaps
+  // Aggiungi i sitemap delle patologie
   for (let i = 1; i <= totalPathologyFiles; i++) {
     sitemaps += `\n  <sitemap>
     <loc>https://mesientomal.info/sitemap-patologias-${i}.xml</loc>
@@ -129,7 +133,7 @@ function generateIndexSitemap(totalPathologyFiles: number) {
   </sitemap>`;
   }
 
-  // Add reviews sitemap
+  // Aggiungi il sitemap delle recensioni
   sitemaps += `\n  <sitemap>
     <loc>https://mesientomal.info/sitemap-reviews.xml</loc>
     <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
@@ -141,21 +145,21 @@ ${sitemaps}
 </sitemapindex>`;
 
   fs.writeFileSync(path.join(process.cwd(), 'public', 'sitemap.xml'), content);
-  console.log('Generated sitemap index');
+  console.log('Sitemap index generato con successo');
 }
 
 export async function generateAllSitemaps() {
   try {
-    console.log('Starting sitemap generation...');
+    console.log('Inizio della generazione dei sitemap...');
     
-    // Fetch all data
+    // Recupera tutti i dati
     const pathologies = await fetchPathologies();
     const reviews = await fetchReviews();
 
-    // Generate static sitemap
+    // Genera il sitemap statico
     generateStaticSitemap();
 
-    // Generate pathology sitemaps (140 URLs per file)
+    // Genera i sitemap delle patologie (140 URL per file)
     const URLS_PER_FILE = 140;
     const totalPathologyFiles = Math.ceil(pathologies.length / URLS_PER_FILE);
 
@@ -166,18 +170,18 @@ export async function generateAllSitemaps() {
       generatePathologySitemap(pathologiesForFile, i + 1);
     }
 
-    // Generate reviews sitemap
+    // Genera il sitemap delle recensioni
     generateReviewsSitemap(reviews);
 
-    // Generate index sitemap
+    // Genera il sitemap index
     generateIndexSitemap(totalPathologyFiles);
 
-    console.log(`\nSitemap Generation Summary:`);
-    console.log(`Total pathologies: ${pathologies.length}`);
-    console.log(`Total reviews: ${reviews.length}`);
-    console.log(`Total sitemap files: ${totalPathologyFiles + 2}`); // +2 for static and reviews sitemaps
+    console.log(`\nRiepilogo della generazione dei sitemap:`);
+    console.log(`Totale patologie: ${pathologies.length}`);
+    console.log(`Totale recensioni: ${reviews.length}`);
+    console.log(`Totale file sitemap: ${totalPathologyFiles + 2}`); // +2 per i sitemap statico e delle recensioni
   } catch (error) {
-    console.error('Error generating sitemaps:', error);
+    console.error('Errore durante la generazione dei sitemap:', error);
     throw error;
   }
 }
