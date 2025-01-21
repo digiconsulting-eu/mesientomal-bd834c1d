@@ -21,7 +21,8 @@ async function generateSitemaps() {
     // Fetch data from Supabase with error handling
     const { data: pathologies, error: pathologiesError } = await supabase
       .from('PATOLOGIE')
-      .select('Patologia');
+      .select('Patologia')
+      .order('Patologia');
 
     if (pathologiesError) {
       console.error('Error fetching pathologies:', pathologiesError);
@@ -37,7 +38,7 @@ async function generateSitemaps() {
       throw reviewsError;
     }
 
-    console.log(`Fetched ${pathologies.length} pathologies and ${reviews.length} reviews`);
+    console.log(`Fetched ${pathologies?.length || 0} pathologies and ${reviews?.length || 0} reviews`);
 
     // Generate static sitemap
     const staticSitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -62,8 +63,11 @@ async function generateSitemaps() {
     // Split pathologies into chunks of 100 for multiple sitemaps
     const CHUNK_SIZE = 100;
     const pathologyChunks = [];
-    for (let i = 0; i < pathologies.length; i += CHUNK_SIZE) {
-      pathologyChunks.push(pathologies.slice(i, i + CHUNK_SIZE));
+    
+    if (pathologies) {
+      for (let i = 0; i < pathologies.length; i += CHUNK_SIZE) {
+        pathologyChunks.push(pathologies.slice(i, i + CHUNK_SIZE));
+      }
     }
 
     // Generate pathology sitemaps
@@ -79,23 +83,26 @@ ${chunk.map(p => `  <url>
   </url>`).join('\n')}
 </urlset>`;
 
-      await writeFile(join(OUTPUT_DIR, `sitemap-patologias-${i + 1}.xml`), pathologySitemap);
-      console.log(`Generated sitemap-patologias-${i + 1}.xml`);
+      const filename = `sitemap-patologias-${i + 1}.xml`;
+      await writeFile(join(OUTPUT_DIR, filename), pathologySitemap);
+      console.log(`Generated ${filename}`);
     }
 
     // Generate reviews sitemap
-    const reviewsSitemap = `<?xml version="1.0" encoding="UTF-8"?>
+    if (reviews) {
+      const reviewsSitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${reviews.map(review => `  <url>
     <loc>${PUBLIC_URL}/review/${encodeURIComponent(review.id)}</loc>
-    <lastmod>${new Date(review.created_at).toISOString().split('T')[0]}</lastmod>
+    <lastmod>${new Date(review.created_at || new Date()).toISOString().split('T')[0]}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>`).join('\n')}
 </urlset>`;
 
-    await writeFile(join(OUTPUT_DIR, 'sitemap-reviews.xml'), reviewsSitemap);
-    console.log('Generated sitemap-reviews.xml');
+      await writeFile(join(OUTPUT_DIR, 'sitemap-reviews.xml'), reviewsSitemap);
+      console.log('Generated sitemap-reviews.xml');
+    }
 
     // Generate sitemap index
     const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>
@@ -118,14 +125,9 @@ ${pathologyChunks.map((_, i) => `  <sitemap>
     console.log('Generated sitemap.xml');
 
     console.log('\nSitemap Generation Summary:');
-    console.log(`Total pathologies: ${pathologies.length}`);
-    console.log(`Total reviews: ${reviews.length}`);
-    console.log(`Total sitemap files: ${pathologyChunks.length + 2}`);
-    console.log('\nGenerated files in public/:');
-    console.log('- sitemap.xml (main index)');
-    console.log('- sitemap-static.xml');
-    console.log(`- sitemap-patologias-[1-${pathologyChunks.length}].xml`);
-    console.log('- sitemap-reviews.xml');
+    console.log(`Total pathologies: ${pathologies?.length || 0}`);
+    console.log(`Total reviews: ${reviews?.length || 0}`);
+    console.log(`Total sitemap files: ${(pathologyChunks?.length || 0) + 2}`);
 
   } catch (error) {
     console.error('Error generating sitemaps:', error);
