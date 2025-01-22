@@ -29,13 +29,17 @@ async function generateSitemaps() {
       throw pathologiesError;
     }
 
-    console.log(`Fetched ${pathologies?.length || 0} pathologies`);
+    if (!pathologies || pathologies.length === 0) {
+      console.error('No pathologies found in the database');
+      throw new Error('No pathologies found');
+    }
 
-    // Generate pathologies sitemap (first 140 pathologies)
-    const firstBatch = pathologies?.slice(0, 140) || [];
+    console.log(`Fetched ${pathologies.length} pathologies`);
+
+    // Generate pathologies sitemap (all pathologies)
     const pathologySitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${firstBatch.map(p => `  <url>
+${pathologies.map(p => `  <url>
     <loc>${PUBLIC_URL}/patologia/${encodeURIComponent(p.Patologia?.toLowerCase().replace(/\s+/g, '-'))}</loc>
     <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>weekly</changefreq>
@@ -44,7 +48,7 @@ ${firstBatch.map(p => `  <url>
 </urlset>`;
 
     await writeFile(join(OUTPUT_DIR, 'sitemap-patologias-1.xml'), pathologySitemap);
-    console.log(`Generated sitemap-patologias-1.xml with ${firstBatch.length} pathologies`);
+    console.log(`Generated sitemap-patologias-1.xml with ${pathologies.length} pathologies`);
 
     // Generate sitemap index
     const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>
@@ -59,12 +63,12 @@ ${firstBatch.map(p => `  <url>
     console.log('Generated sitemap.xml');
 
     console.log('\nSitemap Generation Summary:');
-    console.log(`Total pathologies processed: ${firstBatch.length}`);
+    console.log(`Total pathologies processed: ${pathologies.length}`);
     console.log('\nAll sitemaps have been generated successfully!');
 
   } catch (error) {
     console.error('Error generating sitemaps:', error);
-    throw error;
+    process.exit(1); // Exit with error code to ensure the build fails if sitemap generation fails
   }
 }
 

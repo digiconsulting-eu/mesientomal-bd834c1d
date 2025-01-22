@@ -20,7 +20,7 @@ const generateSitemapsPlugin = () => ({
       console.log('Sitemap generation completed successfully!');
     } catch (error) {
       console.error('Error during sitemap generation:', error);
-      throw error;
+      throw error; // This will cause the build to fail if sitemap generation fails
     }
   },
 });
