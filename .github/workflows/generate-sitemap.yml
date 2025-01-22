@@ -27,10 +27,12 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
           
-      - name: Commit and push sitemap
+      - name: Configure Git
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
+          
+      - name: Commit and push sitemap
+        run: |
           git add public/sitemap*.xml
-          git commit -m "Update sitemap" || echo "No changes to commit"
-          git push
+          git diff --staged --quiet || (git commit -m "Update sitemap" && git push)

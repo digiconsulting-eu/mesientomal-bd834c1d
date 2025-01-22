@@ -13,20 +13,17 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 const PUBLIC_URL = 'https://mesientomal.info';
 const OUTPUT_DIR = './public';
+const ITEMS_PER_SITEMAP = 100; // Split sitemaps into chunks of 100 items
 
 async function generateSitemaps() {
   try {
     console.log('Starting sitemap generation...');
-    console.log('Using Supabase URL:', supabaseUrl);
-    console.log('Output directory:', OUTPUT_DIR);
-
-    // Fetch all pathologies ordered alphabetically with no limit
-    console.log('Fetching pathologies from Supabase...');
-    const { data: pathologies, error: pathologiesError, count } = await supabase
+    
+    // Fetch all pathologies ordered alphabetically
+    const { data: pathologies, error: pathologiesError } = await supabase
       .from('PATOLOGIE')
-      .select('*', { count: 'exact' })
-      .order('Patologia')
-      .throwOnError();
+      .select('*')
+      .order('Patologia');
 
     if (pathologiesError) {
       console.error('Error fetching pathologies:', pathologiesError);
@@ -38,23 +35,27 @@ async function generateSitemaps() {
       throw new Error('No pathologies found');
     }
 
-    console.log(`Successfully fetched ${pathologies.length} pathologies`);
-    console.log('Total number of pathologies in database:', count);
-    
-    // Log first few pathologies to verify data
-    console.log('Sample of pathologies:', pathologies.slice(0, 5));
+    console.log(`Found ${pathologies.length} pathologies`);
 
-    // Generate pathologies sitemap
-    console.log('Generating sitemap content...');
-    const pathologySitemap = `<?xml version="1.0" encoding="UTF-8"?>
+    // Split pathologies into chunks
+    const chunks = [];
+    for (let i = 0; i < pathologies.length; i += ITEMS_PER_SITEMAP) {
+      chunks.push(pathologies.slice(i, i + ITEMS_PER_SITEMAP));
+    }
+
+    console.log(`Creating ${chunks.length} sitemap files`);
+
+    // Generate individual sitemap files
+    for (let i = 0; i < chunks.length; i++) {
+      const chunk = chunks[i];
+      const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${pathologies.map(p => {
+${chunk.map(p => {
   if (!p.Patologia) {
     console.warn('Found pathology with null or undefined name:', p);
     return '';
   }
   const url = `${PUBLIC_URL}/patologia/${encodeURIComponent(p.Patologia.toLowerCase().replace(/\s+/g, '-'))}`;
-  console.log('Generated URL:', url); // Log each URL being generated
   return `  <url>
     <loc>${url}</loc>
     <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
@@ -64,31 +65,27 @@ ${pathologies.map(p => {
 }).filter(Boolean).join('\n')}
 </urlset>`;
 
-    console.log('Writing sitemap file...');
-    const sitemapPath = join(OUTPUT_DIR, 'sitemap-patologias-1.xml');
-    await writeFile(sitemapPath, pathologySitemap);
-    console.log(`Successfully wrote sitemap to ${sitemapPath} with ${pathologies.length} pathologies`);
+      const filename = `sitemap-patologias-${i + 1}.xml`;
+      await writeFile(join(OUTPUT_DIR, filename), sitemapContent);
+      console.log(`Generated ${filename} with ${chunk.length} entries`);
+    }
 
     // Generate sitemap index
-    console.log('Generating sitemap index...');
     const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <sitemap>
-    <loc>${PUBLIC_URL}/sitemap-patologias-1.xml</loc>
+${chunks.map((_, index) => `  <sitemap>
+    <loc>${PUBLIC_URL}/sitemap-patologias-${index + 1}.xml</loc>
     <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
-  </sitemap>
+  </sitemap>`).join('\n')}
 </sitemapindex>`;
 
-    const indexPath = join(OUTPUT_DIR, 'sitemap.xml');
-    await writeFile(indexPath, sitemapIndex);
-    console.log(`Successfully wrote sitemap index to ${indexPath}`);
+    await writeFile(join(OUTPUT_DIR, 'sitemap.xml'), sitemapIndex);
+    console.log('Generated sitemap index');
 
     console.log('\nSitemap Generation Summary:');
     console.log(`Total pathologies processed: ${pathologies.length}`);
-    console.log('Output files:');
-    console.log(`- ${sitemapPath}`);
-    console.log(`- ${indexPath}`);
-    console.log('\nAll sitemaps have been generated successfully!');
+    console.log(`Number of sitemap files: ${chunks.length}`);
+    console.log('Generation completed successfully!');
 
   } catch (error) {
     console.error('Fatal error during sitemap generation:', error);
