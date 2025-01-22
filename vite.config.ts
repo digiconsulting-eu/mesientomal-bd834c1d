@@ -23,6 +23,21 @@ const generateSitemapsPlugin = () => ({
       throw error; // This will cause the build to fail if sitemap generation fails
     }
   },
+  writeBundle: {
+    sequential: true,
+    order: 'post',
+    handler() {
+      // Ensure the sitemap files are copied after the build
+      console.log('Copying sitemap files to dist directory...');
+      try {
+        execSync('cp public/sitemap*.xml dist/', { stdio: 'inherit' });
+        console.log('Sitemap files copied successfully!');
+      } catch (error) {
+        console.error('Error copying sitemap files:', error);
+        throw error;
+      }
+    }
+  }
 });
 
 export default defineConfig(({ mode }) => ({
