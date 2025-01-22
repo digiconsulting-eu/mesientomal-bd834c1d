@@ -20,12 +20,13 @@ async function generateSitemaps() {
     console.log('Using Supabase URL:', supabaseUrl);
     console.log('Output directory:', OUTPUT_DIR);
 
-    // Fetch all pathologies ordered alphabetically
+    // Fetch all pathologies ordered alphabetically with no limit
     console.log('Fetching pathologies from Supabase...');
     const { data: pathologies, error: pathologiesError } = await supabase
       .from('PATOLOGIE')
       .select('*')
-      .order('Patologia');
+      .order('Patologia')
+      .throwOnError();
 
     if (pathologiesError) {
       console.error('Error fetching pathologies:', pathologiesError);
@@ -43,12 +44,18 @@ async function generateSitemaps() {
     console.log('Generating sitemap content...');
     const pathologySitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${pathologies.map(p => `  <url>
-    <loc>${PUBLIC_URL}/patologia/${encodeURIComponent(p.Patologia?.toLowerCase().replace(/\s+/g, '-'))}</loc>
+${pathologies.map(p => {
+  if (!p.Patologia) {
+    console.warn('Found pathology with null or undefined name:', p);
+    return '';
+  }
+  return `  <url>
+    <loc>${PUBLIC_URL}/patologia/${encodeURIComponent(p.Patologia.toLowerCase().replace(/\s+/g, '-'))}</loc>
     <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-  </url>`).join('\n')}
+  </url>`;
+}).filter(Boolean).join('\n')}
 </urlset>`;
 
     console.log('Writing sitemap file...');
@@ -79,7 +86,7 @@ ${pathologies.map(p => `  <url>
 
   } catch (error) {
     console.error('Fatal error during sitemap generation:', error);
-    process.exit(1); // Exit with error code to ensure the build fails if sitemap generation fails
+    process.exit(1);
   }
 }
 
