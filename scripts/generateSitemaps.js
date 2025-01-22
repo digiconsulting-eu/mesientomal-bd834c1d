@@ -22,9 +22,9 @@ async function generateSitemaps() {
 
     // Fetch all pathologies ordered alphabetically with no limit
     console.log('Fetching pathologies from Supabase...');
-    const { data: pathologies, error: pathologiesError } = await supabase
+    const { data: pathologies, error: pathologiesError, count } = await supabase
       .from('PATOLOGIE')
-      .select('*')
+      .select('*', { count: 'exact' })
       .order('Patologia')
       .throwOnError();
 
@@ -39,8 +39,12 @@ async function generateSitemaps() {
     }
 
     console.log(`Successfully fetched ${pathologies.length} pathologies`);
+    console.log('Total number of pathologies in database:', count);
+    
+    // Log first few pathologies to verify data
+    console.log('Sample of pathologies:', pathologies.slice(0, 5));
 
-    // Generate pathologies sitemap (all pathologies)
+    // Generate pathologies sitemap
     console.log('Generating sitemap content...');
     const pathologySitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -49,8 +53,10 @@ ${pathologies.map(p => {
     console.warn('Found pathology with null or undefined name:', p);
     return '';
   }
+  const url = `${PUBLIC_URL}/patologia/${encodeURIComponent(p.Patologia.toLowerCase().replace(/\s+/g, '-'))}`;
+  console.log('Generated URL:', url); // Log each URL being generated
   return `  <url>
-    <loc>${PUBLIC_URL}/patologia/${encodeURIComponent(p.Patologia.toLowerCase().replace(/\s+/g, '-'))}</loc>
+    <loc>${url}</loc>
     <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
