@@ -1,842 +1,950 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://mesientomal.info/patologia/acalasia</loc>
-    <lastmod>2025-01-21</lastmod>
+    <loc>https://mesientomal.info/patologia/abasia</loc>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://mesientomal.info/patologia/accidente-cerebrovascular-ictus</loc>
-    <lastmod>2025-01-21</lastmod>
+    <loc>https://mesientomal.info/patologia/abceso-cerebral</loc>
+    <lastmod>2024-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/abceso-dental</loc>
+    <lastmod>2024-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/abceso-hepatico</loc>
+    <lastmod>2024-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/abceso-perianal</loc>
+    <lastmod>2024-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/abceso-peritonsilar</loc>
+    <lastmod>2024-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/abceso-pulmonar</loc>
+    <lastmod>2024-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/abceso-renal</loc>
+    <lastmod>2024-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/aborto</loc>
+    <lastmod>2024-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/abrasion-corneal</loc>
+    <lastmod>2024-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/absceso-cutaneo</loc>
+    <lastmod>2024-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/absceso-mamario</loc>
+    <lastmod>2024-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/absceso-retrofaringeo</loc>
+    <lastmod>2024-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/abstinencia-alcoholica</loc>
+    <lastmod>2024-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/acalasia</loc>
+    <lastmod>2024-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/acantosis-nigricans</loc>
+    <lastmod>2024-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/acardia</loc>
+    <lastmod>2024-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/acariasis</loc>
+    <lastmod>2024-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/accidente-cerebrovascular</loc>
+    <lastmod>2024-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/acefalgia</loc>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/acetonemia</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/acidosis-metabolica</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/acne</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/acondroplasia</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/acromegalia</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/adenoides-hipertroficas</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/adenoiditis</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/aerofagia</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/albinismo</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/alcoholismo</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/alergia</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/alergia-a-la-lactosa</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/alergia-alimentaria</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/alergia-al-niquel</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/alergia-al-niquel-y-snas</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/alergias-de-contacto</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/alergias-respiratorias</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/algodistrofia</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/alopecia-areata</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/ambliopia</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/amebiasis</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/amigdalitis</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/amiloidosis</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/anafilaxia</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/anemia</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/anemia-de-fanconi</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/anemia-falciforme</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/anemia-hemolitica</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/anemia-perniciosa</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/aneurisma-aortico</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/aneurisma-cerebral</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/angina-abdominal</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/angina-de-pecho</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/angina-inestable</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/angiodisplasia</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/angioma</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/anisakiasis</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/anorexia</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/ansiedad</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/antrax</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/apendicitis</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/apnea-del-sueno</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/arteriosclerosis</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/arteritis-de-celulas-gigantes</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/artritis</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/artritis-gotosa</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/artritis-idiopatica-juvenil</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/artritis-psoriasica</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/artritis-reactiva</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/artritis-reumatoide</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/artrofia-muscular-espinal</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/artrosis</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/artrosis-de-rodilla</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/asfixia</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/asma</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/aspergilosis</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/aspiracion-de-cuerpos-extranos</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/astigmatismo</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/ataxia</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/ataxia-de-friedreich</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/atopia</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/atragantamiento</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/atresia-biliar</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/atresia-esofagica</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/atritis-septica</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/autismo</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/avitaminosis</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/bacteriemia</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/balanitis</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/becquerelio</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/blefaritis</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/bloqueo-cardiaco</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/bolo-funcional</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/botulismo</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/bozo-bulbo</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/bozo-tiroideo</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/bradicardia</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/bronquiectasias</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/bronquitis</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/bulimia</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/bursitis</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/calazion</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/calculos-biliares</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/calculos-en-la-vesicula-biliar</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/calculos-hepaticos</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/calculosis-renal</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/calculosis-salival</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/calculos-renales</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/calculos-tonsilares</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cancer</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cancer-cardiaco</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cancer-de-ano</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cancer-de-colon</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cancer-de-colon-y-recto</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cancer-de-cuello-uterino</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cancer-de-endometrio</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cancer-de-esofago</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cancer-de-glandulas-salivares</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cancer-de-higado</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cancer-de-laringe</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cancer-de-mama</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cancer-de-medula-espinal</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cancer-de-ovario</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cancer-de-pancreas</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cancer-de-pene</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cancer-de-piel</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cancer-de-prostata</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cancer-de-pulmon</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cancer-de-rinon</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cancer-de-testiculo</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cancer-de-tiroides</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cancer-de-uretra</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cancer-de-vejiga</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cancroide</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/candidiasis</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/carcinoma-basocelular</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/carcinoma-de-cervix</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/catarata</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/celiaquia</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cervicalgia</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cervicitis</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cirrosis-hepatica</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cistitis</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cistocele</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/coagulacion-intravascular-diseminada</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/colecistitis</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/colelitiasis</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/colestasis</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/colico-por-frio</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/colitis</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/colon-irritable</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/conjuntivitis</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/convulsiones</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/coronavirus-covid-19</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/craneosinostosis</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/criptorquidia</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/cuadriplejia</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/dedo-en-resorte</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2024-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
