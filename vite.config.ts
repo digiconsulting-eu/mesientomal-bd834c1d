@@ -3,8 +3,9 @@ import react from '@vitejs/plugin-react-swc';
 import path from 'path';
 import { componentTagger } from "lovable-tagger";
 import { execSync } from 'child_process';
+import type { Plugin, PluginOption } from 'vite';
 
-const generateSitemapsPlugin = () => ({
+const generateSitemapsPlugin = (): Plugin => ({
   name: 'generate-sitemaps',
   buildStart: async () => {
     console.log('Starting sitemap generation...');
@@ -20,14 +21,11 @@ const generateSitemapsPlugin = () => ({
       console.log('Sitemap generation completed successfully!');
     } catch (error) {
       console.error('Error during sitemap generation:', error);
-      throw error; // This will cause the build to fail if sitemap generation fails
+      throw error;
     }
   },
   writeBundle: {
-    sequential: true,
-    order: 'post',
     handler() {
-      // Ensure the sitemap files are copied after the build
       console.log('Copying sitemap files to dist directory...');
       try {
         execSync('cp public/sitemap*.xml dist/', { stdio: 'inherit' });
@@ -36,7 +34,9 @@ const generateSitemapsPlugin = () => ({
         console.error('Error copying sitemap files:', error);
         throw error;
       }
-    }
+    },
+    order: 'post' as const,
+    sequential: true
   }
 });
 
@@ -49,7 +49,7 @@ export default defineConfig(({ mode }) => ({
     react(),
     mode === 'development' && componentTagger(),
     generateSitemapsPlugin()
-  ].filter(Boolean),
+  ].filter(Boolean) as PluginOption[],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
