@@ -17,8 +17,11 @@ const OUTPUT_DIR = './public';
 async function generateSitemaps() {
   try {
     console.log('Starting sitemap generation...');
+    console.log('Using Supabase URL:', supabaseUrl);
+    console.log('Output directory:', OUTPUT_DIR);
 
     // Fetch all pathologies ordered alphabetically
+    console.log('Fetching pathologies from Supabase...');
     const { data: pathologies, error: pathologiesError } = await supabase
       .from('PATOLOGIE')
       .select('*')
@@ -34,9 +37,10 @@ async function generateSitemaps() {
       throw new Error('No pathologies found');
     }
 
-    console.log(`Fetched ${pathologies.length} pathologies`);
+    console.log(`Successfully fetched ${pathologies.length} pathologies`);
 
     // Generate pathologies sitemap (all pathologies)
+    console.log('Generating sitemap content...');
     const pathologySitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${pathologies.map(p => `  <url>
@@ -47,10 +51,13 @@ ${pathologies.map(p => `  <url>
   </url>`).join('\n')}
 </urlset>`;
 
-    await writeFile(join(OUTPUT_DIR, 'sitemap-patologias-1.xml'), pathologySitemap);
-    console.log(`Generated sitemap-patologias-1.xml with ${pathologies.length} pathologies`);
+    console.log('Writing sitemap file...');
+    const sitemapPath = join(OUTPUT_DIR, 'sitemap-patologias-1.xml');
+    await writeFile(sitemapPath, pathologySitemap);
+    console.log(`Successfully wrote sitemap to ${sitemapPath} with ${pathologies.length} pathologies`);
 
     // Generate sitemap index
+    console.log('Generating sitemap index...');
     const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
@@ -59,15 +66,19 @@ ${pathologies.map(p => `  <url>
   </sitemap>
 </sitemapindex>`;
 
-    await writeFile(join(OUTPUT_DIR, 'sitemap.xml'), sitemapIndex);
-    console.log('Generated sitemap.xml');
+    const indexPath = join(OUTPUT_DIR, 'sitemap.xml');
+    await writeFile(indexPath, sitemapIndex);
+    console.log(`Successfully wrote sitemap index to ${indexPath}`);
 
     console.log('\nSitemap Generation Summary:');
     console.log(`Total pathologies processed: ${pathologies.length}`);
+    console.log('Output files:');
+    console.log(`- ${sitemapPath}`);
+    console.log(`- ${indexPath}`);
     console.log('\nAll sitemaps have been generated successfully!');
 
   } catch (error) {
-    console.error('Error generating sitemaps:', error);
+    console.error('Fatal error during sitemap generation:', error);
     process.exit(1); // Exit with error code to ensure the build fails if sitemap generation fails
   }
 }
