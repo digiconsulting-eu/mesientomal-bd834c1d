@@ -21,7 +21,7 @@ async function generateSitemaps() {
     // Fetch data from Supabase with error handling
     const { data: pathologies, error: pathologiesError } = await supabase
       .from('PATOLOGIE')
-      .select('Patologia')
+      .select('*')
       .order('Patologia');
 
     if (pathologiesError) {
@@ -31,7 +31,7 @@ async function generateSitemaps() {
 
     const { data: reviews, error: reviewsError } = await supabase
       .from('reviews')
-      .select('*');
+      .select('*, patologia:PATOLOGIE(Patologia)');
 
     if (reviewsError) {
       console.error('Error fetching reviews:', reviewsError);
@@ -52,8 +52,14 @@ async function generateSitemaps() {
   <url>
     <loc>${PUBLIC_URL}/patologias</loc>
     <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>${PUBLIC_URL}/cuenta-tu-experiencia</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>`;
 
@@ -68,12 +74,11 @@ async function generateSitemaps() {
       for (let i = 0; i < pathologies.length; i += CHUNK_SIZE) {
         pathologyChunks.push(pathologies.slice(i, i + CHUNK_SIZE));
       }
-    }
 
-    // Generate pathology sitemaps
-    for (let i = 0; i < pathologyChunks.length; i++) {
-      const chunk = pathologyChunks[i];
-      const pathologySitemap = `<?xml version="1.0" encoding="UTF-8"?>
+      // Generate pathology sitemaps
+      for (let i = 0; i < pathologyChunks.length; i++) {
+        const chunk = pathologyChunks[i];
+        const pathologySitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${chunk.map(p => `  <url>
     <loc>${PUBLIC_URL}/patologia/${encodeURIComponent(p.Patologia?.toLowerCase().replace(/\s+/g, '-'))}</loc>
@@ -83,25 +88,26 @@ ${chunk.map(p => `  <url>
   </url>`).join('\n')}
 </urlset>`;
 
-      const filename = `sitemap-patologias-${i + 1}.xml`;
-      await writeFile(join(OUTPUT_DIR, filename), pathologySitemap);
-      console.log(`Generated ${filename}`);
+        const filename = `sitemap-patologias-${i + 1}.xml`;
+        await writeFile(join(OUTPUT_DIR, filename), pathologySitemap);
+        console.log(`Generated ${filename} with ${chunk.length} pathologies`);
+      }
     }
 
     // Generate reviews sitemap
-    if (reviews) {
+    if (reviews && reviews.length > 0) {
       const reviewsSitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${reviews.map(review => `  <url>
-    <loc>${PUBLIC_URL}/review/${encodeURIComponent(review.id)}</loc>
+    <loc>${PUBLIC_URL}/${review.patologia?.Patologia?.toLowerCase().replace(/\s+/g, '-')}/esperienza/${encodeURIComponent(review.title)}</loc>
     <lastmod>${new Date(review.created_at || new Date()).toISOString().split('T')[0]}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <changefreq>never</changefreq>
+    <priority>0.6</priority>
   </url>`).join('\n')}
 </urlset>`;
 
       await writeFile(join(OUTPUT_DIR, 'sitemap-reviews.xml'), reviewsSitemap);
-      console.log('Generated sitemap-reviews.xml');
+      console.log(`Generated sitemap-reviews.xml with ${reviews.length} reviews`);
     }
 
     // Generate sitemap index
@@ -128,6 +134,7 @@ ${pathologyChunks.map((_, i) => `  <sitemap>
     console.log(`Total pathologies: ${pathologies?.length || 0}`);
     console.log(`Total reviews: ${reviews?.length || 0}`);
     console.log(`Total sitemap files: ${(pathologyChunks?.length || 0) + 2}`);
+    console.log('\nAll sitemaps have been generated successfully!');
 
   } catch (error) {
     console.error('Error generating sitemaps:', error);
