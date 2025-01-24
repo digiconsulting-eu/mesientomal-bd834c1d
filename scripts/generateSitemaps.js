@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 
 const SITE_URL = 'https://mesientomal.info'
-const ITEMS_PER_SITEMAP = 100 // Reduced from 140 to 100 for better file sizes
+const ITEMS_PER_SITEMAP = 100 // Reduced for better file sizes
 
 // Initialize Supabase client
 const supabase = createClient(
@@ -41,31 +41,32 @@ const generateStaticSitemap = () => {
 
 // Generate sitemap for pathologies
 const generatePathologySitemaps = async () => {
-  const { data: pathologies, error } = await supabase
-    .from('PATOLOGIE')
-    .select('Patologia')
-    .order('Patologia')
-    .not('Patologia', 'is', null)
+  try {
+    const { data: pathologies, error, count } = await supabase
+      .from('PATOLOGIE')
+      .select('Patologia', { count: 'exact' })
+      .order('Patologia')
+      .not('Patologia', 'is', null)
 
-  if (error) {
-    console.error('Error fetching pathologies:', error)
-    process.exit(1)
-  }
+    if (error) {
+      console.error('Error fetching pathologies:', error)
+      throw error
+    }
 
-  // Filter out any null or empty pathologies
-  const validPathologies = pathologies.filter(p => p.Patologia && p.Patologia.trim() !== '')
-  console.log(`Total valid pathologies: ${validPathologies.length}`)
+    // Filter out any null or empty pathologies
+    const validPathologies = pathologies.filter(p => p.Patologia && p.Patologia.trim() !== '')
+    console.log(`Total valid pathologies: ${validPathologies.length}`)
 
-  const totalSitemaps = Math.ceil(validPathologies.length / ITEMS_PER_SITEMAP)
-  console.log(`Creating ${totalSitemaps} sitemap files`)
-  
-  for (let i = 0; i < totalSitemaps; i++) {
-    const start = i * ITEMS_PER_SITEMAP
-    const end = start + ITEMS_PER_SITEMAP
-    const chunk = validPathologies.slice(start, end)
-    const currentDate = new Date().toISOString().split('T')[0]
+    const totalSitemaps = Math.ceil(validPathologies.length / ITEMS_PER_SITEMAP)
+    console.log(`Creating ${totalSitemaps} sitemap files`)
+    
+    for (let i = 0; i < totalSitemaps; i++) {
+      const start = i * ITEMS_PER_SITEMAP
+      const end = start + ITEMS_PER_SITEMAP
+      const chunk = validPathologies.slice(start, end)
+      const currentDate = new Date().toISOString().split('T')[0]
 
-    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+      const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   ${chunk.map(p => `
   <url>
@@ -76,36 +77,41 @@ const generatePathologySitemaps = async () => {
   </url>`).join('')}
 </urlset>`
 
-    const fileName = i === 0 ? 'sitemap-patologias.xml' : `sitemap-patologias-${i + 1}.xml`
-    fs.writeFileSync(
-      path.join(process.cwd(), `public/${fileName}`),
-      sitemap
-    )
-    console.log(`Generated pathology sitemap ${fileName} with ${chunk.length} entries`)
-  }
+      const fileName = `sitemap-patologias${i === 0 ? '' : `-${i + 1}`}.xml`
+      fs.writeFileSync(
+        path.join(process.cwd(), `public/${fileName}`),
+        sitemap
+      )
+      console.log(`Generated pathology sitemap ${fileName} with ${chunk.length} entries`)
+    }
 
-  return totalSitemaps
+    return totalSitemaps
+  } catch (error) {
+    console.error('Error generating pathology sitemaps:', error)
+    throw error
+  }
 }
 
 // Generate sitemap for reviews
 const generateReviewsSitemap = async () => {
-  const { data: reviews, error } = await supabase
-    .from('reviews')
-    .select(`
-      title,
-      PATOLOGIE (
-        Patologia
-      )
-    `)
-    .order('created_at', { ascending: false })
+  try {
+    const { data: reviews, error } = await supabase
+      .from('reviews')
+      .select(`
+        title,
+        PATOLOGIE (
+          Patologia
+        )
+      `)
+      .order('created_at', { ascending: false })
 
-  if (error) {
-    console.error('Error fetching reviews:', error)
-    process.exit(1)
-  }
+    if (error) {
+      console.error('Error fetching reviews:', error)
+      throw error
+    }
 
-  const currentDate = new Date().toISOString().split('T')[0]
-  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+    const currentDate = new Date().toISOString().split('T')[0]
+    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   ${reviews.map(review => `
   <url>
@@ -116,8 +122,12 @@ const generateReviewsSitemap = async () => {
   </url>`).join('')}
 </urlset>`
 
-  fs.writeFileSync(path.join(process.cwd(), 'public/sitemap-reviews.xml'), sitemap)
-  console.log('Generated reviews sitemap')
+    fs.writeFileSync(path.join(process.cwd(), 'public/sitemap-reviews.xml'), sitemap)
+    console.log('Generated reviews sitemap')
+  } catch (error) {
+    console.error('Error generating reviews sitemap:', error)
+    throw error
+  }
 }
 
 // Generate sitemap index
@@ -126,7 +136,7 @@ const generateSitemapIndex = (totalPathologySitemaps) => {
   const sitemaps = [
     'sitemap-static.xml',
     ...Array.from({ length: totalPathologySitemaps }, (_, i) => 
-      i === 0 ? 'sitemap-patologias.xml' : `sitemap-patologias-${i + 1}.xml`
+      `sitemap-patologias${i === 0 ? '' : `-${i + 1}`}.xml`
     ),
     'sitemap-reviews.xml'
   ]
