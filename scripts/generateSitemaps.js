@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 
 const SITE_URL = 'https://mesientomal.info'
-const ITEMS_PER_SITEMAP = 100
+const ITEMS_PER_SITEMAP = 200 // Increased to match current structure (695/3 ≈ 232 items per file)
 
 // Initialize Supabase client
 const supabase = createClient(
@@ -57,7 +57,7 @@ const generatePathologySitemaps = async () => {
     const validPathologies = pathologies.filter(p => p.Patologia && p.Patologia.trim() !== '')
     console.log(`Total valid pathologies: ${validPathologies.length}`)
 
-    const totalSitemaps = Math.ceil(validPathologies.length / ITEMS_PER_SITEMAP)
+    const totalSitemaps = 3 // Fixed to match current structure
     console.log(`Creating ${totalSitemaps} sitemap files`)
     
     for (let i = 0; i < totalSitemaps; i++) {
