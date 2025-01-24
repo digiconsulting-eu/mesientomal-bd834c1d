@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 
 const SITE_URL = 'https://mesientomal.info'
-const ITEMS_PER_SITEMAP = 140
+const ITEMS_PER_SITEMAP = 100 // Reduced from 140 to 100 for better file sizes
 
 // Initialize Supabase client
 const supabase = createClient(
@@ -19,7 +19,9 @@ const generateStaticSitemap = () => {
     '/ultimas-resenas',
     '/cuenta-tu-experiencia',
     '/iniciar-sesion',
-    '/registro'
+    '/registro',
+    '/reset-password',
+    '/update-password'
   ]
 
   const staticSitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -27,6 +29,7 @@ const generateStaticSitemap = () => {
   ${staticPages.map(page => `
   <url>
     <loc>${SITE_URL}${page}</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>daily</changefreq>
     <priority>${page === '' ? '1.0' : '0.8'}</priority>
   </url>`).join('')}
@@ -42,34 +45,43 @@ const generatePathologySitemaps = async () => {
     .from('PATOLOGIE')
     .select('Patologia')
     .order('Patologia')
+    .not('Patologia', 'is', null)
 
   if (error) {
     console.error('Error fetching pathologies:', error)
     process.exit(1)
   }
 
-  const totalSitemaps = Math.ceil(pathologies.length / ITEMS_PER_SITEMAP)
+  // Filter out any null or empty pathologies
+  const validPathologies = pathologies.filter(p => p.Patologia && p.Patologia.trim() !== '')
+  console.log(`Total valid pathologies: ${validPathologies.length}`)
+
+  const totalSitemaps = Math.ceil(validPathologies.length / ITEMS_PER_SITEMAP)
+  console.log(`Creating ${totalSitemaps} sitemap files`)
   
   for (let i = 0; i < totalSitemaps; i++) {
     const start = i * ITEMS_PER_SITEMAP
     const end = start + ITEMS_PER_SITEMAP
-    const chunk = pathologies.slice(start, end)
+    const chunk = validPathologies.slice(start, end)
+    const currentDate = new Date().toISOString().split('T')[0]
 
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   ${chunk.map(p => `
   <url>
-    <loc>${SITE_URL}/patologia/${encodeURIComponent(p.Patologia)}</loc>
+    <loc>${SITE_URL}/patologia/${encodeURIComponent(p.Patologia.toLowerCase())}</loc>
+    <lastmod>${currentDate}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>`).join('')}
 </urlset>`
 
+    const fileName = i === 0 ? 'sitemap-patologias.xml' : `sitemap-patologias-${i + 1}.xml`
     fs.writeFileSync(
-      path.join(process.cwd(), `public/sitemap-patologias-${i + 1}.xml`),
+      path.join(process.cwd(), `public/${fileName}`),
       sitemap
     )
-    console.log(`Generated pathology sitemap ${i + 1}`)
+    console.log(`Generated pathology sitemap ${fileName} with ${chunk.length} entries`)
   }
 
   return totalSitemaps
@@ -92,11 +104,13 @@ const generateReviewsSitemap = async () => {
     process.exit(1)
   }
 
+  const currentDate = new Date().toISOString().split('T')[0]
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   ${reviews.map(review => `
   <url>
-    <loc>${SITE_URL}/${encodeURIComponent(review.PATOLOGIE.Patologia)}/esperienza/${encodeURIComponent(review.title)}</loc>
+    <loc>${SITE_URL}/${encodeURIComponent(review.PATOLOGIE.Patologia.toLowerCase())}/esperienza/${encodeURIComponent(review.title)}</loc>
+    <lastmod>${currentDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>`).join('')}
@@ -108,10 +122,13 @@ const generateReviewsSitemap = async () => {
 
 // Generate sitemap index
 const generateSitemapIndex = (totalPathologySitemaps) => {
+  const currentDate = new Date().toISOString().split('T')[0]
   const sitemaps = [
     'sitemap-static.xml',
-    'sitemap-reviews.xml',
-    ...Array.from({ length: totalPathologySitemaps }, (_, i) => `sitemap-patologias-${i + 1}.xml`)
+    ...Array.from({ length: totalPathologySitemaps }, (_, i) => 
+      i === 0 ? 'sitemap-patologias.xml' : `sitemap-patologias-${i + 1}.xml`
+    ),
+    'sitemap-reviews.xml'
   ]
 
   const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>
@@ -119,6 +136,7 @@ const generateSitemapIndex = (totalPathologySitemaps) => {
   ${sitemaps.map(sitemap => `
   <sitemap>
     <loc>${SITE_URL}/${sitemap}</loc>
+    <lastmod>${currentDate}</lastmod>
   </sitemap>`).join('')}
 </sitemapindex>`
 
