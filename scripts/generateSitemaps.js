@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 
 const SITE_URL = 'https://mesientomal.info'
-const ITEMS_PER_SITEMAP = 100 // Reduced for better file sizes
+const ITEMS_PER_SITEMAP = 100
 
 // Initialize Supabase client
 const supabase = createClient(
@@ -42,9 +42,9 @@ const generateStaticSitemap = () => {
 // Generate sitemap for pathologies
 const generatePathologySitemaps = async () => {
   try {
-    const { data: pathologies, error, count } = await supabase
+    const { data: pathologies, error } = await supabase
       .from('PATOLOGIE')
-      .select('Patologia', { count: 'exact' })
+      .select('Patologia')
       .order('Patologia')
       .not('Patologia', 'is', null)
 
@@ -77,7 +77,7 @@ const generatePathologySitemaps = async () => {
   </url>`).join('')}
 </urlset>`
 
-      const fileName = `sitemap-patologias${i === 0 ? '' : `-${i + 1}`}.xml`
+      const fileName = `sitemap-patologias-${i + 1}.xml`
       fs.writeFileSync(
         path.join(process.cwd(), `public/${fileName}`),
         sitemap
@@ -115,7 +115,7 @@ const generateReviewsSitemap = async () => {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   ${reviews.map(review => `
   <url>
-    <loc>${SITE_URL}/${encodeURIComponent(review.PATOLOGIE.Patologia.toLowerCase())}/esperienza/${encodeURIComponent(review.title)}</loc>
+    <loc>${SITE_URL}/patologia/${encodeURIComponent(review.PATOLOGIE.Patologia.toLowerCase())}/esperienza/${encodeURIComponent(review.title)}</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -133,21 +133,21 @@ const generateReviewsSitemap = async () => {
 // Generate sitemap index
 const generateSitemapIndex = (totalPathologySitemaps) => {
   const currentDate = new Date().toISOString().split('T')[0]
-  const sitemaps = [
-    'sitemap-static.xml',
-    ...Array.from({ length: totalPathologySitemaps }, (_, i) => 
-      `sitemap-patologias${i === 0 ? '' : `-${i + 1}`}.xml`
-    ),
-    'sitemap-reviews.xml'
-  ]
-
   const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  ${sitemaps.map(sitemap => `
   <sitemap>
-    <loc>${SITE_URL}/${sitemap}</loc>
+    <loc>${SITE_URL}/sitemap-static.xml</loc>
+    <lastmod>${currentDate}</lastmod>
+  </sitemap>
+  ${Array.from({ length: totalPathologySitemaps }, (_, i) => `
+  <sitemap>
+    <loc>${SITE_URL}/sitemap-patologias-${i + 1}.xml</loc>
     <lastmod>${currentDate}</lastmod>
   </sitemap>`).join('')}
+  <sitemap>
+    <loc>${SITE_URL}/sitemap-reviews.xml</loc>
+    <lastmod>${currentDate}</lastmod>
+  </sitemap>
 </sitemapindex>`
 
   fs.writeFileSync(path.join(process.cwd(), 'public/sitemap.xml'), sitemapIndex)
