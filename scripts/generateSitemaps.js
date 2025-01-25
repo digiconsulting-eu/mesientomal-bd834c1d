@@ -3,13 +3,23 @@ import fs from 'fs'
 import path from 'path'
 
 const SITE_URL = 'https://mesientomal.info'
-const ITEMS_PER_SITEMAP = 200 // Increased to match current structure (695/3 ≈ 232 items per file)
+const ITEMS_PER_SITEMAP = 200
 
 // Initialize Supabase client
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_ANON_KEY
 )
+
+// Normalize text for URLs
+const normalizeText = (text) => {
+  return text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+    .replace(/[^a-z0-9]+/g, '-')     // Replace non-alphanumeric chars with hyphens
+    .replace(/^-+|-+$/g, '')         // Remove leading/trailing hyphens
+}
 
 // Create static sitemap
 const generateStaticSitemap = () => {
@@ -53,11 +63,17 @@ const generatePathologySitemaps = async () => {
       throw error
     }
 
-    // Filter out any null or empty pathologies
-    const validPathologies = pathologies.filter(p => p.Patologia && p.Patologia.trim() !== '')
+    // Filter out any null or empty pathologies and normalize URLs
+    const validPathologies = pathologies
+      .filter(p => p.Patologia && p.Patologia.trim() !== '')
+      .map(p => ({
+        ...p,
+        normalizedUrl: normalizeText(p.Patologia.trim())
+      }))
+
     console.log(`Total valid pathologies: ${validPathologies.length}`)
 
-    const totalSitemaps = 3 // Fixed to match current structure
+    const totalSitemaps = Math.ceil(validPathologies.length / ITEMS_PER_SITEMAP)
     console.log(`Creating ${totalSitemaps} sitemap files`)
     
     for (let i = 0; i < totalSitemaps; i++) {
@@ -70,7 +86,7 @@ const generatePathologySitemaps = async () => {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   ${chunk.map(p => `
   <url>
-    <loc>${SITE_URL}/patologia/${encodeURIComponent(p.Patologia.toLowerCase())}</loc>
+    <loc>${SITE_URL}/patologia/${p.normalizedUrl}</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -115,7 +131,7 @@ const generateReviewsSitemap = async () => {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   ${reviews.map(review => `
   <url>
-    <loc>${SITE_URL}/patologia/${encodeURIComponent(review.PATOLOGIE.Patologia.toLowerCase())}/esperienza/${encodeURIComponent(review.title)}</loc>
+    <loc>${SITE_URL}/patologia/${normalizeText(review.PATOLOGIE.Patologia)}/esperienza/${encodeURIComponent(review.title)}</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
