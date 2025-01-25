@@ -9,11 +9,14 @@ on:
 jobs:
   generate-sitemap:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     
     steps:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -34,7 +37,13 @@ jobs:
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
           
+      - name: Debug Git Status
+        run: |
+          git status
+          ls -la public/
+          
       - name: Commit and push sitemap
         run: |
           git add public/sitemap*.xml
-          git diff --staged --quiet || (git commit -m "Update sitemap" && git push)
+          git status
+          git diff --staged --quiet || (git commit -m "Update sitemap [skip ci]" && git push)
