@@ -11,6 +11,9 @@ const supabase = createClient(
   process.env.SUPABASE_ANON_KEY
 )
 
+console.log('Supabase URL:', process.env.SUPABASE_URL)
+console.log('Supabase Anon Key length:', process.env.SUPABASE_ANON_KEY?.length)
+
 // Normalize text for URLs
 const normalizeText = (text) => {
   return text
@@ -34,6 +37,8 @@ const generateStaticSitemap = () => {
     '/update-password'
   ]
 
+  console.log('Generating static sitemap with pages:', staticPages)
+
   const staticSitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   ${staticPages.map(page => `
@@ -46,15 +51,17 @@ const generateStaticSitemap = () => {
 </urlset>`
 
   fs.writeFileSync(path.join(process.cwd(), 'public/sitemap-static.xml'), staticSitemap)
-  console.log('Generated static sitemap')
+  console.log('Generated static sitemap successfully')
 }
 
 // Generate sitemap for pathologies
 const generatePathologySitemaps = async () => {
   try {
-    const { data: pathologies, error } = await supabase
+    console.log('Starting pathology sitemap generation...')
+    
+    const { data: pathologies, error, count } = await supabase
       .from('PATOLOGIE')
-      .select('Patologia')
+      .select('Patologia', { count: 'exact' })
       .order('Patologia')
       .not('Patologia', 'is', null)
 
@@ -62,6 +69,10 @@ const generatePathologySitemaps = async () => {
       console.error('Error fetching pathologies:', error)
       throw error
     }
+
+    console.log('Total pathologies count from DB:', count)
+    console.log('Actual pathologies data length:', pathologies?.length)
+    console.log('First 5 pathologies:', pathologies?.slice(0, 5))
 
     // Filter out any null or empty pathologies and normalize URLs
     const validPathologies = pathologies
@@ -71,7 +82,8 @@ const generatePathologySitemaps = async () => {
         normalizedUrl: normalizeText(p.Patologia.trim())
       }))
 
-    console.log(`Total valid pathologies: ${validPathologies.length}`)
+    console.log(`Total valid pathologies after filtering: ${validPathologies.length}`)
+    console.log('First 5 normalized pathologies:', validPathologies.slice(0, 5))
 
     const totalSitemaps = Math.ceil(validPathologies.length / ITEMS_PER_SITEMAP)
     console.log(`Creating ${totalSitemaps} sitemap files`)
@@ -81,6 +93,8 @@ const generatePathologySitemaps = async () => {
       const end = start + ITEMS_PER_SITEMAP
       const chunk = validPathologies.slice(start, end)
       const currentDate = new Date().toISOString().split('T')[0]
+
+      console.log(`Generating sitemap ${i + 1} with ${chunk.length} entries`)
 
       const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -94,11 +108,11 @@ const generatePathologySitemaps = async () => {
 </urlset>`
 
       const fileName = `sitemap-patologias-${i + 1}.xml`
-      fs.writeFileSync(
-        path.join(process.cwd(), `public/${fileName}`),
-        sitemap
-      )
-      console.log(`Generated pathology sitemap ${fileName} with ${chunk.length} entries`)
+      const filePath = path.join(process.cwd(), `public/${fileName}`)
+      fs.writeFileSync(filePath, sitemap)
+      
+      console.log(`Generated ${fileName} with ${chunk.length} entries`)
+      console.log(`File size: ${fs.statSync(filePath).size} bytes`)
     }
 
     return totalSitemaps
@@ -111,6 +125,8 @@ const generatePathologySitemaps = async () => {
 // Generate sitemap for reviews
 const generateReviewsSitemap = async () => {
   try {
+    console.log('Starting reviews sitemap generation...')
+    
     const { data: reviews, error } = await supabase
       .from('reviews')
       .select(`
@@ -126,6 +142,9 @@ const generateReviewsSitemap = async () => {
       throw error
     }
 
+    console.log(`Total reviews found: ${reviews?.length}`)
+    console.log('First 5 reviews:', reviews?.slice(0, 5))
+
     const currentDate = new Date().toISOString().split('T')[0]
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -138,8 +157,11 @@ const generateReviewsSitemap = async () => {
   </url>`).join('')}
 </urlset>`
 
-    fs.writeFileSync(path.join(process.cwd(), 'public/sitemap-reviews.xml'), sitemap)
+    const filePath = path.join(process.cwd(), 'public/sitemap-reviews.xml')
+    fs.writeFileSync(filePath, sitemap)
+    
     console.log('Generated reviews sitemap')
+    console.log(`Reviews sitemap file size: ${fs.statSync(filePath).size} bytes`)
   } catch (error) {
     console.error('Error generating reviews sitemap:', error)
     throw error
@@ -148,6 +170,8 @@ const generateReviewsSitemap = async () => {
 
 // Generate sitemap index
 const generateSitemapIndex = (totalPathologySitemaps) => {
+  console.log('Generating sitemap index...')
+  
   const currentDate = new Date().toISOString().split('T')[0]
   const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -166,30 +190,50 @@ const generateSitemapIndex = (totalPathologySitemaps) => {
   </sitemap>
 </sitemapindex>`
 
-  fs.writeFileSync(path.join(process.cwd(), 'public/sitemap.xml'), sitemapIndex)
+  const filePath = path.join(process.cwd(), 'public/sitemap.xml')
+  fs.writeFileSync(filePath, sitemapIndex)
+  
   console.log('Generated sitemap index')
+  console.log(`Sitemap index file size: ${fs.statSync(filePath).size} bytes`)
 }
 
 // Main execution
 const main = async () => {
   try {
-    console.log('Starting sitemap generation...')
+    console.log('Starting sitemap generation process...')
+    console.log('Current working directory:', process.cwd())
     
     // Create public directory if it doesn't exist
     const publicDir = path.join(process.cwd(), 'public')
     if (!fs.existsSync(publicDir)) {
+      console.log('Creating public directory...')
       fs.mkdirSync(publicDir)
     }
 
     // Generate all sitemaps
+    console.log('Generating static sitemap...')
     generateStaticSitemap()
+    
+    console.log('Generating pathology sitemaps...')
     const totalPathologySitemaps = await generatePathologySitemaps()
+    
+    console.log('Generating reviews sitemap...')
     await generateReviewsSitemap()
+    
+    console.log('Generating sitemap index...')
     generateSitemapIndex(totalPathologySitemaps)
 
     console.log('Sitemap generation completed successfully')
+    
+    // List all generated files
+    console.log('\nGenerated files in public directory:')
+    const files = fs.readdirSync(publicDir)
+    files.filter(f => f.includes('sitemap')).forEach(file => {
+      const stats = fs.statSync(path.join(publicDir, file))
+      console.log(`${file}: ${stats.size} bytes`)
+    })
   } catch (error) {
-    console.error('Error generating sitemaps:', error)
+    console.error('Error in main execution:', error)
     process.exit(1)
   }
 }
