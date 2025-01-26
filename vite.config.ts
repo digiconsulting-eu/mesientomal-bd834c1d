@@ -25,9 +25,9 @@ export default defineConfig(({ mode }) => ({
       output: {
         assetFileNames: (assetInfo) => {
           let fileName = assetInfo.name || '';
-          // Exclude sitemap files completely
+          // Skip sitemap files by returning an empty string
           if (fileName.includes('sitemap') || fileName === 'sitemap.xml') {
-            return null; // This will prevent the file from being generated
+            return ''; // This will effectively skip the file
           }
           return 'assets/[name]-[hash][extname]';
         },
