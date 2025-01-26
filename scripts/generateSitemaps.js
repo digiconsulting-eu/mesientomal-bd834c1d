@@ -5,23 +5,33 @@ import path from 'path'
 const SITE_URL = 'https://mesientomal.info'
 const ITEMS_PER_SITEMAP = 200
 
-// Initialize Supabase client with explicit error handling
+// Initialize Supabase client with explicit error handling and validation
 const initSupabase = () => {
-  if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
-    throw new Error('Missing Supabase credentials. Both SUPABASE_URL and SUPABASE_ANON_KEY are required.');
+  console.log('Starting Supabase initialization...');
+  
+  if (!process.env.SUPABASE_URL) {
+    throw new Error('SUPABASE_URL is not defined in environment variables');
+  }
+  if (!process.env.SUPABASE_ANON_KEY) {
+    throw new Error('SUPABASE_ANON_KEY is not defined in environment variables');
   }
   
-  console.log('Initializing Supabase client with:');
-  console.log('URL:', process.env.SUPABASE_URL);
-  console.log('Key length:', process.env.SUPABASE_ANON_KEY.length);
+  console.log('Supabase URL:', process.env.SUPABASE_URL);
+  console.log('Supabase Anon Key length:', process.env.SUPABASE_ANON_KEY.length);
   
-  return createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  const client = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  
+  // Test the connection
+  return client;
 }
-
-const supabase = initSupabase();
 
 // Normalize text for URLs
 const normalizeText = (text) => {
+  if (!text) {
+    console.warn('Received empty or null text to normalize');
+    return '';
+  }
+  
   return text
     .toLowerCase()
     .normalize('NFD')
@@ -30,21 +40,22 @@ const normalizeText = (text) => {
     .replace(/^-+|-+$/g, '');
 }
 
-// Create static sitemap
+// Create static sitemap with improved error handling
 const generateStaticSitemap = () => {
-  const staticPages = [
-    '',
-    '/patologias',
-    '/ultimas-resenas',
-    '/cuenta-tu-experiencia',
-    '/iniciar-sesion',
-    '/registro',
-    '/reset-password',
-    '/update-password'
-  ];
+  try {
+    console.log('Generating static sitemap...');
+    const staticPages = [
+      '',
+      '/patologias',
+      '/ultimas-resenas',
+      '/cuenta-tu-experiencia',
+      '/iniciar-sesion',
+      '/registro',
+      '/reset-password',
+      '/update-password'
+    ];
 
-  console.log('Generating static sitemap...');
-  const staticSitemap = `<?xml version="1.0" encoding="UTF-8"?>
+    const staticSitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   ${staticPages.map(page => `
   <url>
@@ -55,11 +66,22 @@ const generateStaticSitemap = () => {
   </url>`).join('')}
 </urlset>`;
 
-  fs.writeFileSync(path.join(process.cwd(), 'public/sitemap-static.xml'), staticSitemap);
-  console.log('Static sitemap generated successfully');
+    const filePath = path.join(process.cwd(), 'public/sitemap-static.xml');
+    fs.writeFileSync(filePath, staticSitemap);
+    console.log('Static sitemap generated successfully at:', filePath);
+    
+    // Verify file was created
+    if (fs.existsSync(filePath)) {
+      const stats = fs.statSync(filePath);
+      console.log('Static sitemap file size:', stats.size, 'bytes');
+    }
+  } catch (error) {
+    console.error('Error generating static sitemap:', error);
+    throw error;
+  }
 }
 
-// Generate sitemap for pathologies
+// Generate sitemap for pathologies with improved error handling and validation
 const generatePathologySitemaps = async () => {
   try {
     console.log('Starting pathology sitemap generation...');
@@ -70,25 +92,26 @@ const generatePathologySitemaps = async () => {
       .order('Patologia');
 
     if (error) {
-      console.error('Error fetching pathologies:', error);
+      console.error('Supabase error fetching pathologies:', error);
       throw error;
     }
 
-    if (!pathologies) {
-      console.error('No pathologies found');
-      throw new Error('No pathologies found');
+    if (!pathologies || !Array.isArray(pathologies)) {
+      console.error('Invalid pathologies data received:', pathologies);
+      throw new Error('Invalid pathologies data received from Supabase');
     }
 
     console.log(`Retrieved ${pathologies.length} pathologies from database`);
 
     const validPathologies = pathologies
-      .filter(p => p.Patologia && p.Patologia.trim() !== '')
+      .filter(p => p && p.Patologia && typeof p.Patologia === 'string' && p.Patologia.trim() !== '')
       .map(p => ({
         ...p,
         normalizedUrl: normalizeText(p.Patologia.trim())
       }));
 
     console.log(`Found ${validPathologies.length} valid pathologies after filtering`);
+    console.log('Sample pathology:', validPathologies[0]);
 
     const totalSitemaps = Math.ceil(validPathologies.length / ITEMS_PER_SITEMAP);
     console.log(`Creating ${totalSitemaps} sitemap files`);
@@ -115,6 +138,12 @@ const generatePathologySitemaps = async () => {
       fs.writeFileSync(filePath, sitemap);
       
       console.log(`Generated ${fileName} with ${chunk.length} entries`);
+      
+      // Verify file was created
+      if (fs.existsSync(filePath)) {
+        const stats = fs.statSync(filePath);
+        console.log(`${fileName} file size:`, stats.size, 'bytes');
+      }
     }
 
     return totalSitemaps;
@@ -124,7 +153,7 @@ const generatePathologySitemaps = async () => {
   }
 }
 
-// Generate sitemap for reviews
+// Generate sitemap for reviews with improved error handling
 const generateReviewsSitemap = async () => {
   try {
     console.log('Starting reviews sitemap generation...');
@@ -140,40 +169,58 @@ const generateReviewsSitemap = async () => {
       .order('created_at', { ascending: false });
 
     if (error) {
-      console.error('Error fetching reviews:', error);
+      console.error('Supabase error fetching reviews:', error);
       throw error;
     }
 
-    console.log(`Retrieved ${reviews?.length || 0} reviews from database`);
+    if (!reviews || !Array.isArray(reviews)) {
+      console.error('Invalid reviews data received:', reviews);
+      throw new Error('Invalid reviews data received from Supabase');
+    }
+
+    console.log(`Retrieved ${reviews.length} reviews from database`);
 
     const currentDate = new Date().toISOString().split('T')[0];
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  ${reviews.map(review => `
+  ${reviews.map(review => {
+    if (!review.PATOLOGIE || !review.PATOLOGIE.Patologia) {
+      console.warn('Review with missing pathology data:', review);
+      return '';
+    }
+    return `
   <url>
     <loc>${SITE_URL}/patologia/${normalizeText(review.PATOLOGIE.Patologia)}/esperienza/${encodeURIComponent(review.title)}</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
-  </url>`).join('')}
+  </url>`;
+  }).join('')}
 </urlset>`;
 
     const filePath = path.join(process.cwd(), 'public/sitemap-reviews.xml');
     fs.writeFileSync(filePath, sitemap);
     
     console.log('Reviews sitemap generated successfully');
+    
+    // Verify file was created
+    if (fs.existsSync(filePath)) {
+      const stats = fs.statSync(filePath);
+      console.log('Reviews sitemap file size:', stats.size, 'bytes');
+    }
   } catch (error) {
     console.error('Error in generateReviewsSitemap:', error);
     throw error;
   }
 }
 
-// Generate sitemap index
+// Generate sitemap index with improved error handling
 const generateSitemapIndex = (totalPathologySitemaps) => {
-  console.log('Generating sitemap index...');
-  
-  const currentDate = new Date().toISOString().split('T')[0];
-  const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>
+  try {
+    console.log('Generating sitemap index...');
+    
+    const currentDate = new Date().toISOString().split('T')[0];
+    const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
     <loc>${SITE_URL}/sitemap-static.xml</loc>
@@ -190,23 +237,44 @@ const generateSitemapIndex = (totalPathologySitemaps) => {
   </sitemap>
 </sitemapindex>`;
 
-  const filePath = path.join(process.cwd(), 'public/sitemap.xml');
-  fs.writeFileSync(filePath, sitemapIndex);
-  console.log('Sitemap index generated successfully');
+    const filePath = path.join(process.cwd(), 'public/sitemap.xml');
+    fs.writeFileSync(filePath, sitemapIndex);
+    
+    console.log('Sitemap index generated successfully');
+    
+    // Verify file was created
+    if (fs.existsSync(filePath)) {
+      const stats = fs.statSync(filePath);
+      console.log('Sitemap index file size:', stats.size, 'bytes');
+    }
+  } catch (error) {
+    console.error('Error generating sitemap index:', error);
+    throw error;
+  }
 }
 
-// Main execution
+// Main execution with improved error handling
 const main = async () => {
+  console.log('Starting sitemap generation process...');
+  console.log('Current working directory:', process.cwd());
+  console.log('Node version:', process.version);
+  console.log('Environment variables present:', {
+    SUPABASE_URL: !!process.env.SUPABASE_URL,
+    SUPABASE_ANON_KEY: !!process.env.SUPABASE_ANON_KEY
+  });
+  
   try {
-    console.log('Starting sitemap generation process...');
-    console.log('Current working directory:', process.cwd());
-    
     const publicDir = path.join(process.cwd(), 'public');
     if (!fs.existsSync(publicDir)) {
       console.log('Creating public directory...');
       fs.mkdirSync(publicDir);
     }
 
+    // Initialize Supabase client
+    const supabase = initSupabase();
+    console.log('Supabase client initialized successfully');
+
+    // Generate all sitemaps
     generateStaticSitemap();
     const totalPathologySitemaps = await generatePathologySitemaps();
     await generateReviewsSitemap();
@@ -222,7 +290,7 @@ const main = async () => {
       console.log(`${file}: ${stats.size} bytes`);
     });
   } catch (error) {
-    console.error('Error in main execution:', error);
+    console.error('Fatal error in main execution:', error);
     process.exit(1);
   }
 }
