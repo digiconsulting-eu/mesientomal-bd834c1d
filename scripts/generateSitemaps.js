@@ -6,6 +6,11 @@ const SITE_URL = 'https://mesientomal.info'
 const SUPABASE_URL = process.env.SUPABASE_URL
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY
 
+if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+  console.error('Missing Supabase environment variables');
+  process.exit(1);
+}
+
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
 // Generate static sitemap
@@ -46,13 +51,22 @@ const generatePathologySitemap = async () => {
   try {
     console.log('Generating pathology sitemap...');
     
-    // Fetch all pathologies from Supabase
+    // Fetch all pathologies from Supabase with no limit
     const { data: pathologies, error } = await supabase
       .from('PATOLOGIE')
       .select('Patologia')
-      .order('Patologia');
+      .order('Patologia')
+      .not('Patologia', 'is', null);
 
-    if (error) throw error;
+    if (error) {
+      console.error('Error fetching pathologies:', error);
+      throw error;
+    }
+
+    if (!pathologies || pathologies.length === 0) {
+      console.error('No pathologies found in database');
+      throw new Error('No pathologies found');
+    }
 
     console.log(`Found ${pathologies.length} pathologies`);
 
@@ -115,23 +129,6 @@ const main = async () => {
     await generateStaticSitemap();
     await generatePathologySitemap();
     await generateSitemapIndex();
-
-    // Remove old sitemap files
-    const oldSitemaps = [
-      'sitemap-patologias-1.xml',
-      'sitemap-patologias-2.xml',
-      'sitemap-patologias-3.xml',
-      'sitemap-patologias-4.xml',
-      'sitemap-patologias-5.xml'
-    ];
-
-    oldSitemaps.forEach(file => {
-      const filePath = path.join(process.cwd(), 'public', file);
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
-        console.log(`Removed old sitemap: ${file}`);
-      }
-    });
 
     console.log('All sitemaps generated successfully');
   } catch (error) {
