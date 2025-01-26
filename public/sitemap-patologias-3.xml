@@ -1,35 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://mesientomal.info/patologia/OSTEOPOROSIS</loc>
+    <loc>https://mesientomal.info/patologia/ADICCION-AL-TRABAJO</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://mesientomal.info/patologia/PSORIASIS</loc>
+    <loc>https://mesientomal.info/patologia/ADHD</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://mesientomal.info/patologia/RINITIS</loc>
+    <loc>https://mesientomal.info/patologia/AFECTO-LABIAL</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://mesientomal.info/patologia/SINDROME-DE-FATIGA-CRONICA</loc>
+    <loc>https://mesientomal.info/patologia/AFECTO-LABIAL-HERPES</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://mesientomal.info/patologia/SINDROME-DEL-INTESTINO-IRRITABLE</loc>
+    <loc>https://mesientomal.info/patologia/AGORAFOBIA</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://mesientomal.info/patologia/TRASTORNO-BIPOLAR</loc>
+    <loc>https://mesientomal.info/patologia/ALCOHOLISMO</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://mesientomal.info/patologia/TRASTORNO-OBSESIVO-COMPULSIVO</loc>
+    <loc>https://mesientomal.info/patologia/ALERGIA-A-LA-LACTOSA</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://mesientomal.info/patologia/VITILIGO</loc>
+    <loc>https://mesientomal.info/patologia/ALERGIA-A-LAS-AVES</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/ALERGIA-A-LAS-LEGUMBRES</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/ALERGIA-A-LAS-NUECES</loc>
     <priority>0.7</priority>
   </url>
 </urlset>
