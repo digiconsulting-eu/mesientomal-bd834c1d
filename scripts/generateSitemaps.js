@@ -1,29 +1,25 @@
-import { createClient } from '@supabase/supabase-js'
 import fs from 'fs'
 import path from 'path'
 
 const SITE_URL = 'https://mesientomal.info'
 const ITEMS_PER_SITEMAP = 200
 
-// Initialize Supabase client with explicit error handling and validation
-const initSupabase = () => {
-  console.log('Starting Supabase initialization...');
-  
-  if (!process.env.SUPABASE_URL) {
-    throw new Error('SUPABASE_URL is not defined in environment variables');
-  }
-  if (!process.env.SUPABASE_ANON_KEY) {
-    throw new Error('SUPABASE_ANON_KEY is not defined in environment variables');
-  }
-  
-  console.log('Supabase URL:', process.env.SUPABASE_URL);
-  console.log('Supabase Anon Key length:', process.env.SUPABASE_ANON_KEY.length);
-  
-  const client = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
-  
-  // Test the connection
-  return client;
-}
+// Lista completa delle patologie
+const pathologies = [
+  "Absceso cerebral", "Absceso dental", "Absceso hepatico", "Absceso perianal",
+  "Acidosis", "Adenitis", "Alergia", "Alzheimer", "Anemia", "Angina de pecho",
+  "Artritis", "Asma", "Ateroesclerosis", "Autismo", "Bipolaridad", "Bronquitis",
+  "Cáncer", "Cáncer de mama", "Cáncer de pulmón", "Cáncer de próstata", "Cáncer de piel",
+  "Cáncer de riñón", "Cáncer de testículo", "Cáncer gástrico", "Cáncer hepático",
+  "Cáncer intestinal", "Cáncer oral", "Cáncer uterino", "Cáncer vesical", "Cefalea",
+  "Cistitis", "Colitis", "Conjuntivitis", "Diabetes", "Diarrea", "Dislexia",
+  "Epilepsia", "Esclerosis múltiple", "Esquizofrenia", "Faringitis", "Fibromialgia",
+  "Gastritis", "Gingivitis", "Gripe", "Hepatitis", "Hernia", "Hipertensión",
+  "Hipotiroidismo", "Infección urinaria", "Insuficiencia renal", "Insuficiencia respiratoria",
+  "Lupus", "Migraña", "Neumonía", "Obesidad", "Osteoporosis", "Psoriasis",
+  "Rinitis", "Sinusitis", "Tensión arterial", "Trombosis", "Tuberculosis", "Virus del papiloma",
+  "Zika"
+];
 
 // Normalize text for URLs
 const normalizeText = (text) => {
@@ -40,7 +36,7 @@ const normalizeText = (text) => {
     .replace(/^-+|-+$/g, '');
 }
 
-// Create static sitemap with improved error handling
+// Create static sitemap
 const generateStaticSitemap = () => {
   try {
     console.log('Generating static sitemap...');
@@ -51,8 +47,7 @@ const generateStaticSitemap = () => {
       '/cuenta-tu-experiencia',
       '/iniciar-sesion',
       '/registro',
-      '/reset-password',
-      '/update-password'
+      '/restablecer-contrasena'
     ];
 
     const staticSitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -68,65 +63,32 @@ const generateStaticSitemap = () => {
 
     const filePath = path.join(process.cwd(), 'public/sitemap-static.xml');
     fs.writeFileSync(filePath, staticSitemap);
-    console.log('Static sitemap generated successfully at:', filePath);
-    
-    // Verify file was created
-    if (fs.existsSync(filePath)) {
-      const stats = fs.statSync(filePath);
-      console.log('Static sitemap file size:', stats.size, 'bytes');
-    }
+    console.log('Static sitemap generated successfully');
   } catch (error) {
     console.error('Error generating static sitemap:', error);
     throw error;
   }
 }
 
-// Generate sitemap for pathologies with improved error handling and validation
-const generatePathologySitemaps = async () => {
+// Generate sitemap for pathologies
+const generatePathologySitemaps = () => {
   try {
     console.log('Starting pathology sitemap generation...');
     
-    const { data: pathologies, error } = await supabase
-      .from('PATOLOGIE')
-      .select('Patologia')
-      .order('Patologia');
-
-    if (error) {
-      console.error('Supabase error fetching pathologies:', error);
-      throw error;
-    }
-
-    if (!pathologies || !Array.isArray(pathologies)) {
-      console.error('Invalid pathologies data received:', pathologies);
-      throw new Error('Invalid pathologies data received from Supabase');
-    }
-
-    console.log(`Retrieved ${pathologies.length} pathologies from database`);
-
-    const validPathologies = pathologies
-      .filter(p => p && p.Patologia && typeof p.Patologia === 'string' && p.Patologia.trim() !== '')
-      .map(p => ({
-        ...p,
-        normalizedUrl: normalizeText(p.Patologia.trim())
-      }));
-
-    console.log(`Found ${validPathologies.length} valid pathologies after filtering`);
-    console.log('Sample pathology:', validPathologies[0]);
-
-    const totalSitemaps = Math.ceil(validPathologies.length / ITEMS_PER_SITEMAP);
+    const totalSitemaps = Math.ceil(pathologies.length / ITEMS_PER_SITEMAP);
     console.log(`Creating ${totalSitemaps} sitemap files`);
     
     for (let i = 0; i < totalSitemaps; i++) {
       const start = i * ITEMS_PER_SITEMAP;
       const end = start + ITEMS_PER_SITEMAP;
-      const chunk = validPathologies.slice(start, end);
+      const chunk = pathologies.slice(start, end);
       const currentDate = new Date().toISOString().split('T')[0];
 
       const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  ${chunk.map(p => `
+  ${chunk.map(pathology => `
   <url>
-    <loc>${SITE_URL}/patologia/${p.normalizedUrl}</loc>
+    <loc>${SITE_URL}/patologia/${normalizeText(pathology)}</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -138,12 +100,6 @@ const generatePathologySitemaps = async () => {
       fs.writeFileSync(filePath, sitemap);
       
       console.log(`Generated ${fileName} with ${chunk.length} entries`);
-      
-      // Verify file was created
-      if (fs.existsSync(filePath)) {
-        const stats = fs.statSync(filePath);
-        console.log(`${fileName} file size:`, stats.size, 'bytes');
-      }
     }
 
     return totalSitemaps;
@@ -153,7 +109,7 @@ const generatePathologySitemaps = async () => {
   }
 }
 
-// Generate sitemap index with improved error handling
+// Generate sitemap index
 const generateSitemapIndex = (totalPathologySitemaps) => {
   try {
     console.log('Generating sitemap index...');
@@ -170,38 +126,19 @@ const generateSitemapIndex = (totalPathologySitemaps) => {
     <loc>${SITE_URL}/sitemap-patologias-${i + 1}.xml</loc>
     <lastmod>${currentDate}</lastmod>
   </sitemap>`).join('')}
-  <sitemap>
-    <loc>${SITE_URL}/sitemap-reviews.xml</loc>
-    <lastmod>${currentDate}</lastmod>
-  </sitemap>
 </sitemapindex>`;
 
     const filePath = path.join(process.cwd(), 'public/sitemap.xml');
     fs.writeFileSync(filePath, sitemapIndex);
-    
     console.log('Sitemap index generated successfully');
-    
-    // Verify file was created
-    if (fs.existsSync(filePath)) {
-      const stats = fs.statSync(filePath);
-      console.log('Sitemap index file size:', stats.size, 'bytes');
-    }
   } catch (error) {
     console.error('Error generating sitemap index:', error);
     throw error;
   }
 }
 
-// Main execution with improved error handling
+// Main execution
 const main = async () => {
-  console.log('Starting sitemap generation process...');
-  console.log('Current working directory:', process.cwd());
-  console.log('Node version:', process.version);
-  console.log('Environment variables present:', {
-    SUPABASE_URL: !!process.env.SUPABASE_URL,
-    SUPABASE_ANON_KEY: !!process.env.SUPABASE_ANON_KEY
-  });
-  
   try {
     const publicDir = path.join(process.cwd(), 'public');
     if (!fs.existsSync(publicDir)) {
@@ -209,25 +146,11 @@ const main = async () => {
       fs.mkdirSync(publicDir);
     }
 
-    // Initialize Supabase client
-    const supabase = initSupabase();
-    console.log('Supabase client initialized successfully');
-
-    // Generate all sitemaps
     generateStaticSitemap();
-    const totalPathologySitemaps = await generatePathologySitemaps();
-    await generateReviewsSitemap();
+    const totalPathologySitemaps = generatePathologySitemaps();
     generateSitemapIndex(totalPathologySitemaps);
 
     console.log('All sitemaps generated successfully');
-    
-    // List generated files
-    console.log('\nGenerated files in public directory:');
-    const files = fs.readdirSync(publicDir);
-    files.filter(f => f.includes('sitemap')).forEach(file => {
-      const stats = fs.statSync(path.join(publicDir, file));
-      console.log(`${file}: ${stats.size} bytes`);
-    });
   } catch (error) {
     console.error('Fatal error in main execution:', error);
     process.exit(1);
