@@ -153,67 +153,6 @@ const generatePathologySitemaps = async () => {
   }
 }
 
-// Generate sitemap for reviews with improved error handling
-const generateReviewsSitemap = async () => {
-  try {
-    console.log('Starting reviews sitemap generation...');
-    
-    const { data: reviews, error } = await supabase
-      .from('reviews')
-      .select(`
-        title,
-        PATOLOGIE (
-          Patologia
-        )
-      `)
-      .order('created_at', { ascending: false });
-
-    if (error) {
-      console.error('Supabase error fetching reviews:', error);
-      throw error;
-    }
-
-    if (!reviews || !Array.isArray(reviews)) {
-      console.error('Invalid reviews data received:', reviews);
-      throw new Error('Invalid reviews data received from Supabase');
-    }
-
-    console.log(`Retrieved ${reviews.length} reviews from database`);
-
-    const currentDate = new Date().toISOString().split('T')[0];
-    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  ${reviews.map(review => {
-    if (!review.PATOLOGIE || !review.PATOLOGIE.Patologia) {
-      console.warn('Review with missing pathology data:', review);
-      return '';
-    }
-    return `
-  <url>
-    <loc>${SITE_URL}/patologia/${normalizeText(review.PATOLOGIE.Patologia)}/esperienza/${encodeURIComponent(review.title)}</loc>
-    <lastmod>${currentDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>`;
-  }).join('')}
-</urlset>`;
-
-    const filePath = path.join(process.cwd(), 'public/sitemap-reviews.xml');
-    fs.writeFileSync(filePath, sitemap);
-    
-    console.log('Reviews sitemap generated successfully');
-    
-    // Verify file was created
-    if (fs.existsSync(filePath)) {
-      const stats = fs.statSync(filePath);
-      console.log('Reviews sitemap file size:', stats.size, 'bytes');
-    }
-  } catch (error) {
-    console.error('Error in generateReviewsSitemap:', error);
-    throw error;
-  }
-}
-
 // Generate sitemap index with improved error handling
 const generateSitemapIndex = (totalPathologySitemaps) => {
   try {
