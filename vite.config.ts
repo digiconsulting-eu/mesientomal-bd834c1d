@@ -21,5 +21,15 @@ export default defineConfig(({ mode }) => ({
     copyPublicDir: true,
     outDir: 'dist',
     assetsDir: 'assets',
+    rollupOptions: {
+      output: {
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name?.includes('sitemap')) {
+            return '';
+          }
+          return 'assets/[name]-[hash][extname]';
+        },
+      },
+    },
   }
 }));
