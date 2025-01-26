@@ -25,7 +25,7 @@
     <loc>https://mesientomal.info/registro</loc>
     <priority>0.5</priority>
   </url>
-  <!-- ALL Pathology URLs -->
+  <!-- ALL Pathology URLs from database -->
   <url>
     <loc>https://mesientomal.info/patologia/ABORTO-ESPONTANEO</loc>
     <priority>0.7</priority>
@@ -115,11 +115,11 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://mesientomal.info/patologia/AFECTO-LABIAL</loc>
+    <loc>https://mesientomal.info/patologia/AFASIA</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://mesientomal.info/patologia/AFECTO-LABIAL-HERPES</loc>
+    <loc>https://mesientomal.info/patologia/AFONIA</loc>
     <priority>0.7</priority>
   </url>
   <url>
@@ -127,51 +127,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://mesientomal.info/patologia/ALCOHOLISMO</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://mesientomal.info/patologia/ALERGIA-A-LA-LACTOSA</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://mesientomal.info/patologia/ALERGIA-A-LAS-AVES</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://mesientomal.info/patologia/ALERGIA-A-LAS-LEGUMBRES</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://mesientomal.info/patologia/ALERGIA-A-LAS-NUECES</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://mesientomal.info/patologia/ALERGIA-A-LAS-PENAS</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://mesientomal.info/patologia/ALERGIA-A-LAS-PLANTAS</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://mesientomal.info/patologia/ALERGIA-A-LAS-POCIONES</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://mesientomal.info/patologia/ALERGIA-A-LAS-SEMILLAS</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://mesientomal.info/patologia/ALERGIA-A-LAS-VERDURAS</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://mesientomal.info/patologia/ALERGIA-A-LA-YERBA-MATE</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://mesientomal.info/patologia/ALERGIA-AL-GLUTEN</loc>
+    <loc>https://mesientomal.info/patologia/AGOTAMIENTO</loc>
     <priority>0.7</priority>
   </url>
   <url>
@@ -179,35 +135,11 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://mesientomal.info/patologia/ALERGIA-AL-POLVO</loc>
+    <loc>https://mesientomal.info/patologia/ALERGIA-A-LOS-ACAROS</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://mesientomal.info/patologia/ALERGIA-AL-QUIRURGI</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://mesientomal.info/patologia/ALERGIA-AL-SULFATO</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://mesientomal.info/patologia/ALERGIA-AL-TABACO</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://mesientomal.info/patologia/ALERGIA-AL-VIENTO</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://mesientomal.info/patologia/ALERGIA-AL-VOLCAN</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://mesientomal.info/patologia/ALERGIA-AL-ZINC</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://mesientomal.info/patologia/ALERGIA-AL-ZUMO</loc>
+    <loc>https://mesientomal.info/patologia/ALERGIA-AL-LATEX</loc>
     <priority>0.7</priority>
   </url>
   <url>
@@ -216,6 +148,10 @@
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/AMENORREA</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/AMIGDALITIS</loc>
     <priority>0.7</priority>
   </url>
   <url>
@@ -231,6 +167,14 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://mesientomal.info/patologia/APNEA-DEL-SUENO</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/ARRITMIA</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://mesientomal.info/patologia/ARTRITIS</loc>
     <priority>0.7</priority>
   </url>
@@ -239,7 +183,19 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://mesientomal.info/patologia/AUTISMO</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://mesientomal.info/patologia/BRONQUITIS</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/BULIMIA</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/CANCER-DE-MAMA</loc>
     <priority>0.7</priority>
   </url>
   <url>
@@ -247,7 +203,15 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://mesientomal.info/patologia/CIRROSIS</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://mesientomal.info/patologia/COLESTEROL-ALTO</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/CONJUNTIVITIS</loc>
     <priority>0.7</priority>
   </url>
   <url>
@@ -259,7 +223,19 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://mesientomal.info/patologia/DISLEXIA</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://mesientomal.info/patologia/ENDOMETRIOSIS</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/EPILEPSIA</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/ESQUIZOFRENIA</loc>
     <priority>0.7</priority>
   </url>
   <url>
@@ -268,6 +244,26 @@
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/GASTRITIS</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/GLAUCOMA</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/HEMORROIDES</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/HEPATITIS</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/HERNIA-DISCAL</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/HIPERTIROIDISMO</loc>
     <priority>0.7</priority>
   </url>
   <url>
@@ -287,7 +283,15 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://mesientomal.info/patologia/MIGRAÑA</loc>
+    <loc>https://mesientomal.info/patologia/MENINGITIS</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/MIGRANAS</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/NEUMONIA</loc>
     <priority>0.7</priority>
   </url>
   <url>
@@ -296,6 +300,10 @@
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/OSTEOPOROSIS</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/PARKINSON</loc>
     <priority>0.7</priority>
   </url>
   <url>
@@ -315,11 +323,31 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://mesientomal.info/patologia/TENDINITIS</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://mesientomal.info/patologia/TRASTORNO-BIPOLAR</loc>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/TRASTORNO-OBSESIVO-COMPULSIVO</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/TUBERCULOSIS</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/ULCERA</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/VARICES</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/VERTIGO</loc>
     <priority>0.7</priority>
   </url>
   <url>
