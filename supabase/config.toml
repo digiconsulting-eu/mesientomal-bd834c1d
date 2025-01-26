@@ -26,5 +26,5 @@ enabled = true
 enabled = true
 
 [[functions]]
-name = "handle-sitemap"
 verify_jwt = false
+[functions.handle-sitemap]
