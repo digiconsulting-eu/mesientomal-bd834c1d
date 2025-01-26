@@ -4,9 +4,8 @@
     <loc>https://mesientomal.info/sitemap-static.xml</loc>
     <lastmod>2025-01-26</lastmod>
   </sitemap>
-  
   <sitemap>
-    <loc>https://mesientomal.info/sitemap-patologias-1.xml</loc>
+    <loc>https://mesientomal.info/sitemap-patologias.xml</loc>
     <lastmod>2025-01-26</lastmod>
   </sitemap>
 </sitemapindex>
