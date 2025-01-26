@@ -26,6 +26,20 @@ jobs:
       - name: Install dependencies
         run: npm install
         
+      - name: Debug Environment
+        run: |
+          echo "Checking Supabase configuration..."
+          if [ -n "${{ secrets.SUPABASE_URL }}" ]; then
+            echo "SUPABASE_URL is set"
+          else
+            echo "SUPABASE_URL is not set"
+          fi
+          if [ -n "${{ secrets.SUPABASE_ANON_KEY }}" ]; then
+            echo "SUPABASE_ANON_KEY is set"
+          else
+            echo "SUPABASE_ANON_KEY is not set"
+          fi
+        
       - name: Generate sitemap
         run: node scripts/generateSitemaps.js
         env:
