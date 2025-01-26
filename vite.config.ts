@@ -24,8 +24,10 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         assetFileNames: (assetInfo) => {
-          if (assetInfo.name?.includes('sitemap')) {
-            return '';
+          let fileName = assetInfo.name || '';
+          // Exclude sitemap files completely
+          if (fileName.includes('sitemap') || fileName === 'sitemap.xml') {
+            return null; // This will prevent the file from being generated
           }
           return 'assets/[name]-[hash][extname]';
         },
