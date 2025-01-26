@@ -1,1 +1,4 @@
 project_id = "igulwzwituvozwneguky"
+
+[functions.handle-sitemap]
+verify_jwt = false
