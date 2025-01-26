@@ -62,6 +62,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://mesientomal.info/patologia/ansiedad</loc>
+    <lastmod>2025-01-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://mesientomal.info/patologia/artritis</loc>
     <lastmod>2025-01-26</lastmod>
     <changefreq>weekly</changefreq>
@@ -200,6 +206,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://mesientomal.info/patologia/depresion</loc>
+    <lastmod>2025-01-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://mesientomal.info/patologia/diabetes</loc>
     <lastmod>2025-01-26</lastmod>
     <changefreq>weekly</changefreq>
@@ -231,6 +243,12 @@
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/esquizofrenia</loc>
+    <lastmod>2025-01-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/estres</loc>
     <lastmod>2025-01-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -291,6 +309,12 @@
   </url>
   <url>
     <loc>https://mesientomal.info/patologia/infeccion-urinaria</loc>
+    <lastmod>2025-01-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mesientomal.info/patologia/insomnio</loc>
     <lastmod>2025-01-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
