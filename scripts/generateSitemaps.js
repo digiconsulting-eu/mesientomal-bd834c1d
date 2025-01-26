@@ -1,85 +1,14 @@
 import fs from 'fs'
 import path from 'path'
+import { createClient } from '@supabase/supabase-js'
 
 const SITE_URL = 'https://mesientomal.info'
+const SUPABASE_URL = process.env.SUPABASE_URL
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY
 
-// Lista completa delle patologie
-const pathologies = [
-  "absceso-cerebral", "absceso-dental", "absceso-hepatico", "absceso-perianal",
-  "acidosis", "adenitis", "alergia", "alzheimer", "anemia", "angina-de-pecho",
-  "ansiedad", "artritis", "asma", "ateroesclerosis", "autismo", "bipolaridad", 
-  "bronquitis", "cancer", "cancer-de-mama", "cancer-de-pulmon", "cancer-de-prostata", 
-  "cancer-de-piel", "cancer-de-rinon", "cancer-de-testiculo", "cancer-gastrico", 
-  "cancer-hepatico", "cancer-intestinal", "cancer-oral", "cancer-uterino", 
-  "cancer-vesical", "cefalea", "cistitis", "colitis", "conjuntivitis", "depresion",
-  "diabetes", "diarrea", "dislexia", "epilepsia", "esclerosis-multiple", 
-  "esquizofrenia", "estres", "faringitis", "fibromialgia", "gastritis", "gingivitis", 
-  "gripe", "hepatitis", "hernia", "hipertension", "hipotiroidismo", "insomnio",
-  "infeccion-urinaria", "insuficiencia-renal", "insuficiencia-respiratoria", 
-  "lupus", "migrana", "neumonia", "obesidad", "osteoporosis", "psoriasis", 
-  "rinitis", "sinusitis", "tension-arterial", "trombosis", "tuberculosis", 
-  "virus-del-papiloma", "zika", "menopausia", "mesotelioma-pleurico", "miastenia-gravis", 
-  "mielitis", "mielofibrosis", "mieloma-multiple", "mielopatia", "miliaria", 
-  "miocarditis", "miopia", "miringitis", "mixoma", "mollusco-contagioso", 
-  "mononucleosis", "narcolepsia", "nefritis", "nefropatia-diabetica", 
-  "neumonia-por-aspiracion", "neurinoma-acustico", "neuritis-optica", 
-  "neuroblastoma", "neurofibromatosis", "neuroma-de-morton", "neuronitis-vestibular", 
-  "neuropatia-diabetica", "nevo-de-spitz", "nevus-nevo", "nodulo-tiroideo", 
-  "obstruccion-intestinal", "oclusion-intestinal", "ojo-de-pernice", "ombalitis", 
-  "onicofagia", "onicomicosis", "orquitis", "orzuelo", "osteitis", "osteocondoresis", 
-  "osteocondritis", "osteogenesis-imperfecta", "osteoma-osteoide", "osteomielitis", 
-  "osteonecrosis", "osteopenia", "osteopetrosis", "osteosarcoma", "otitis", 
-  "otitis-aguda", "otitis-barotraumatica", "otitis-bollosa", "otitis-media", 
-  "otoesclerosis", "ovario-polquistico", "oxiuriasis", "palatosquisis", "panaricio", 
-  "pancreatitis", "pancreatitis-aguda", "panicolitis", "parafimosis", 
-  "paralisis-cerebral-infantil", "paraparesia-espastica", "paro-cardiaco", "paroniquia", 
-  "parotitis", "patereco", "pediculosis", "pelagra", "pericarditis", "periodontitis", 
-  "peritonitis", "permigoide-bulloso", "permigoide-gestacional", "permigo-vulgar", 
-  "pfapa", "pie-cavo", "pie-de-atleta", "pie-diabetico", "pielonefritis", "pie-plano", 
-  "pinguecola", "pitiriasis-alba", "pitiriasis-rosa", "placenta-accreta", 
-  "placenta-previa", "pleuritis", "policitemia-vera", "polidipsia-psicogena", 
-  "polimialgia-reumatica", "polimiositis", "poliomielitis", "polipos-intestinales", 
-  "poliposis-nasales-polipos-en-la-nariz", "polipos-uterinos", "porfiria", 
-  "porfiria-cutanea-tarda", "pre-eclampsia", "presbiopia", "proctitis", "progeria", 
-  "prostatitis", "psicosis-de-korsakoff", "pubalgia", "pulpitis", "quemadura", "rabia", 
-  "radiculopatia", "rafaga-anal", "reflujo-gastroesofagico", "resfriado", 
-  "retinitis-pigmentosa", "retinoblastoma", "retinopatia-diabetica", "rinitis-alergica", 
-  "rizoartrosis", "rosacea", "rubeola", "sacroilitis", "salmonella", "salpingitis", 
-  "sarcoma-de-kaposi", "sarna", "sepsis", "sexta-enfermedad", "shigellosis", 
-  "shock-septico", "sialoadenitis", "sida", "sifilis", "silicosis", 
-  "sindrome-compartimental", "sindrome-de-asperger", "sindrome-de-aspiracion-de-meconio", 
-  "sindrome-de-brugada", "sindrome-de-colon-irritable", "sindrome-de-de-quervain", 
-  "sindrome-de-descompresion", "sindrome-de-down", "sindrome-de-ehlers-danlos", 
-  "sindrome-de-fanconi", "sindrome-de-fatiga-cronica", "sindrome-de-horner", 
-  "sindrome-de-intestino-irritable", "sindrome-de-klinefelter", "sindrome-de-la-boca-ardiente", 
-  "sindrome-de-la-cola-de-caballo", "sindrome-de-las-piernas-sin-descanso", 
-  "sindrome-del-estrecho-toracico", "sindrome-del-ojo-seco", "sindrome-del-piriforme", 
-  "sindrome-del-tunel-carpal", "sindrome-de-mallory-weiss", "sindrome-de-marfan", 
-  "sindrome-de-meniere", "sindrome-de-ovario-policistico", "sindrome-de-pickwick", 
-  "sindrome-de-prader-willi", "sindrome-de-reiter", "sindrome-de-reye", 
-  "sindrome-de-sjogren", "sindrome-de-tourette", "sindrome-de-turner", "sindrome-de-zieve", 
-  "sindrome-de-zollinger-ellison", "sindrome-emolitico-uremico", "sindrome-fetal-alcoholico", 
-  "sindrome-metabolico", "sindrome-parainfluenzal", "sindrome-premenstrual", 
-  "sindrome-serotoninergico", "sinovitis", "sintomas-de-ganglios-o-quistes-sinoviales", 
-  "sintomas-de-insuficiencia-cardiaca", "siringomielia", "sprue-tropical", "talasemia", 
-  "talonitis", "tdah-sindrome-de-deficit-de-atencion-e-hiperactividad", "tendinitis", 
-  "tenosinovitis", "tetanos", "tifoidea", "timoma", "tina-capitis", "tina-versicolor", 
-  "tiroiditis-subaguda", "torsion-anexial", "torsion-testicular", "tos-ferina", 
-  "toxoplasmosis", "tracoma", "traqueitis", "trastorno-bipolar", "trastorno-ciclotimico", 
-  "trastorno-de-estres-postraumatico", "trastorno-de-la-alimentacion-incontrolada", 
-  "trastorno-evitativo-de-la-personalidad", "trastorno-limite-de-la-personalidad", 
-  "trastorno-narcisista-de-la-personalidad", "trastorno-obsesivo-compulsivo", 
-  "trastornos-de-la-coagulacion", "trichinosis", "trichomonas", "tripanosomiasis-africana", 
-  "trisomia-13", "trisomia-18", "trombocitemia-esencial", "trombofilia", "tromboflebitis", 
-  "trombosis-venosa-profunda", "trombosis-venosa-superficial", "tumor-de-hipofisis", 
-  "tumor-de-wilms", "ulcera-corneal", "ulcera-duodenal", "ulcera-gastrica", 
-  "ulcera-peptica", "una-encarnada", "uretritis", "uveitis", "vaginitis", 
-  "vaginosis-bacteriana", "varicela", "varices-esofagicas", "varicocele", 
-  "vejiga-neurologica", "venas-varicosas", "verrugas", "vih", "viruela", "virus-zika", 
-  "vitiligo", "zigomicosis", "zoantropia"
-].sort();
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
-// Create static sitemap
+// Generate static sitemap
 const generateStaticSitemap = () => {
   try {
     console.log('Generating static sitemap...');
@@ -113,20 +42,31 @@ const generateStaticSitemap = () => {
 }
 
 // Generate sitemap for pathologies
-const generatePathologySitemap = () => {
+const generatePathologySitemap = async () => {
   try {
     console.log('Generating pathology sitemap...');
+    
+    // Fetch all pathologies from Supabase
+    const { data: pathologies, error } = await supabase
+      .from('PATOLOGIE')
+      .select('Patologia')
+      .order('Patologia');
+
+    if (error) throw error;
+
+    console.log(`Found ${pathologies.length} pathologies`);
+
     const currentDate = new Date().toISOString().split('T')[0];
     
     const pathologySitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  ${pathologies.map(pathology => `
+  ${pathologies.map(p => p.Patologia ? `
   <url>
-    <loc>${SITE_URL}/patologia/${pathology}</loc>
+    <loc>${SITE_URL}/patologia/${p.Patologia.toLowerCase().replace(/ /g, '-')}</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-  </url>`).join('')}
+  </url>` : '').join('')}
 </urlset>`;
 
     fs.writeFileSync(path.join(process.cwd(), 'public/sitemap-patologias.xml'), pathologySitemap);
@@ -172,11 +112,11 @@ const main = async () => {
       fs.mkdirSync(publicDir);
     }
 
-    generateStaticSitemap();
-    generatePathologySitemap();
-    generateSitemapIndex();
+    await generateStaticSitemap();
+    await generatePathologySitemap();
+    await generateSitemapIndex();
 
-    // Rimuovi i vecchi file sitemap non più necessari
+    // Remove old sitemap files
     const oldSitemaps = [
       'sitemap-patologias-1.xml',
       'sitemap-patologias-2.xml',
