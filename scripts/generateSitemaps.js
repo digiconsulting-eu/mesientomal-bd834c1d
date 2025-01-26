@@ -2,39 +2,24 @@ import fs from 'fs'
 import path from 'path'
 
 const SITE_URL = 'https://mesientomal.info'
-const ITEMS_PER_SITEMAP = 200
 
 // Lista completa delle patologie
 const pathologies = [
-  "Absceso cerebral", "Absceso dental", "Absceso hepatico", "Absceso perianal",
-  "Acidosis", "Adenitis", "Alergia", "Alzheimer", "Anemia", "Angina de pecho",
-  "Artritis", "Asma", "Ateroesclerosis", "Autismo", "Bipolaridad", "Bronquitis",
-  "Cáncer", "Cáncer de mama", "Cáncer de pulmón", "Cáncer de próstata", "Cáncer de piel",
-  "Cáncer de riñón", "Cáncer de testículo", "Cáncer gástrico", "Cáncer hepático",
-  "Cáncer intestinal", "Cáncer oral", "Cáncer uterino", "Cáncer vesical", "Cefalea",
-  "Cistitis", "Colitis", "Conjuntivitis", "Diabetes", "Diarrea", "Dislexia",
-  "Epilepsia", "Esclerosis múltiple", "Esquizofrenia", "Faringitis", "Fibromialgia",
-  "Gastritis", "Gingivitis", "Gripe", "Hepatitis", "Hernia", "Hipertensión",
-  "Hipotiroidismo", "Infección urinaria", "Insuficiencia renal", "Insuficiencia respiratoria",
-  "Lupus", "Migraña", "Neumonía", "Obesidad", "Osteoporosis", "Psoriasis",
-  "Rinitis", "Sinusitis", "Tensión arterial", "Trombosis", "Tuberculosis", "Virus del papiloma",
-  "Zika"
-];
-
-// Normalize text for URLs
-const normalizeText = (text) => {
-  if (!text) {
-    console.warn('Received empty or null text to normalize');
-    return '';
-  }
-  
-  return text
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-}
+  "absceso-cerebral", "absceso-dental", "absceso-hepatico", "absceso-perianal",
+  "acidosis", "adenitis", "alergia", "alzheimer", "anemia", "angina-de-pecho",
+  "artritis", "asma", "ateroesclerosis", "autismo", "bipolaridad", "bronquitis",
+  "cancer", "cancer-de-mama", "cancer-de-pulmon", "cancer-de-prostata", 
+  "cancer-de-piel", "cancer-de-rinon", "cancer-de-testiculo", "cancer-gastrico", 
+  "cancer-hepatico", "cancer-intestinal", "cancer-oral", "cancer-uterino", 
+  "cancer-vesical", "cefalea", "cistitis", "colitis", "conjuntivitis", "diabetes", 
+  "diarrea", "dislexia", "epilepsia", "esclerosis-multiple", "esquizofrenia", 
+  "faringitis", "fibromialgia", "gastritis", "gingivitis", "gripe", "hepatitis", 
+  "hernia", "hipertension", "hipotiroidismo", "infeccion-urinaria", 
+  "insuficiencia-renal", "insuficiencia-respiratoria", "lupus", "migrana", 
+  "neumonia", "obesidad", "osteoporosis", "psoriasis", "rinitis", "sinusitis", 
+  "tension-arterial", "trombosis", "tuberculosis", "virus-del-papiloma", "zika",
+  // ... aggiungere tutte le altre patologie qui
+].sort();
 
 // Create static sitemap
 const generateStaticSitemap = () => {
@@ -61,8 +46,7 @@ const generateStaticSitemap = () => {
   </url>`).join('')}
 </urlset>`;
 
-    const filePath = path.join(process.cwd(), 'public/sitemap-static.xml');
-    fs.writeFileSync(filePath, staticSitemap);
+    fs.writeFileSync(path.join(process.cwd(), 'public/sitemap-static.xml'), staticSitemap);
     console.log('Static sitemap generated successfully');
   } catch (error) {
     console.error('Error generating static sitemap:', error);
@@ -71,65 +55,49 @@ const generateStaticSitemap = () => {
 }
 
 // Generate sitemap for pathologies
-const generatePathologySitemaps = () => {
+const generatePathologySitemap = () => {
   try {
-    console.log('Starting pathology sitemap generation...');
+    console.log('Generating pathology sitemap...');
+    const currentDate = new Date().toISOString().split('T')[0];
     
-    const totalSitemaps = Math.ceil(pathologies.length / ITEMS_PER_SITEMAP);
-    console.log(`Creating ${totalSitemaps} sitemap files`);
-    
-    for (let i = 0; i < totalSitemaps; i++) {
-      const start = i * ITEMS_PER_SITEMAP;
-      const end = start + ITEMS_PER_SITEMAP;
-      const chunk = pathologies.slice(start, end);
-      const currentDate = new Date().toISOString().split('T')[0];
-
-      const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+    const pathologySitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  ${chunk.map(pathology => `
+  ${pathologies.map(pathology => `
   <url>
-    <loc>${SITE_URL}/patologia/${normalizeText(pathology)}</loc>
+    <loc>${SITE_URL}/patologia/${pathology}</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>`).join('')}
 </urlset>`;
 
-      const fileName = `sitemap-patologias-${i + 1}.xml`;
-      const filePath = path.join(process.cwd(), `public/${fileName}`);
-      fs.writeFileSync(filePath, sitemap);
-      
-      console.log(`Generated ${fileName} with ${chunk.length} entries`);
-    }
-
-    return totalSitemaps;
+    fs.writeFileSync(path.join(process.cwd(), 'public/sitemap-patologias.xml'), pathologySitemap);
+    console.log('Pathology sitemap generated successfully');
   } catch (error) {
-    console.error('Error in generatePathologySitemaps:', error);
+    console.error('Error generating pathology sitemap:', error);
     throw error;
   }
 }
 
 // Generate sitemap index
-const generateSitemapIndex = (totalPathologySitemaps) => {
+const generateSitemapIndex = () => {
   try {
     console.log('Generating sitemap index...');
-    
     const currentDate = new Date().toISOString().split('T')[0];
+    
     const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
     <loc>${SITE_URL}/sitemap-static.xml</loc>
     <lastmod>${currentDate}</lastmod>
   </sitemap>
-  ${Array.from({ length: totalPathologySitemaps }, (_, i) => `
   <sitemap>
-    <loc>${SITE_URL}/sitemap-patologias-${i + 1}.xml</loc>
+    <loc>${SITE_URL}/sitemap-patologias.xml</loc>
     <lastmod>${currentDate}</lastmod>
-  </sitemap>`).join('')}
+  </sitemap>
 </sitemapindex>`;
 
-    const filePath = path.join(process.cwd(), 'public/sitemap.xml');
-    fs.writeFileSync(filePath, sitemapIndex);
+    fs.writeFileSync(path.join(process.cwd(), 'public/sitemap.xml'), sitemapIndex);
     console.log('Sitemap index generated successfully');
   } catch (error) {
     console.error('Error generating sitemap index:', error);
@@ -147,8 +115,25 @@ const main = async () => {
     }
 
     generateStaticSitemap();
-    const totalPathologySitemaps = generatePathologySitemaps();
-    generateSitemapIndex(totalPathologySitemaps);
+    generatePathologySitemap();
+    generateSitemapIndex();
+
+    // Rimuovi i vecchi file sitemap non più necessari
+    const oldSitemaps = [
+      'sitemap-patologias-1.xml',
+      'sitemap-patologias-2.xml',
+      'sitemap-patologias-3.xml',
+      'sitemap-patologias-4.xml',
+      'sitemap-patologias-5.xml'
+    ];
+
+    oldSitemaps.forEach(file => {
+      const filePath = path.join(process.cwd(), 'public', file);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+        console.log(`Removed old sitemap: ${file}`);
+      }
+    });
 
     console.log('All sitemaps generated successfully');
   } catch (error) {
