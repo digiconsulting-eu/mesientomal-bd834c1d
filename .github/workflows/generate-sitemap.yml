@@ -28,6 +28,9 @@ jobs:
         
       - name: Generate sitemap
         run: node scripts/generateSitemaps.js
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
           
       - name: Configure Git
         run: |
