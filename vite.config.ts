@@ -27,7 +27,7 @@ export default defineConfig(({ mode }) => ({
           let fileName = assetInfo.name || '';
           // Copy sitemap files directly without hashing
           if (fileName.includes('sitemap')) {
-            return fileName;
+            return `${fileName}`;
           }
           return 'assets/[name]-[hash][extname]';
         },
