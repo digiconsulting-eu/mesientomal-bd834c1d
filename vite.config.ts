@@ -24,10 +24,10 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         assetFileNames: (assetInfo) => {
-          let fileName = assetInfo.name || '';
-          // Copy sitemap files directly without hashing
+          const fileName = assetInfo.name || '';
+          // Copy sitemap files directly to root without hashing
           if (fileName.includes('sitemap')) {
-            return `${fileName}`;
+            return fileName;
           }
           return 'assets/[name]-[hash][extname]';
         },
