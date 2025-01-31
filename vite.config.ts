@@ -25,9 +25,9 @@ export default defineConfig(({ mode }) => ({
       output: {
         assetFileNames: (assetInfo) => {
           const fileName = assetInfo.name || '';
-          // Copy sitemap files directly to root without hashing
+          // Ensure sitemap files are copied to the root directory
           if (fileName.includes('sitemap')) {
-            return fileName;
+            return `${fileName}`;
           }
           return 'assets/[name]-[hash][extname]';
         },
