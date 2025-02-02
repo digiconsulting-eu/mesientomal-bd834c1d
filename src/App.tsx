@@ -35,6 +35,15 @@ function App() {
                 <Route path="/admin/importazione" element={<div>Importazione Dati</div>} />
                 <Route path="/iniciar-sesion" element={<Login />} />
                 <Route path="/registro" element={<Register />} />
+                <Route path="*" element={
+                  <div className="container mx-auto px-4 py-16 text-center">
+                    <h1 className="text-4xl font-bold mb-4">Página no encontrada</h1>
+                    <p className="text-gray-600 mb-8">Lo sentimos, la página que buscas no existe.</p>
+                    <a href="/" className="text-blue-500 hover:text-blue-600">
+                      Volver a la página principal
+                    </a>
+                  </div>
+                } />
               </Routes>
             </main>
           </div>
