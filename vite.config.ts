@@ -26,8 +26,8 @@ export default defineConfig(({ mode }) => ({
         assetFileNames: (assetInfo) => {
           const fileName = assetInfo.name || '';
           if (fileName.endsWith('.xml')) {
-            // Keep original name for XML files (sitemaps)
-            return `${fileName}`;
+            // Ensure XML files are copied to the root directory without hashing
+            return fileName;
           }
           return 'assets/[name]-[hash][extname]';
         },
