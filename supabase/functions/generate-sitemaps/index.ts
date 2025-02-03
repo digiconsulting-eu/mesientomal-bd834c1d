@@ -14,6 +14,7 @@ const corsHeaders = {
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 function generateSitemapIndex(sitemaps: string[]): string {
+  console.log('Generating sitemap index for:', sitemaps);
   return `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   ${sitemaps.map(sitemap => `
@@ -25,6 +26,7 @@ function generateSitemapIndex(sitemaps: string[]): string {
 }
 
 function generateUrlSet(urls: Array<{ loc: string; lastmod?: string }>): string {
+  console.log('Generating URL set for:', urls.length, 'URLs');
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   ${urls.map(({ loc, lastmod }) => `
@@ -36,6 +38,7 @@ function generateUrlSet(urls: Array<{ loc: string; lastmod?: string }>): string 
 }
 
 async function generateStaticSitemap(): Promise<string> {
+  console.log('Generating static sitemap');
   const staticUrls = [
     { loc: '/' },
     { loc: '/patologias' },
@@ -104,6 +107,8 @@ async function generateReviewsSitemap(): Promise<string> {
 
 serve(async (req) => {
   try {
+    console.log('Received request:', req.method, new URL(req.url).pathname);
+    
     // Handle CORS preflight requests
     if (req.method === 'OPTIONS') {
       return new Response(null, { headers: corsHeaders });
