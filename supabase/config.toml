@@ -7,10 +7,13 @@ schemas = ["public", "storage", "graphql_public"]
 
 [db]
 port = 54322
+shadow_port = 54320
+major_version = 15
 
 [studio]
 enabled = true
 port = 54323
+api_url = "http://localhost"
 
 [inbucket]
 enabled = true
@@ -18,13 +21,16 @@ port = 54324
 
 [storage]
 enabled = true
+port = 54325
 
 [auth]
 enabled = true
+port = 54326
 
 [realtime]
 enabled = true
+port = 54327
 
-[[functions]]
+[functions]
 [functions.generate-sitemaps]
 verify_jwt = false

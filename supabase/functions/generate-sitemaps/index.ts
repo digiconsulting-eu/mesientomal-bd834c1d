@@ -5,6 +5,12 @@ const SITE_URL = "https://mesientomal.info";
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL') ?? '';
 const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY') ?? '';
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Content-Type': 'application/xml',
+}
+
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 function generateSitemapIndex(sitemaps: string[]): string {
@@ -35,17 +41,24 @@ async function generateStaticSitemap(): Promise<string> {
     { loc: '/patologias' },
     { loc: '/cuenta-tu-experiencia' },
     { loc: '/ultimas-resenas' },
-    { loc: '/login' },
-    { loc: '/register' },
+    { loc: '/iniciar-sesion' },
+    { loc: '/registro' },
   ];
   return generateUrlSet(staticUrls);
 }
 
 async function generatePathologySitemaps(): Promise<string[]> {
-  const { data: pathologies } = await supabase
+  console.log('Fetching pathologies from database...');
+  const { data: pathologies, error } = await supabase
     .from('PATOLOGIE')
     .select('Patologia');
 
+  if (error) {
+    console.error('Error fetching pathologies:', error);
+    return [];
+  }
+
+  console.log(`Found ${pathologies?.length || 0} pathologies`);
   if (!pathologies) return [];
 
   // Split pathologies into chunks of 1000 URLs each
@@ -55,7 +68,7 @@ async function generatePathologySitemaps(): Promise<string[]> {
   for (let i = 0; i < pathologies.length; i += chunkSize) {
     const chunk = pathologies.slice(i, i + chunkSize);
     const urls = chunk.map(p => ({
-      loc: `/patologia/${encodeURIComponent(p.Patologia || '')}`,
+      loc: `/patologia/${encodeURIComponent(p.Patologia?.toUpperCase() || '')}`,
     }));
     chunks.push(generateUrlSet(urls));
   }
@@ -64,27 +77,43 @@ async function generatePathologySitemaps(): Promise<string[]> {
 }
 
 async function generateReviewsSitemap(): Promise<string> {
-  const { data: reviews } = await supabase
+  console.log('Fetching reviews from database...');
+  const { data: reviews, error } = await supabase
     .from('reviews')
-    .select('title, created_at');
+    .select(`
+      title,
+      created_at,
+      PATOLOGIE (
+        Patologia
+      )
+    `);
 
-  if (!reviews) return generateUrlSet([]);
+  if (error) {
+    console.error('Error fetching reviews:', error);
+    return generateUrlSet([]);
+  }
 
-  const urls = reviews.map(review => ({
-    loc: `/resena/${encodeURIComponent(review.title)}`,
+  console.log(`Found ${reviews?.length || 0} reviews`);
+  const urls = reviews?.map(review => ({
+    loc: `/${review.PATOLOGIE?.Patologia?.toLowerCase()}/esperienza/${encodeURIComponent(review.title)}`,
     lastmod: review.created_at?.split('T')[0],
-  }));
+  })) || [];
 
   return generateUrlSet(urls);
 }
 
 serve(async (req) => {
   try {
+    // Handle CORS preflight requests
+    if (req.method === 'OPTIONS') {
+      return new Response(null, { headers: corsHeaders });
+    }
+
     const url = new URL(req.url);
     const path = url.pathname.split('/').pop();
+    console.log('Requested sitemap path:', path);
 
     let content = '';
-    let contentType = 'application/xml';
 
     if (path === 'sitemap.xml') {
       const sitemaps = [
@@ -98,24 +127,31 @@ serve(async (req) => {
       }
 
       content = generateSitemapIndex(sitemaps);
+      console.log('Generated sitemap index with sitemaps:', sitemaps);
     } else if (path === 'sitemap-static.xml') {
       content = await generateStaticSitemap();
+      console.log('Generated static sitemap');
     } else if (path === 'sitemap-reviews.xml') {
       content = await generateReviewsSitemap();
+      console.log('Generated reviews sitemap');
     } else if (path?.startsWith('sitemap-patologias-')) {
       const index = parseInt(path.split('-')[2]) - 1;
       const pathologySitemaps = await generatePathologySitemaps();
       content = pathologySitemaps[index] || generateUrlSet([]);
+      console.log(`Generated pathology sitemap ${index + 1}`);
     }
 
     return new Response(content, {
       headers: {
-        'Content-Type': contentType,
+        ...corsHeaders,
         'Cache-Control': 'public, max-age=3600',
       },
     });
   } catch (error) {
     console.error('Error generating sitemap:', error);
-    return new Response('Error generating sitemap', { status: 500 });
+    return new Response('Error generating sitemap', { 
+      status: 500,
+      headers: corsHeaders
+    });
   }
 });
