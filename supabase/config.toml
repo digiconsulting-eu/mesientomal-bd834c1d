@@ -27,4 +27,5 @@ enabled = true
 
 [[functions]]
 name = "generate-sitemaps"
+[functions.generate-sitemaps]
 verify_jwt = false
