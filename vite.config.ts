@@ -21,10 +21,12 @@ export default defineConfig(({ command }) => ({
       output: {
         assetFileNames: (assetInfo) => {
           const fileName = assetInfo.name || '';
+          // Handle XML files specifically
           if (fileName.endsWith('.xml')) {
             // Ensure XML files are copied to the root directory without hashing
             return `${fileName}`;
           }
+          // Handle other assets normally
           return 'assets/[name]-[hash][extname]';
         },
         chunkFileNames: 'assets/[name]-[hash].js',
