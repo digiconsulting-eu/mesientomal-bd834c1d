@@ -5,10 +5,17 @@ const SITE_URL = "https://mesientomal.info";
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL') ?? '';
 const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY') ?? '';
 
+console.log('Edge Function starting...');
+console.log('SUPABASE_URL configured:', !!SUPABASE_URL);
+console.log('SUPABASE_ANON_KEY configured:', !!SUPABASE_ANON_KEY);
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
   'Content-Type': 'application/xml',
+  'Cache-Control': 'no-cache, no-store, must-revalidate',
+  'Pragma': 'no-cache',
+  'Expires': '0'
 }
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -25,14 +32,15 @@ function generateSitemapIndex(sitemaps: string[]): string {
 </sitemapindex>`;
 }
 
-function generateUrlSet(urls: Array<{ loc: string; lastmod?: string }>): string {
+function generateUrlSet(urls: Array<{ loc: string; lastmod?: string; priority?: string }>): string {
   console.log('Generating URL set for:', urls.length, 'URLs');
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  ${urls.map(({ loc, lastmod }) => `
+  ${urls.map(({ loc, lastmod, priority }) => `
   <url>
     <loc>${SITE_URL}${loc}</loc>
     ${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}
+    ${priority ? `<priority>${priority}</priority>` : ''}
   </url>`).join('')}
 </urlset>`;
 }
@@ -40,12 +48,12 @@ function generateUrlSet(urls: Array<{ loc: string; lastmod?: string }>): string 
 async function generateStaticSitemap(): Promise<string> {
   console.log('Generating static sitemap');
   const staticUrls = [
-    { loc: '/' },
-    { loc: '/patologias' },
-    { loc: '/cuenta-tu-experiencia' },
-    { loc: '/ultimas-resenas' },
-    { loc: '/iniciar-sesion' },
-    { loc: '/registro' },
+    { loc: '/', priority: '1.0' },
+    { loc: '/patologias', priority: '0.8' },
+    { loc: '/cuenta-tu-experiencia', priority: '0.8' },
+    { loc: '/ultimas-resenas', priority: '0.8' },
+    { loc: '/iniciar-sesion', priority: '0.5' },
+    { loc: '/registro', priority: '0.5' }
   ];
   return generateUrlSet(staticUrls);
 }
@@ -72,6 +80,7 @@ async function generatePathologySitemaps(): Promise<string[]> {
     const chunk = pathologies.slice(i, i + chunkSize);
     const urls = chunk.map(p => ({
       loc: `/patologia/${encodeURIComponent(p.Patologia?.toUpperCase() || '')}`,
+      priority: '0.7'
     }));
     chunks.push(generateUrlSet(urls));
   }
@@ -98,8 +107,9 @@ async function generateReviewsSitemap(): Promise<string> {
 
   console.log(`Found ${reviews?.length || 0} reviews`);
   const urls = reviews?.map(review => ({
-    loc: `/${review.PATOLOGIE?.Patologia?.toLowerCase()}/esperienza/${encodeURIComponent(review.title)}`,
+    loc: `/patologia/${review.PATOLOGIE?.Patologia?.toLowerCase()}/experiencia/${encodeURIComponent(review.title)}`,
     lastmod: review.created_at?.split('T')[0],
+    priority: '0.6'
   })) || [];
 
   return generateUrlSet(urls);
@@ -123,7 +133,7 @@ serve(async (req) => {
     if (path === 'sitemap.xml') {
       const sitemaps = [
         'sitemap-static.xml',
-        'sitemap-reviews.xml',
+        'sitemap-reviews.xml'
       ];
 
       const pathologySitemaps = await generatePathologySitemaps();
@@ -146,15 +156,19 @@ serve(async (req) => {
       console.log(`Generated pathology sitemap ${index + 1}`);
     }
 
+    if (!content) {
+      console.error('No content generated for path:', path);
+      return new Response('Not found', { status: 404, headers: corsHeaders });
+    }
+
     return new Response(content, {
       headers: {
         ...corsHeaders,
-        'Cache-Control': 'public, max-age=3600',
       },
     });
   } catch (error) {
     console.error('Error generating sitemap:', error);
-    return new Response('Error generating sitemap', { 
+    return new Response(`Error generating sitemap: ${error.message}`, { 
       status: 500,
       headers: corsHeaders
     });

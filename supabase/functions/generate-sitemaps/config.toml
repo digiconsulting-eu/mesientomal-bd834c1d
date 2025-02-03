@@ -1,0 +1,8 @@
+project_id = "igulwzwituvozwneguky"
+
+[api]
+enabled = true
+url = "https://igulwzwituvozwneguky.supabase.co"
+
+[functions.generate-sitemaps]
+verify_jwt = false
