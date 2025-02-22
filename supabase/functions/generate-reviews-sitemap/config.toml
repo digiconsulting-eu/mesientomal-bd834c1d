@@ -1,0 +1,9 @@
+
+project_id = "igulwzwituvozwneguky"
+
+[api]
+enabled = true
+url = "https://igulwzwituvozwneguky.supabase.co"
+
+[functions.generate-reviews-sitemap]
+verify_jwt = false
