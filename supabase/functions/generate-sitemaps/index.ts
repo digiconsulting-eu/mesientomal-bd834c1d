@@ -7,8 +7,6 @@ const SUPABASE_URL = Deno.env.get('SUPABASE_URL') ?? '';
 const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY') ?? '';
 
 console.log('Edge Function starting...');
-console.log('SUPABASE_URL configured:', !!SUPABASE_URL);
-console.log('SUPABASE_ANON_KEY configured:', !!SUPABASE_ANON_KEY);
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -21,9 +19,18 @@ const corsHeaders = {
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+const staticRoutes = [
+  { loc: '/', priority: '1.0' },
+  { loc: '/patologias', priority: '0.8' },
+  { loc: '/cuenta-tu-experiencia', priority: '0.8' },
+  { loc: '/ultimas-resenas', priority: '0.8' },
+  { loc: '/iniciar-sesion', priority: '0.5' },
+  { loc: '/registro', priority: '0.5' }
+];
+
 function generateSitemapIndex(): string {
   const today = new Date().toISOString().split('T')[0];
-  console.log('Generating sitemap index with date:', today);
+  console.log('Generating sitemap index');
   
   return `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -32,7 +39,7 @@ function generateSitemapIndex(): string {
     <lastmod>${today}</lastmod>
   </sitemap>
   <sitemap>
-    <loc>${SITE_URL}/sitemap-google.xml</loc>
+    <loc>${SITE_URL}/sitemap-patologias.xml</loc>
     <lastmod>${today}</lastmod>
   </sitemap>
   <sitemap>
@@ -42,83 +49,39 @@ function generateSitemapIndex(): string {
 </sitemapindex>`;
 }
 
-function generateUrlSet(urls: Array<{ loc: string; lastmod?: string; priority?: string }>): string {
-  console.log('Generating URL set for:', urls.length, 'URLs');
+function generateUrlSet(urls: Array<{ loc: string; lastmod?: string; priority?: string }>, isFullUrl = false): string {
+  console.log(`Generating URL set with ${urls.length} URLs`);
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  ${urls.map(({ loc, lastmod, priority }) => `
-  <url>
-    <loc>${SITE_URL}${loc}</loc>
-    ${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}
-    ${priority ? `<priority>${priority}</priority>` : ''}
-  </url>`).join('')}
+${urls.map(({ loc, lastmod, priority }) => `  <url>
+    <loc>${isFullUrl ? loc : SITE_URL + loc}</loc>${lastmod ? `
+    <lastmod>${lastmod}</lastmod>` : ''}${priority ? `
+    <priority>${priority}</priority>` : ''}
+  </url>`).join('\n')}
 </urlset>`;
 }
 
 async function generateStaticSitemap(): Promise<string> {
   console.log('Generating static sitemap');
-  const staticUrls = [
-    { loc: '/', priority: '1.0' },
-    { loc: '/patologias', priority: '0.8' },
-    { loc: '/cuenta-tu-experiencia', priority: '0.8' },
-    { loc: '/ultimas-resenas', priority: '0.8' },
-    { loc: '/iniciar-sesion', priority: '0.5' },
-    { loc: '/registro', priority: '0.5' }
-  ];
-  return generateUrlSet(staticUrls);
+  return generateUrlSet(staticRoutes);
 }
 
-async function generateGoogleSitemap(): Promise<string> {
-  console.log('Generating Google sitemap with all URLs');
-  
-  // Fetch all pathologies
-  const { data: pathologies, error: pathologyError } = await supabase
+async function generatePatologiasSitemap(): Promise<string> {
+  console.log('Fetching pathologies from database...');
+  const { data: pathologies, error } = await supabase
     .from('PATOLOGIE')
     .select('Patologia');
 
-  if (pathologyError) {
-    console.error('Error fetching pathologies:', pathologyError);
+  if (error) {
+    console.error('Error fetching pathologies:', error);
     return generateUrlSet([]);
   }
 
-  // Generate base URLs
-  let urls = [
-    { loc: '/', priority: '1.0' },
-    { loc: '/patologias', priority: '0.8' },
-    { loc: '/cuenta-tu-experiencia', priority: '0.8' },
-    { loc: '/ultimas-resenas', priority: '0.8' },
-    { loc: '/iniciar-sesion', priority: '0.5' },
-    { loc: '/registro', priority: '0.5' }
-  ];
-
-  // Add pathology URLs
-  if (pathologies) {
-    const pathologyUrls = pathologies.map(p => ({
-      loc: `/patologia/${encodeURIComponent(p.Patologia?.toUpperCase() || '')}`,
-      priority: '0.7'
-    }));
-    urls = [...urls, ...pathologyUrls];
-  }
-
-  // Fetch and add review URLs
-  const { data: reviews, error: reviewError } = await supabase
-    .from('reviews')
-    .select(`
-      title,
-      created_at,
-      PATOLOGIE (
-        Patologia
-      )
-    `);
-
-  if (!reviewError && reviews) {
-    const reviewUrls = reviews.map(review => ({
-      loc: `/patologia/${review.PATOLOGIE?.Patologia?.toLowerCase()}/experiencia/${encodeURIComponent(review.title)}`,
-      lastmod: review.created_at?.split('T')[0],
-      priority: '0.6'
-    }));
-    urls = [...urls, ...reviewUrls];
-  }
+  console.log(`Found ${pathologies?.length || 0} pathologies`);
+  const urls = pathologies?.map(p => ({
+    loc: `/patologia/${encodeURIComponent((p.Patologia || '').toUpperCase())}`,
+    priority: '0.7'
+  })) || [];
 
   return generateUrlSet(urls);
 }
@@ -142,7 +105,7 @@ async function generateReviewsSitemap(): Promise<string> {
 
   console.log(`Found ${reviews?.length || 0} reviews`);
   const urls = reviews?.map(review => ({
-    loc: `/patologia/${review.PATOLOGIE?.Patologia?.toLowerCase()}/experiencia/${encodeURIComponent(review.title)}`,
+    loc: `/patologia/${encodeURIComponent((review.PATOLOGIE?.Patologia || '').toLowerCase())}/experiencia/${encodeURIComponent(review.title)}`,
     lastmod: review.created_at?.split('T')[0],
     priority: '0.6'
   })) || [];
@@ -152,56 +115,44 @@ async function generateReviewsSitemap(): Promise<string> {
 
 serve(async (req) => {
   try {
-    console.log('Received request:', req.method, new URL(req.url).pathname);
+    console.log('Request received:', req.method, new URL(req.url).pathname);
     
-    // Handle CORS preflight requests
     if (req.method === 'OPTIONS') {
       return new Response(null, { headers: corsHeaders });
     }
 
     const url = new URL(req.url);
     const path = url.pathname.split('/').pop();
-    console.log('Requested sitemap path:', path);
+    console.log('Requested sitemap:', path);
 
     let content = '';
 
     switch (path) {
       case 'sitemap.xml':
         content = generateSitemapIndex();
-        console.log('Generated sitemap index');
         break;
       case 'sitemap-static.xml':
         content = await generateStaticSitemap();
-        console.log('Generated static sitemap');
         break;
-      case 'sitemap-google.xml':
-        content = await generateGoogleSitemap();
-        console.log('Generated Google sitemap');
+      case 'sitemap-patologias.xml':
+        content = await generatePatologiasSitemap();
         break;
       case 'sitemap-reviews.xml':
         content = await generateReviewsSitemap();
-        console.log('Generated reviews sitemap');
         break;
       default:
         console.error('Unknown sitemap requested:', path);
         return new Response('Not found', { status: 404, headers: corsHeaders });
     }
 
-    if (!content) {
-      console.error('No content generated for path:', path);
-      return new Response('Not found', { status: 404, headers: corsHeaders });
-    }
-
     return new Response(content, {
-      headers: {
-        ...corsHeaders,
-      },
+      headers: corsHeaders
     });
   } catch (error) {
     console.error('Error generating sitemap:', error);
     return new Response(`Error generating sitemap: ${error.message}`, { 
-      status: 500,
-      headers: corsHeaders
+      status: 500, 
+      headers: corsHeaders 
     });
   }
 });
