@@ -8,7 +8,8 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Headers': '*',
+  'Access-Control-Allow-Methods': 'GET, OPTIONS',
   'Content-Type': 'application/xml',
   'Cache-Control': 'no-cache, no-store, must-revalidate',
   'Pragma': 'no-cache',
@@ -77,32 +78,36 @@ ${urls}
 }
 
 serve(async (req) => {
-  const requestStart = new Date().toISOString();
-  console.log(`[${requestStart}] Request received:`, req.method, new URL(req.url).pathname);
-  
-  try {
-    if (req.method === 'OPTIONS') {
-      return new Response(null, { headers: corsHeaders });
-    }
+  console.log('Request received:', req.method, req.url);
+  console.log('Request headers:', Object.fromEntries(req.headers.entries()));
 
+  // Handle CORS preflight requests
+  if (req.method === 'OPTIONS') {
+    return new Response(null, {
+      status: 204,
+      headers: corsHeaders
+    });
+  }
+
+  try {
     console.log('Starting sitemap generation process...');
-    try {
-      const content = await generateReviewsSitemap();
-      console.log('Sitemap generation completed, length:', content.length);
-      return new Response(content, { headers: corsHeaders });
-    } catch (error) {
-      console.error('Error during sitemap generation:', error);
-      throw error;
-    }
+    const content = await generateReviewsSitemap();
+    console.log('Sitemap generation completed, length:', content.length);
+    
+    // Return the response with CORS headers
+    return new Response(content, {
+      status: 200,
+      headers: corsHeaders
+    });
 
   } catch (error) {
     console.error('Error handling request:', error);
-    return new Response(`Error: ${error.message}`, { 
-      status: 500, 
-      headers: corsHeaders 
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: {
+        ...corsHeaders,
+        'Content-Type': 'application/json'
+      }
     });
-  } finally {
-    const requestEnd = new Date().toISOString();
-    console.log(`[${requestEnd}] Request completed`);
   }
 });
