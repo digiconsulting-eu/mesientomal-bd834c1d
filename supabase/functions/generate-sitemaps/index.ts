@@ -6,10 +6,6 @@ const SITE_URL = "https://mesientomal.info";
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL') ?? '';
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 
-console.log('Edge Function starting...');
-console.log('SUPABASE_URL:', SUPABASE_URL);
-console.log('Service role key exists:', !!SUPABASE_SERVICE_ROLE_KEY);
-
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -26,17 +22,16 @@ async function generatePatologiasSitemap(): Promise<string> {
   
   try {
     console.log('Querying PATOLOGIE table...');
-    const { data: pathologies, error, count } = await supabase
+    const { data: pathologies, error } = await supabase
       .from('PATOLOGIE')
-      .select('Patologia', { count: 'exact' });
+      .select('Patologia');
     
     if (error) {
       console.error('Database error:', error);
       throw error;
     }
 
-    console.log(`Found ${count} total pathologies`);
-    console.log('Sample pathologies:', pathologies?.slice(0, 3));
+    console.log('Found pathologies:', pathologies?.length);
     
     if (!pathologies || pathologies.length === 0) {
       console.warn('No pathologies found in database');
@@ -84,27 +79,16 @@ serve(async (req) => {
       return new Response(null, { headers: corsHeaders });
     }
 
-    const url = new URL(req.url);
-    const path = url.pathname.split('/').pop();
-    console.log('Requested sitemap:', path);
-
-    if (path === 'sitemap-patologias.xml') {
-      console.log('Starting sitemap generation process...');
-      try {
-        const content = await generatePatologiasSitemap();
-        console.log('Sitemap generation completed, length:', content.length);
-        return new Response(content, { headers: corsHeaders });
-      } catch (error) {
-        console.error('Error during sitemap generation:', error);
-        throw error;
-      }
+    console.log('Starting sitemap generation process...');
+    try {
+      const content = await generatePatologiasSitemap();
+      console.log('Sitemap generation completed, length:', content.length);
+      return new Response(content, { headers: corsHeaders });
+    } catch (error) {
+      console.error('Error during sitemap generation:', error);
+      throw error;
     }
 
-    console.log('Sitemap not found:', path);
-    return new Response('Not found', { 
-      status: 404, 
-      headers: corsHeaders 
-    });
   } catch (error) {
     console.error('Error handling request:', error);
     return new Response(`Error: ${error.message}`, { 
