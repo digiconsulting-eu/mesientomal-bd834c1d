@@ -9,42 +9,27 @@ const corsHeaders = {
   'Content-Type': 'application/xml'
 };
 
-console.log('Edge Function starting...');
-
 serve(async (req) => {
-  console.log('Request received:', req.method, req.url);
+  console.log('Starting function execution...');
 
   if (req.method === 'OPTIONS') {
-    console.log('Handling OPTIONS request');
+    console.log('OPTIONS request received');
     return new Response(null, {
       status: 204,
       headers: corsHeaders
     });
   }
 
+  console.log('Main request handling started');
+
   try {
-    console.log('Checking environment variables...');
-    const supabaseUrl = Deno.env.get('SUPABASE_URL');
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
-    
-    if (!supabaseUrl || !supabaseKey) {
-      throw new Error('Missing environment variables');
-    }
+    const supabaseUrl = 'https://igulwzwituvozwneguky.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlndWx3endpdHV2b3p3bmVndWt5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTczNjMzMTAzNCwiZXhwIjoyMDUxOTA3MDM0fQ.uvdDS20jw_Y_EXiHE_24QeHHRcH7DIzGLJ2ZQ8ssJFM';
 
-    console.log('Environment variables found, initializing Supabase client...');
-    const supabase = createClient(
-      supabaseUrl,
-      supabaseKey,
-      {
-        auth: {
-          persistSession: false,
-          autoRefreshToken: false,
-          detectSessionInUrl: false
-        }
-      }
-    );
+    console.log('Initializing Supabase client...');
+    const supabase = createClient(supabaseUrl, supabaseKey);
 
-    console.log('Testing database connection...');
+    console.log('Executing test query...');
     const { data: testData, error: testError } = await supabase
       .from('reviews')
       .select('id')
@@ -52,65 +37,53 @@ serve(async (req) => {
 
     if (testError) {
       console.error('Test query failed:', testError);
-      throw testError;
+      throw new Error(`Test query failed: ${testError.message}`);
     }
 
-    console.log('Test query successful, proceeding with main query...');
+    console.log('Test query successful, found', testData?.length || 0, 'rows');
+
+    console.log('Executing main query...');
     const { data: reviews, error } = await supabase
       .from('reviews')
       .select(`
         id,
         title,
-        patologia_id,
         PATOLOGIE!inner (
-          id,
           Patologia
         )
       `);
 
     if (error) {
-      console.error('Main query error:', error);
-      throw error;
+      console.error('Main query failed:', error);
+      throw new Error(`Main query failed: ${error.message}`);
     }
 
-    console.log('Reviews fetched:', reviews?.length || 0);
-    if (reviews?.length > 0) {
-      console.log('Sample review:', JSON.stringify(reviews[0], null, 2));
-    } else {
-      console.log('No reviews found');
-    }
+    console.log('Main query successful, processing', reviews?.length || 0, 'reviews');
 
-    const urls = reviews
-      ?.filter(r => {
+    const urls = (reviews || [])
+      .filter(r => {
         const isValid = r.title && r.PATOLOGIE?.Patologia;
-        console.log('Processing review:', {
-          id: r.id,
-          title: r.title,
-          patologia: r.PATOLOGIE?.Patologia,
-          isValid
-        });
+        console.log('Processing review:', r.id, 'valid:', isValid);
         return isValid;
       })
       .map(r => {
         const patologiaPath = r.PATOLOGIE?.Patologia.toLowerCase();
         const titlePath = encodeURIComponent(r.title);
-        const url = `  <url>
+        return `  <url>
     <loc>https://mesientomal.info/${encodeURIComponent(patologiaPath)}/esperienza/${titlePath}</loc>
     <priority>0.7</priority>
   </url>`;
-        console.log('Generated URL entry:', url);
-        return url;
       })
-      .join('\n') || '';
+      .join('\n');
 
-    console.log('Generated URLs count:', urls.split('\n').length);
+    console.log('Generated', (urls.match(/<url>/g) || []).length, 'URLs');
 
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls}
 </urlset>`;
 
-    console.log('Final sitemap length:', sitemap.length);
+    console.log('Sitemap generation complete');
 
     return new Response(sitemap, {
       headers: {
@@ -120,11 +93,12 @@ ${urls}
     });
 
   } catch (error) {
-    console.error('Fatal error:', error);
-    console.error('Error stack:', error.stack);
-    return new Response(JSON.stringify({ 
+    console.error('Fatal error occurred:', error);
+    console.error('Stack trace:', error.stack);
+    
+    return new Response(JSON.stringify({
       error: error.message,
-      stack: error.stack 
+      stack: error.stack
     }), {
       status: 500,
       headers: {
