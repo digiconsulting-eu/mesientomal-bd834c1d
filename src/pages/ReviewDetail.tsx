@@ -1,3 +1,4 @@
+
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -78,8 +79,8 @@ const ReviewDetail = () => {
   return (
     <>
       <Helmet>
-        <title>{review.title} - MeSientoMal.info</title>
-        <meta name="description" content={review.experience?.substring(0, 155)} />
+        <title>{review?.title} - MeSientoMal.info</title>
+        <meta name="description" content={review?.experience?.substring(0, 155)} />
       </Helmet>
 
       <div className="container mx-auto px-4 py-8">
