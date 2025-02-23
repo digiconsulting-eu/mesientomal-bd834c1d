@@ -11,7 +11,7 @@ import { RelatedReviews } from "@/components/review-detail/RelatedReviews";
 
 const ReviewDetail = () => {
   const { reviewTitle } = useParams();
-  const decodedTitle = decodeURIComponent(reviewTitle || "");
+  const decodedTitle = decodeURIComponent(reviewTitle || "").replace(/-/g, ' ');
 
   const { data: review, isError, isLoading } = useQuery({
     queryKey: ['review', reviewTitle],
@@ -25,7 +25,7 @@ const ReviewDetail = () => {
           patologia:PATOLOGIE(Patologia),
           author:author_username
         `)
-        .eq('title', decodedTitle)
+        .ilike('title', decodedTitle)
         .maybeSingle();
 
       if (error) throw error;
