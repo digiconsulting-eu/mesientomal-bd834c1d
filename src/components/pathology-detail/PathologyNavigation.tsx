@@ -7,6 +7,8 @@ interface PathologyNavigationProps {
 }
 
 export const PathologyNavigation = ({ pathologyName, onSectionClick }: PathologyNavigationProps) => {
+  const formattedPathologyName = pathologyName.replace(/\s+/g, '-');
+
   return (
     <div className="space-y-6">
       <div className="bg-sky-50 rounded-lg p-6">
@@ -28,7 +30,7 @@ export const PathologyNavigation = ({ pathologyName, onSectionClick }: Pathology
       </div>
 
       <div className="bg-sky-50 rounded-lg p-6">
-        <Link to={`/cuenta-tu-experiencia?patologia=${encodeURIComponent(pathologyName)}`}>
+        <Link to={`/cuenta-tu-experiencia?patologia=${encodeURIComponent(formattedPathologyName)}`}>
           <h2 className="text-xl font-semibold text-sky-500 mb-2 hover:text-sky-600">
             Comparte tu Experiencia
           </h2>
