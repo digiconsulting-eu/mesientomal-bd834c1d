@@ -23,11 +23,25 @@ serve(async (req) => {
   console.log('Main request handling started');
 
   try {
-    const supabaseUrl = 'https://igulwzwituvozwneguky.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlndWx3endpdHV2b3p3bmVndWt5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTczNjMzMTAzNCwiZXhwIjoyMDUxOTA3MDM0fQ.uvdDS20jw_Y_EXiHE_24QeHHRcH7DIzGLJ2ZQ8ssJFM';
+    // Get environment variables
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
 
-    console.log('Initializing Supabase client...');
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    if (!supabaseUrl || !supabaseKey) {
+      throw new Error('Missing required environment variables');
+    }
+
+    console.log('Creating Supabase client...');
+    console.log('URL:', supabaseUrl);
+    console.log('Key length:', supabaseKey.length);
+
+    const supabase = createClient(supabaseUrl, supabaseKey, {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+        detectSessionInUrl: false
+      }
+    });
 
     console.log('Executing test query...');
     const { data: testData, error: testError } = await supabase
