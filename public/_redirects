@@ -1,2 +1,4 @@
 
+/sitemap-patologias.xml https://igulwzwituvozwneguky.supabase.co/functions/v1/generate-sitemaps 200
+/sitemap-reviews.xml https://igulwzwituvozwneguky.supabase.co/functions/v1/generate-reviews-sitemap 200
 /* /index.html 200
