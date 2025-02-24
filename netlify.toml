@@ -9,10 +9,15 @@
   status = 200
   force = true
   headers = {X-From = "Netlify"}
-
+  
 [[redirects]]
   from = "/sitemap-reviews.xml"
   to = "https://igulwzwituvozwneguky.supabase.co/functions/v1/generate-reviews-sitemap"
   status = 200
   force = true
   headers = {X-From = "Netlify"}
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
