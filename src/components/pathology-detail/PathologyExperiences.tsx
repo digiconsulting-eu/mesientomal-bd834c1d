@@ -6,7 +6,7 @@ interface Review {
   id: number;
   title: string;
   experience: string;
-  author: string;
+  author_username?: string;
   PATOLOGIE?: {
     Patologia?: string;
   };
@@ -34,7 +34,7 @@ export const PathologyExperiences = ({ reviews }: PathologyExperiencesProps) => 
             return (
               <Link 
                 key={review.id} 
-                to={`/${encodeURIComponent(formattedPatologia)}/esperienza/${encodeURIComponent(formattedTitle)}`}
+                to={`/patologia/${encodeURIComponent(formattedPatologia)}/esperienza/${encodeURIComponent(formattedTitle)}`}
                 className="block"
               >
                 <div className="p-4 bg-white rounded-lg border hover:shadow-md transition-shadow">
@@ -43,7 +43,7 @@ export const PathologyExperiences = ({ reviews }: PathologyExperiencesProps) => 
                     <Badge className="mr-2" variant="secondary">
                       {review.PATOLOGIE?.Patologia?.toUpperCase()}
                     </Badge>
-                    {review.author && <span className="text-sm text-gray-500">{review.author}</span>}
+                    {review.author_username && <span className="text-sm text-gray-500">{review.author_username}</span>}
                   </div>
                   <p className="text-gray-700 line-clamp-2">{review.experience}</p>
                 </div>
