@@ -1,3 +1,4 @@
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
@@ -26,7 +27,7 @@ export const ReviewHeader = ({ title, patologia, author, createdAt }: ReviewHead
       <Button
         variant="ghost"
         className="mb-6 -ml-4"
-        onClick={() => navigate(`/pathology/${encodeURIComponent(patologia)}`)}
+        onClick={() => navigate(`/patologia/${encodeURIComponent(patologia.replace(/\s+/g, '-').toLowerCase())}`)}
       >
         <ArrowLeft className="mr-2 h-4 w-4" />
         Leer todas las experiencias sobre {patologia}
