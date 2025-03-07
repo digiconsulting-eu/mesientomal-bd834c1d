@@ -12,13 +12,17 @@ import { PathologyExperiences } from '@/components/pathology-detail/PathologyExp
 const PathologyDetail = () => {
   const { name } = useParams();
   
-  const { data: pathologyData } = useQuery({
-    queryKey: ['pathology', name],
+  // Format name for case-insensitive comparison
+  const formattedName = name?.replace(/-/g, ' ');
+  
+  const { data: pathologyData, isLoading: pathologyLoading } = useQuery({
+    queryKey: ['pathology', formattedName],
     queryFn: async () => {
+      // Case insensitive search
       const { data, error } = await supabase
         .from('PATOLOGIE')
         .select('*')
-        .eq('Patologia', name)
+        .ilike('Patologia', formattedName || '')
         .maybeSingle();
       
       if (error) throw error;
@@ -26,8 +30,8 @@ const PathologyDetail = () => {
     }
   });
 
-  const { data: reviews } = useQuery({
-    queryKey: ['pathology-reviews', name],
+  const { data: reviews, isLoading: reviewsLoading } = useQuery({
+    queryKey: ['pathology-reviews', pathologyData?.id],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('reviews')
@@ -40,6 +44,7 @@ const PathologyDetail = () => {
         .eq('patologia_id', pathologyData?.id);
       
       if (error) throw error;
+      console.log("Reviews data:", data);
       return data;
     },
     enabled: !!pathologyData?.id
@@ -75,14 +80,14 @@ const PathologyDetail = () => {
   return (
     <>
       <Helmet>
-        <title>{name?.toUpperCase()} - Información y Experiencias | MeSientoMal.info</title>
-        <meta name="description" content={`Información detallada y experiencias de pacientes sobre ${name?.toUpperCase()}. Conoce síntomas, tratamientos y testimonios reales.`} />
+        <title>{pathologyData?.Patologia?.toUpperCase() || name?.toUpperCase()} - Información y Experiencias | MeSientoMal.info</title>
+        <meta name="description" content={`Información detallada y experiencias de pacientes sobre ${pathologyData?.Patologia || name}. Conoce síntomas, tratamientos y testimonios reales.`} />
       </Helmet>
       
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-6xl mx-auto">
           <div className="flex justify-between items-center mb-8">
-            <h1 className="text-3xl font-bold text-sky-500">{name?.toUpperCase()}</h1>
+            <h1 className="text-3xl font-bold text-sky-500">{pathologyData?.Patologia?.toUpperCase() || name?.toUpperCase()}</h1>
             <Button variant="outline" className="border-sky-500 text-sky-500 hover:bg-sky-50">
               Seguir
             </Button>
@@ -95,12 +100,12 @@ const PathologyDetail = () => {
             {/* Main Content Column */}
             <div className="md:col-span-2 space-y-6">
               <PathologyNavigation 
-                pathologyName={name || ''} 
+                pathologyName={pathologyData?.Patologia || name || ''} 
                 onSectionClick={scrollToSection}
               />
               
               <PathologyDescription 
-                name={name || ''} 
+                name={pathologyData?.Patologia || name || ''} 
                 description={pathologyData?.Descrizione || ''}
               />
               
