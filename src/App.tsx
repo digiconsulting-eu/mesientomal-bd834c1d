@@ -1,3 +1,4 @@
+
 import { Navbar } from "./components/Navbar";
 import Index from "./pages/Index";
 import ReviewDetail from "./pages/ReviewDetail";
@@ -11,8 +12,21 @@ import Register from "./pages/Register";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Toaster } from "@/components/ui/toaster";
 
-const queryClient = new QueryClient();
+// Configure React Query with proper settings
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: true,
+      refetchOnMount: true,
+      refetchOnReconnect: true,
+      retry: 3,
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      cacheTime: 30 * 60 * 1000, // 30 minutes
+    },
+  },
+});
 
 function App() {
   return (
@@ -27,7 +41,7 @@ function App() {
                 <Route path="/patologias" element={<PathologySearch />} />
                 <Route path="/patologia/:name" element={<PathologyDetail />} />
                 <Route path="/ultimas-resenas" element={<LatestReviews />} />
-                <Route path="/:pathologyName/esperienza/:reviewTitle" element={<ReviewDetail />} />
+                <Route path="/patologia/:pathologyName/esperienza/:reviewTitle" element={<ReviewDetail />} />
                 <Route path="/cuenta-tu-experiencia" element={<ShareExperience />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/admin/recensioni" element={<div>Gestione Recensioni</div>} />
@@ -46,6 +60,7 @@ function App() {
                 } />
               </Routes>
             </main>
+            <Toaster />
           </div>
         </Router>
       </QueryClientProvider>

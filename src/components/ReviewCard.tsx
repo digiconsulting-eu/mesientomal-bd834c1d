@@ -18,7 +18,7 @@ export const ReviewCard = ({ title, patologia, content, author }: ReviewCardProp
     <Card className="p-6 hover:shadow-lg transition-shadow border-primary">
       <div className="space-y-4">
         <div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-1">{title}</h3>
+          <h3 className="text-xl font-semibold text-gray-900 mb-1 truncate">{title}</h3>
           <p className="text-sm text-gray-500">{author}</p>
         </div>
 
@@ -31,13 +31,13 @@ export const ReviewCard = ({ title, patologia, content, author }: ReviewCardProp
 
         <p className="text-gray-600 line-clamp-2">{content}</p>
 
-        <button 
-          className="w-full bg-primary text-white py-3 px-4 rounded-lg hover:bg-[#0284C7] transition-colors flex items-center justify-center gap-2"
-          onClick={() => window.location.href = `/${encodeURIComponent(formattedPatologia)}/esperienza/${encodeURIComponent(formattedTitle)}`}
+        <a 
+          className="w-full bg-primary text-white py-3 px-4 rounded-lg hover:bg-[#0284C7] transition-colors flex items-center justify-center gap-2 cursor-pointer"
+          href={`/patologia/${encodeURIComponent(formattedPatologia)}/esperienza/${encodeURIComponent(formattedTitle)}`}
         >
           Leer experiencia completa
           <ArrowRight className="h-4 w-4" />
-        </button>
+        </a>
       </div>
     </Card>
   );
